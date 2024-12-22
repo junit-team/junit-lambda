@@ -10,10 +10,13 @@
 
 package org.junit.platform.launcher.core;
 
+import static org.junit.platform.engine.support.store.ResourceContext.*;
+
 import java.util.List;
 import java.util.function.Supplier;
 
 import org.junit.platform.commons.PreconditionViolationException;
+import org.junit.platform.engine.support.store.NamespacedHierarchicalStore;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryListener;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
@@ -43,6 +46,7 @@ class DefaultLauncherSession implements LauncherSession {
 	private final LauncherInterceptor interceptor;
 	private final LauncherSessionListener listener;
 	private final DelegatingLauncher launcher;
+	private final NamespacedHierarchicalStore<Namespace> store;
 
 	DefaultLauncherSession(List<LauncherInterceptor> interceptors, Supplier<LauncherSessionListener> listenerSupplier,
 			Supplier<Launcher> launcherSupplier) {
@@ -58,6 +62,7 @@ class DefaultLauncherSession implements LauncherSession {
 		}
 		this.launcher = new DelegatingLauncher(launcher);
 		listener.launcherSessionOpened(this);
+		this.store = new NamespacedHierarchicalStore<>(null);
 	}
 
 	@Override
@@ -76,6 +81,11 @@ class DefaultLauncherSession implements LauncherSession {
 			listener.launcherSessionClosed(this);
 			interceptor.close();
 		}
+	}
+
+	@Override
+	public NamespacedHierarchicalStore<Namespace> getStore() {
+		return store;
 	}
 
 	private static class ClosedLauncher implements Launcher {

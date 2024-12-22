@@ -11,8 +11,10 @@
 package org.junit.platform.launcher;
 
 import static org.apiguardian.api.API.Status.STABLE;
+import static org.junit.platform.engine.support.store.ResourceContext.*;
 
 import org.apiguardian.api.API;
+import org.junit.platform.engine.support.store.NamespacedHierarchicalStore;
 import org.junit.platform.launcher.core.LauncherFactory;
 
 /**
@@ -46,5 +48,7 @@ public interface LauncherSession extends AutoCloseable {
 	 */
 	@Override
 	void close();
+
+	NamespacedHierarchicalStore<Namespace> getStore();
 
 }
