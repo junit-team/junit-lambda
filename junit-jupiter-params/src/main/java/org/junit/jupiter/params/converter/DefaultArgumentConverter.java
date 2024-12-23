@@ -39,7 +39,7 @@ import org.junit.platform.commons.util.ReflectionUtils;
  * {@link File}, {@link BigDecimal}, {@link BigInteger}, {@link Currency},
  * {@link Locale}, {@link URI}, {@link URL}, {@link UUID}, etc.
  *
- * <p>If the source and target types are identical the source object will not
+ * <p>If the source and target types are identical, the source object will not
  * be modified.
  *
  * @since 5.0
@@ -74,20 +74,14 @@ public class DefaultArgumentConverter implements ArgumentConverter {
 			return source;
 		}
 
-		if (source instanceof String) {
-			Class<?> declaringClass = context.getDeclaringExecutable().getDeclaringClass();
-			ClassLoader classLoader = ClassLoaderUtils.getClassLoader(declaringClass);
-			try {
-				return ConversionSupport.convert((String) source, targetType, classLoader);
-			}
-			catch (ConversionException ex) {
-				throw new ArgumentConversionException(ex.getMessage(), ex);
-			}
+		Class<?> declaringClass = context.getDeclaringExecutable().getDeclaringClass();
+		ClassLoader classLoader = ClassLoaderUtils.getClassLoader(declaringClass);
+		try {
+			return ConversionSupport.convert(source, targetType, classLoader);
 		}
-
-		throw new ArgumentConversionException(
-			String.format("No built-in converter for source type %s and target type %s",
-				source.getClass().getTypeName(), targetType.getTypeName()));
+		catch (ConversionException ex) {
+			throw new ArgumentConversionException(ex.getMessage(), ex);
+		}
 	}
 
 }

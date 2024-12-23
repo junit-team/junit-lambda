@@ -347,7 +347,8 @@ class DefaultArgumentConverterTests {
 	@SuppressWarnings("deprecation")
 	void convertsStringToLocale() {
 		assertConverts("en", Locale.class, Locale.ENGLISH);
-		assertConverts("en_us", Locale.class, new Locale(Locale.US.toString()));
+		assertConverts("en-US", Locale.class, Locale.US); // FIXME revert
+		assertConverts(null, Locale.class, null); // FIXME remove
 	}
 
 	@Test

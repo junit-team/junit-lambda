@@ -40,7 +40,6 @@ import org.junit.jupiter.api.extension.ParameterResolver;
  * the {@link ParameterContext} to perform the conversion.
  *
  * @since 5.0
- * @see SimpleArgumentConverter
  * @see org.junit.jupiter.params.ParameterizedTest
  * @see org.junit.jupiter.params.converter.ConvertWith
  * @see org.junit.jupiter.params.support.AnnotationConsumer
