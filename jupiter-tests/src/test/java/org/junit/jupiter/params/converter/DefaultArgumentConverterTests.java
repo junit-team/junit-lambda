@@ -186,24 +186,27 @@ class DefaultArgumentConverterTests {
 	void throwsExceptionWhenImplicitConverstionIsUnsupported() {
 		assertThatExceptionOfType(ArgumentConversionException.class) //
 				.isThrownBy(() -> convert("foo", Enigma.class)) //
-				.withMessage("No built-in converter for source type java.lang.String and target type %s",
+				.withMessage("No built-in converter for source type java.lang.String and target type %s", // FIXME enhance DefaultConversionService::canConvert
 					Enigma.class.getName());
 
 		assertThatExceptionOfType(ArgumentConversionException.class) //
 				.isThrownBy(() -> convert(new Enigma(), int[].class)) //
-				.withMessage("No built-in converter for source type %s and target type int[]", Enigma.class.getName());
+				.withMessage("No registered or built-in converter for source type %s and target type int[]",
+					Enigma.class.getName());
 
 		assertThatExceptionOfType(ArgumentConversionException.class) //
 				.isThrownBy(() -> convert(new long[] {}, int[].class)) //
-				.withMessage("No built-in converter for source type long[] and target type int[]");
+				.withMessage("No registered or built-in converter for source type long[] and target type int[]");
 
 		assertThatExceptionOfType(ArgumentConversionException.class) //
 				.isThrownBy(() -> convert(new String[] {}, boolean.class)) //
-				.withMessage("No built-in converter for source type java.lang.String[] and target type boolean");
+				.withMessage(
+					"No registered or built-in converter for source type java.lang.String[] and target type boolean");
 
 		assertThatExceptionOfType(ArgumentConversionException.class) //
 				.isThrownBy(() -> convert(Class.class, int[].class)) //
-				.withMessage("No built-in converter for source type java.lang.Class and target type int[]");
+				.withMessage(
+					"No registered or built-in converter for source type java.lang.Class and target type int[]");
 	}
 
 	/**

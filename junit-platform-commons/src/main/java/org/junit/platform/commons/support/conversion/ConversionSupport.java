@@ -10,6 +10,7 @@
 
 package org.junit.platform.commons.support.conversion;
 
+import static org.apiguardian.api.API.Status.DEPRECATED;
 import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 
 import java.util.ServiceLoader;
@@ -52,6 +53,7 @@ public final class ConversionSupport {
 	 */
 	@SuppressWarnings("unchecked")
 	@Deprecated
+	@API(status = DEPRECATED, since = "5.12")
 	public static <T> T convert(String source, Class<T> targetType, ClassLoader classLoader) {
 		return (T) DefaultConversionService.INSTANCE.convert(source, targetType, getClassLoader(classLoader));
 	}
@@ -84,7 +86,7 @@ public final class ConversionSupport {
 				.filter(candidate -> candidate.canConvert(source, targetType, classLoader)) //
 				.findFirst() //
 				.map(candidate -> candidate.convert(source, targetType, classLoaderToUse)) //
-				.orElseThrow(() -> new ConversionException("No built-in converter for source type "
+				.orElseThrow(() -> new ConversionException("No registered or built-in converter for source type "
 						+ source.getClass().getTypeName() + " and target type " + targetType.getTypeName()));
 	}
 

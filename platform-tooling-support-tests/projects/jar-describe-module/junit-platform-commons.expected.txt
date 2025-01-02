@@ -9,6 +9,7 @@ requires java.base mandated
 requires java.logging
 requires java.management
 requires org.apiguardian.api static transitive
+uses org.junit.platform.commons.support.conversion.ConversionService
 uses org.junit.platform.commons.support.scanning.ClasspathScanner
 qualified exports org.junit.platform.commons.logging to org.junit.jupiter.api org.junit.jupiter.engine org.junit.jupiter.migrationsupport org.junit.jupiter.params org.junit.platform.console org.junit.platform.engine org.junit.platform.launcher org.junit.platform.reporting org.junit.platform.runner org.junit.platform.suite.api org.junit.platform.suite.engine org.junit.platform.testkit org.junit.vintage.engine
 qualified exports org.junit.platform.commons.util to org.junit.jupiter.api org.junit.jupiter.engine org.junit.jupiter.migrationsupport org.junit.jupiter.params org.junit.platform.console org.junit.platform.engine org.junit.platform.launcher org.junit.platform.reporting org.junit.platform.runner org.junit.platform.suite.api org.junit.platform.suite.commons org.junit.platform.suite.engine org.junit.platform.testkit org.junit.vintage.engine
