@@ -10,12 +10,11 @@
 
 package org.junit.platform.launcher.core;
 
-import static org.junit.platform.engine.support.store.ResourceContext.*;
-
 import java.util.List;
 import java.util.function.Supplier;
 
 import org.junit.platform.commons.PreconditionViolationException;
+import org.junit.platform.engine.Namespace;
 import org.junit.platform.engine.support.store.NamespacedHierarchicalStore;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryListener;
