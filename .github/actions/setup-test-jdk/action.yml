@@ -11,6 +11,13 @@ runs:
     - uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4
       with:
         distribution: ${{ inputs.distribution }}
+        java-version: 8
+        check-latest: true
+    - shell: bash
+      run: echo "JDK8=$JAVA_HOME" >> $GITHUB_ENV
+    - uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4
+      with:
+        distribution: ${{ inputs.distribution }}
         java-version: 17
         check-latest: true
     - shell: bash
