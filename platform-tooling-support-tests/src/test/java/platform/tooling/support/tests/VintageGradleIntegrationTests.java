@@ -59,7 +59,7 @@ class VintageGradleIntegrationTests {
 	private ProcessResult run(OutputFiles outputFiles, String version) throws Exception {
 		return ProcessStarters.gradlew() //
 				.workingDir(copyToWorkspace(Projects.VINTAGE, workspace)) //
-				.putEnvironment("JDK8", Helper.getJavaHome("8").orElseThrow(TestAbortedException::new).toString()) //
+				.putEnvironment("JDK17", Helper.getJavaHome("17").orElseThrow(TestAbortedException::new).toString()) //
 				.addArguments("build", "--no-daemon", "--stacktrace", "--no-build-cache", "--warning-mode=fail") //
 				.addArguments("-Dmaven.repo=" + MavenRepo.dir()) //
 				.addArguments("-Djunit4Version=" + version) //

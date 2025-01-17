@@ -13,9 +13,9 @@ package org.junit.platform.commons.util;
 import java.util.ServiceLoader;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 
 /**
  * Collection of utilities for working with {@link ServiceLoader}.
@@ -28,7 +28,7 @@ import org.apiguardian.api.API;
  *
  * @since 5.11
  */
-@API(status = API.Status.INTERNAL, since = "5.11")
+@API(status = Status.INTERNAL, since = "5.11")
 public class ServiceLoaderUtils {
 
 	private ServiceLoaderUtils() {
@@ -45,11 +45,12 @@ public class ServiceLoaderUtils {
 	 */
 	public static <T> Stream<T> filter(ServiceLoader<T> serviceLoader,
 			Predicate<? super Class<? extends T>> providerPredicate) {
-		return StreamSupport.stream(serviceLoader.spliterator(), false).filter(it -> {
-			@SuppressWarnings("unchecked")
-			Class<? extends T> type = (Class<? extends T>) it.getClass();
-			return providerPredicate.test(type);
-		});
+		// @formatter:off
+		return serviceLoader
+				.stream()
+				.filter(provider -> providerPredicate.test(provider.type()))
+				.map(ServiceLoader.Provider::get);
+		// @formatter:on
 	}
 
 }

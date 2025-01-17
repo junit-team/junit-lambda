@@ -44,7 +44,7 @@ class MavenSurefireCompatibilityTests {
 	void testMavenSurefireCompatibilityProject(String surefireVersion, String extraArg, @TempDir Path workspace,
 			@FilePrefix("maven") OutputFiles outputFiles) throws Exception {
 		var extraArgs = extraArg == null ? new String[0] : new String[] { extraArg };
-		var result = ProcessStarters.maven(Helper.getJavaHome("8").orElseThrow(TestAbortedException::new)) //
+		var result = ProcessStarters.maven(Helper.getJavaHome("17").orElseThrow(TestAbortedException::new)) //
 				.workingDir(copyToWorkspace(Projects.MAVEN_SUREFIRE_COMPATIBILITY, workspace)) //
 				.addArguments(localMavenRepo.toCliArgument(), "-Dmaven.repo=" + MavenRepo.dir()) //
 				.addArguments("-Dsurefire.version=" + surefireVersion) //

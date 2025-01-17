@@ -26,8 +26,8 @@ val modularProjects: List<Project> by rootProject
 modularProjects.forEach { evaluationDependsOn(it.path) }
 
 javaLibrary {
-	mainJavaVersion = JavaVersion.VERSION_1_8
-	testJavaVersion = JavaVersion.VERSION_1_8
+	mainJavaVersion = JavaVersion.VERSION_17
+	testJavaVersion = JavaVersion.VERSION_17
 }
 
 val apiReport = configurations.dependencyScope("apiReport")

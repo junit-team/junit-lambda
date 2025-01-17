@@ -10,8 +10,6 @@
 
 package org.junit.platform.commons.util;
 
-import static org.junit.platform.commons.util.PackageUtils.DEFAULT_PACKAGE_NAME;
-
 /**
  * Collection of utilities for working with package names.
  *
@@ -26,13 +24,7 @@ import static org.junit.platform.commons.util.PackageUtils.DEFAULT_PACKAGE_NAME;
 class PackageNameUtils {
 
 	static String getPackageName(Class<?> clazz) {
-		Package p = clazz.getPackage();
-		if (p != null) {
-			return p.getName();
-		}
-		String className = clazz.getName();
-		int index = className.lastIndexOf('.');
-		return index == -1 ? DEFAULT_PACKAGE_NAME : className.substring(0, index);
+		return clazz.getPackageName();
 	}
 
 }
