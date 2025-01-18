@@ -423,7 +423,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="../org.junit.platform.engine/org/junit/platform/engine/ExecutionRequest.html#getConfigurationParameters()" class="member-name-link">getConfigurationParameters()</a> - Method in class org.junit.platform.engine.<a href="../org.junit.platform.engine/org/junit/platform/engine/ExecutionRequest.html" title="class in org.junit.platform.engine">ExecutionRequest</a></dt>
 <dd>
-<div class="block">Get the <a href="../org.junit.platform.engine/org/junit/platform/engine/ConfigurationParameters.html" title="interface in org.junit.platform.engine"><code>ConfigurationParameters</code></a> that the engine may use to
+<div class="block">Returns the <a href="../org.junit.platform.engine/org/junit/platform/engine/ConfigurationParameters.html" title="interface in org.junit.platform.engine"><code>ConfigurationParameters</code></a> that the engine may use to
  influence test execution.</div>
 </dd>
 <dt><a href="../org.junit.platform.launcher/org/junit/platform/launcher/TestPlan.html#getConfigurationParameters()" class="member-name-link">getConfigurationParameters()</a> - Method in class org.junit.platform.launcher.<a href="../org.junit.platform.launcher/org/junit/platform/launcher/TestPlan.html" title="class in org.junit.platform.launcher">TestPlan</a></dt>
@@ -677,7 +677,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="../org.junit.platform.engine/org/junit/platform/engine/ExecutionRequest.html#getEngineExecutionListener()" class="member-name-link">getEngineExecutionListener()</a> - Method in class org.junit.platform.engine.<a href="../org.junit.platform.engine/org/junit/platform/engine/ExecutionRequest.html" title="class in org.junit.platform.engine">ExecutionRequest</a></dt>
 <dd>
-<div class="block">Get the <a href="../org.junit.platform.engine/org/junit/platform/engine/EngineExecutionListener.html" title="interface in org.junit.platform.engine"><code>EngineExecutionListener</code></a> to be notified of test execution
+<div class="block">Returns the <a href="../org.junit.platform.engine/org/junit/platform/engine/EngineExecutionListener.html" title="interface in org.junit.platform.engine"><code>EngineExecutionListener</code></a> to be notified of test execution
  events.</div>
 </dd>
 <dt><a href="../org.junit.platform.launcher/org/junit/platform/launcher/LauncherDiscoveryRequest.html#getEngineFilters()" class="member-name-link">getEngineFilters()</a> - Method in interface org.junit.platform.launcher.<a href="../org.junit.platform.launcher/org/junit/platform/launcher/LauncherDiscoveryRequest.html" title="interface in org.junit.platform.launcher">LauncherDiscoveryRequest</a></dt>
@@ -1214,6 +1214,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Get the <a href="../org.junit.platform.engine/org/junit/platform/engine/reporting/OutputDirectoryProvider.html" title="interface in org.junit.platform.engine.reporting"><code>OutputDirectoryProvider</code></a> for this request.</div>
 </dd>
+<dt><a href="../org.junit.platform.engine/org/junit/platform/engine/ExecutionRequest.html#getOutputDirectoryProvider()" class="member-name-link">getOutputDirectoryProvider()</a> - Method in class org.junit.platform.engine.<a href="../org.junit.platform.engine/org/junit/platform/engine/ExecutionRequest.html" title="class in org.junit.platform.engine">ExecutionRequest</a></dt>
+<dd>
+<div class="block">Returns the <a href="../org.junit.platform.engine/org/junit/platform/engine/reporting/OutputDirectoryProvider.html" title="interface in org.junit.platform.engine.reporting"><code>OutputDirectoryProvider</code></a> for this request for writing
+ reports and other output files.</div>
+</dd>
 <dt><a href="../org.junit.platform.launcher/org/junit/platform/launcher/TestPlan.html#getOutputDirectoryProvider()" class="member-name-link">getOutputDirectoryProvider()</a> - Method in class org.junit.platform.launcher.<a href="../org.junit.platform.launcher/org/junit/platform/launcher/TestPlan.html" title="class in org.junit.platform.launcher">TestPlan</a></dt>
 <dd>
 <div class="block">Get the <a href="../org.junit.platform.engine/org/junit/platform/engine/reporting/OutputDirectoryProvider.html" title="interface in org.junit.platform.engine.reporting"><code>OutputDirectoryProvider</code></a> for this test plan.</div>
@@ -1460,7 +1465,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="../org.junit.platform.engine/org/junit/platform/engine/ExecutionRequest.html#getRootTestDescriptor()" class="member-name-link">getRootTestDescriptor()</a> - Method in class org.junit.platform.engine.<a href="../org.junit.platform.engine/org/junit/platform/engine/ExecutionRequest.html" title="class in org.junit.platform.engine">ExecutionRequest</a></dt>
 <dd>
-<div class="block">Get the root <a href="../org.junit.platform.engine/org/junit/platform/engine/TestDescriptor.html" title="interface in org.junit.platform.engine"><code>TestDescriptor</code></a> of the engine that processes this
+<div class="block">Returns the root <a href="../org.junit.platform.engine/org/junit/platform/engine/TestDescriptor.html" title="interface in org.junit.platform.engine"><code>TestDescriptor</code></a> of the engine that processes this
  request.</div>
 </dd>
 <dt><a href="../org.junit.platform.engine/org/junit/platform/engine/support/hierarchical/ParallelExecutionConfiguration.html#getSaturatePredicate()" class="member-name-link">getSaturatePredicate()</a> - Method in interface org.junit.platform.engine.support.hierarchical.<a href="../org.junit.platform.engine/org/junit/platform/engine/support/hierarchical/ParallelExecutionConfiguration.html" title="interface in org.junit.platform.engine.support.hierarchical">ParallelExecutionConfiguration</a></dt>
