@@ -17,6 +17,7 @@ import static org.junit.platform.commons.util.ReflectionUtils.isAssignableTo;
 
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -83,6 +84,18 @@ public final class NamespacedHierarchicalStore<N> implements AutoCloseable {
 	 */
 	public NamespacedHierarchicalStore<N> newChild() {
 		return new NamespacedHierarchicalStore<>(this, this.closeAction);
+	}
+
+	/**
+	 * Returns the parent store of this {@code NamespacedHierarchicalStore}.
+	 *
+	 * <p>If this store does not have a parent, an empty {@code Optional} is returned.
+	 *
+	 * @return an {@code Optional} containing the parent store, or an empty {@code Optional} if there is no parent
+	 * @since 5.13
+	 */
+	public Optional<NamespacedHierarchicalStore<N>> getParent() {
+		return Optional.ofNullable(this.parentStore);
 	}
 
 	/**

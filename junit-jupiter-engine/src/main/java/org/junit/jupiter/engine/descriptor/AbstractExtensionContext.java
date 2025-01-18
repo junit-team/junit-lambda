@@ -193,6 +193,16 @@ abstract class AbstractExtensionContext<T extends TestDescriptor> implements Ext
 	}
 
 	@Override
+	public Store getSessionLevelStore() {
+		return getStore(Namespace.create("session"));
+	}
+
+	@Override
+	public Store getRequestLevelStore() {
+		return getStore(Namespace.create("request"));
+	}
+
+	@Override
 	public Set<String> getTags() {
 		// return modifiable copy
 		return new LinkedHashSet<>(this.tags);

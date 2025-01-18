@@ -419,6 +419,28 @@ public interface ExtensionContext {
 	Store getStore(Namespace namespace);
 
 	/**
+	 * Returns the store for session-level data.
+	 *
+	 * <p>This store is used to store data that is scoped to the session level.
+	 * The data stored in this store will be available throughout the entire session.
+	 *
+	 * @return the store for session-level data
+	 * @since 5.13
+	 */
+	Store getSessionLevelStore();
+
+	/**
+	 * Returns the store for request-level data.
+	 *
+	 * <p>This store is used to store data that is scoped to the request level.
+	 * The data stored in this store will be available only for the duration of the current request.
+	 *
+	 * @return the store for request-level data
+	 * @since 5.13
+	 */
+	Store getRequestLevelStore();
+
+	/**
 	 * Get the {@link ExecutionMode} associated with the current test or container.
 	 *
 	 * @return the {@code ExecutionMode} of the test; never {@code null}
