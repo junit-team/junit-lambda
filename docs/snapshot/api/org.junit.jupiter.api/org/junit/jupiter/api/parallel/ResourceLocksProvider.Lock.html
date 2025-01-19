@@ -101,13 +101,11 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public static final class </span><span class="element-name type-name-label">ResourceLocksProvider.Lock</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block"><p><a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel"><code>ResourceLocksProvider.Lock</code></a> represents a shared resource.
+<div class="block"><code>Lock</code> represents a shared resource.
 
- <p>Each resource is identified by a <code>key</code>.
- In addition, the <code>accessMode</code> allows to specify
- whether a test class or test
- method requires <a href="ResourceAccessMode.html#READ_WRITE"><code>READ_WRITE</code></a>
- or only <a href="ResourceAccessMode.html#READ"><code>READ</code></a> access to the resource.</div>
+ <p>Each resource is identified by a <a href="#getKey()">key</a>. In addition,
+ the <a href="#getAccessMode()">access mode</a> allows one to specify whether
+ a test class or test method requires <a href="ResourceAccessMode.html#READ_WRITE"><code>READ_WRITE</code></a> or <a href="ResourceAccessMode.html#READ"><code>READ</code></a> access to the resource.</div>
 <dl class="notes">
 <dt>Since:</dt>
 <dd>5.12</dd>
@@ -122,7 +120,7 @@ loadScripts(document, 'script');</script>
 </ul>
 </dd>
 <dt>API Note:</dt>
-<dd><code>key</code> and <code>accessMode</code> have the same
+<dd><a href="#getKey()"><code>getKey()</code></a> and <a href="#getAccessMode()"><code>getAccessMode()</code></a> have the same
  semantics as <a href="ResourceLock.html#value()"><code>ResourceLock.value()</code></a> and <a href="ResourceLock.html#mode()"><code>ResourceLock.mode()</code></a>
  respectively.</dd>
 </dl>
@@ -139,7 +137,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String)" class="member-name-link">Lock</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Create a new <code>Lock</code> with <code>accessMode = READ_WRITE</code>.</div>
+<div class="block">Create a new <code>Lock</code> with <a href="ResourceAccessMode.html#READ_WRITE"><code>ResourceAccessMode.READ_WRITE</code></a>.</div>
 </div>
 <div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.junit.jupiter.api.parallel.ResourceAccessMode)" class="member-name-link">Lock</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
  <a href="ResourceAccessMode.html" title="enum class in org.junit.jupiter.api.parallel">ResourceAccessMode</a>&nbsp;accessMode)</code></div>
@@ -166,12 +164,12 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ResourceAccessMode.html" title="enum class in org.junit.jupiter.api.parallel">ResourceAccessMode</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAccessMode()" class="member-name-link">getAccessMode</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Get the access mode of this lock.</div>
+<div class="block">Get the access mode for this lock.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getKey()" class="member-name-link">getKey</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Get the key of this lock.</div>
+<div class="block">Get the key for this lock.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -200,7 +198,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(java.lang.String)">
 <h3>Lock</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">Lock</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key)</span></div>
-<div class="block">Create a new <code>Lock</code> with <code>accessMode = READ_WRITE</code>.</div>
+<div class="block">Create a new <code>Lock</code> with <a href="ResourceAccessMode.html#READ_WRITE"><code>ResourceAccessMode.READ_WRITE</code></a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>key</code> - the identifier of the resource; never <code>null</code> or blank</dd>
@@ -222,7 +220,8 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>key</code> - the identifier of the resource; never <code>null</code> or blank</dd>
-<dd><code>accessMode</code> - the lock mode to use to synchronize access to the resource; never <code>null</code></dd>
+<dd><code>accessMode</code> - the lock mode to use to synchronize access to the
+ resource; never <code>null</code></dd>
 <dt>See Also:</dt>
 <dd>
 <ul class="tag-list">
@@ -245,7 +244,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getKey()">
 <h3>getKey</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getKey</span>()</div>
-<div class="block">Get the key of this lock.</div>
+<div class="block">Get the key for this lock.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -260,7 +259,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getAccessMode()">
 <h3>getAccessMode</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ResourceAccessMode.html" title="enum class in org.junit.jupiter.api.parallel">ResourceAccessMode</a></span>&nbsp;<span class="element-name">getAccessMode</span>()</div>
-<div class="block">Get the access mode of this lock.</div>
+<div class="block">Get the access mode for this lock.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>

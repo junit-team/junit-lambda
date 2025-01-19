@@ -581,36 +581,43 @@ to newer versions of JUnit.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>New <code>addResourceContainerSelectorResolver()</code> in <code>EngineDiscoveryRequestResolver.Builder</code> to
-support the discovery of class path resource based tests, analogous to the
-<code>addClassContainerSelectorResolver()</code>.</p>
-</li>
-<li>
-<p>Introduce <code>ReflectionSupport.makeAccessible(Field)</code> for third-party use rather than
-calling the internal <code>ReflectionUtils.makeAccessible(Field)</code> method directly.</p>
-</li>
-<li>
-<p>Support both the primitive type <code>void</code> and the wrapper type <code>Void</code> in the internal
-<code>ReflectionUtils</code> to allow <code>String</code> to <code>Class</code> conversion in parameterized tests.</p>
-</li>
-<li>
-<p>New <code>--exclude-methodname</code> and <code>--include-methodname</code> options added to the
-<code>ConsoleLauncher</code> to include or exclude methods based on fully qualified method names
-without parameters. For example, <code>--exclude-methodname=^org\.example\..+#methodname</code>
-will exclude all methods called <code>methodName</code> under package <code>org.example</code>.</p>
-</li>
-<li>
-<p>Add support for passing line and column number to <code>ConsoleLauncher</code> via
-<code>--select-file</code> and <code>--select-resource</code>.</p>
-</li>
-<li>
 <p><code>ConsoleLauncher</code> now accepts multiple values for all <code>--select</code> options.</p>
 </li>
 <li>
-<p>Add <code>--select-unique-id</code> support to ConsoleLauncher.</p>
+<p><code>ConsoleLauncher</code> now supports a <code>--select-unique-id</code> option to select containers and
+tests by unique ID.</p>
 </li>
 <li>
-<p>Add <code>getOutputDirectoryProvider()</code> method to <code>EngineDiscoveryRequest</code> and <code>TestPlan</code> to
+<p><code>ConsoleLauncher</code> supports new <code>--exclude-methodname</code> and <code>--include-methodname</code> options
+to include or exclude methods based on fully qualified method names without parameters.
+For example, <code>--exclude-methodname=^org\.example\..+#methodname</code> will exclude all
+methods called <code>methodName</code> under package <code>org.example</code>.</p>
+</li>
+<li>
+<p>The <code>--select-file</code> and <code>--select-resource</code> options for the <code>ConsoleLauncher</code> now
+support line and column numbers.</p>
+</li>
+<li>
+<p>New <code>ReflectionSupport.makeAccessible(Field)</code> public utility method to be used by third
+parties instead of calling the internal <code>ReflectionUtils.makeAccessible(Field)</code> method
+directly.</p>
+</li>
+<li>
+<p>The <code>ReflectionSupport.tryToLoadClass(&#8230;&#8203;)</code> utility methods now support lookups for the
+<code>"void"</code> pseudo-type, which indirectly supports <code>String</code> to <code>Class</code> conversion for
+<code>"void"</code> in parameterized tests in JUnit Jupiter.</p>
+</li>
+<li>
+<p><code>ReflectionUtils</code> now treats <code>Void</code> as a <em>wrapper</em> type for the <code>void</code> pseudo-type.</p>
+</li>
+<li>
+<p>New <code>addResourceContainerSelectorResolver()</code> method in
+<code>EngineDiscoveryRequestResolver.Builder</code> which supports the discovery of class path
+resource based tests, analogous to the existing <code>addClassContainerSelectorResolver()</code>
+method.</p>
+</li>
+<li>
+<p>New <code>getOutputDirectoryProvider()</code> method in <code>EngineDiscoveryRequest</code> and <code>TestPlan</code> to
 allow test engines to publish/attach files to containers and tests by calling
 <code>EngineExecutionListener.fileEntryPublished(&#8230;&#8203;)</code>. Registered <code>TestExecutionListeners</code>
 can then access these files by overriding the <code>fileEntryPublished(&#8230;&#8203;)</code> method.</p>
@@ -645,9 +652,6 @@ in the XML report.</p>
 to the most recent test or container that was started or has written output.</p>
 </li>
 <li>
-<p>Introduced contracts for Kotlin-specific assertion methods.</p>
-</li>
-<li>
 <p>New public interface <code>ClasspathScanner</code> allowing third parties to provide a custom
 implementation for scanning the classpath for classes and resources.</p>
 </li>
@@ -672,18 +676,18 @@ implementation for scanning the classpath for classes and resources.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>When injecting <code>TestInfo</code> into test class constructors it now contains data of the test
-method the test class instance is being created for unless the test instance lifecycle
-is set to <code>PER_CLASS</code> (in which case it continues to contain the data of the test
-class). If you require the <code>TestInfo</code> of the test class, you can implement a class-level
-lifecycle method (e.g., <code>@BeforeAll</code>) and inject <code>TestInfo</code> into that method.</p>
+<p>When injecting <code>TestInfo</code> into test class constructors, the <code>TestInfo</code> now contains data
+for the test method for which the test class instance is being created, unless the test
+instance lifecycle is set to <code>PER_CLASS</code> (in which case it continues to contain the data
+for the test class). If you require the <code>TestInfo</code> of the test class, you can implement
+a <code>@BeforeAll</code> lifecycle method and inject <code>TestInfo</code> into that method.</p>
 </li>
 <li>
 <p>When injecting <code>TestReporter</code> into test class constructors the published report entries
-are now associated with the test method rather than the test class unless the test
-instance lifecycle is set to <code>PER_CLASS</code> (in which case they will continue to be
-associated with the test class). If you want to publish report entries for the test
-class, you can implement a class-level lifecycle method (e.g., <code>@BeforeAll</code>) and inject
+are now associated with the test method rather than the test class, unless the test
+instance lifecycle is set to <code>PER_CLASS</code> (in which case the published report entries
+will continue to be associated with the test class). If you want to publish report
+entries for the test class, you can implement a <code>@BeforeAll</code> lifecycle method and inject
 <code>TestReporter</code> into that method.</p>
 </li>
 </ul>
@@ -694,9 +698,41 @@ class, you can implement a class-level lifecycle method (e.g., <code>@BeforeAll<
 <div class="ulist">
 <ul>
 <li>
+<p>Kotlin contracts for Kotlin-specific assertion methods in <code>Assertions</code>.</p>
+</li>
+<li>
+<p><code>@TempDir</code> is now supported on test class constructors.</p>
+</li>
+<li>
+<p>Shared resource locks may now be determined programmatically at runtime via the new
+<code>@ResourceLock#providers</code> attribute that accepts implementations of
+<code>ResourceLocksProvider</code>.</p>
+</li>
+<li>
+<p>Shared resource locks for <em>direct</em> child nodes may now be configured via the new
+<code>@ResourceLock(target = CHILDREN)</code> attribute. This may improve parallelization when
+a test class declares a <code>READ</code> lock, but only a few methods hold a <code>READ_WRITE</code> lock.</p>
+</li>
+<li>
+<p><code>@EnumSource</code> has new <code>from</code> and <code>to</code> attributes that support the selection of enum
+constants within the specified range.</p>
+</li>
+<li>
 <p>In a <code>@ParameterizedTest</code> method, a <code>null</code> value can now be supplied for Java Date/Time
 types such as <code>LocalDate</code> if the new <code>nullable</code> attribute in
 <code>@JavaTimeConversionPattern</code> is set to <code>true</code>.</p>
+</li>
+<li>
+<p>The new <code>@ParameterizedTest(allowZeroInvocations = true)</code> attribute allows to specify that
+the absence of invocations is expected in some cases and should not cause a test failure.</p>
+</li>
+<li>
+<p>Parameterized tests now support argument count validation. If the
+<code>junit.jupiter.params.argumentCountValidation=strict</code> configuration parameter or the
+<code>@ParameterizedTest(argumentCountValidation = STRICT)</code> attribute is set, any mismatch
+between the declared number of arguments and the number of arguments provided by the
+arguments source will result in an error. By default, it is still only an error if there
+are fewer arguments provided than declared.</p>
 </li>
 <li>
 <p><code>ArgumentsProvider</code> (declared via <code>@ArgumentsSource</code>), <code>ArgumentConverter</code> (declared via
@@ -705,22 +741,9 @@ implementations can now use constructor injection from registered <code>Paramete
 extensions.</p>
 </li>
 <li>
-<p>Extensions based on <code>TestTemplateInvocationContextProvider</code> can now allow returning zero
-invocation contexts by overriding the new <code>mayReturnZeroTestTemplateInvocationContexts</code>
-method.</p>
-</li>
-<li>
-<p>The new <code>@ParameterizedTest(allowZeroInvocations = true)</code> attribute allows to specify that
-the absence of invocations is expected in some cases and should not cause a test failure.</p>
-</li>
-<li>
-<p>Allow determining "shared resources" at runtime via the new <code>@ResourceLock#providers</code>
-attribute that accepts implementations of <code>ResourceLocksProvider</code>.</p>
-</li>
-<li>
-<p>Allow declaring "shared resources" for <em>direct</em> child nodes via the new
-<code>@ResourceLock(target = CHILDREN)</code> attribute. This may improve parallelization when
-a test class declares a <code>READ</code> lock, but only a few methods hold a <code>READ_WRITE</code> lock.</p>
+<p><code>TestTemplateInvocationContextProvider</code> extensions can now signal that they may
+potentially return zero invocation contexts by overriding the new
+<code>mayReturnZeroTestTemplateInvocationContexts()</code> method.</p>
 </li>
 <li>
 <p>Extensions that implement <code>TestInstancePreConstructCallback</code>, <code>TestInstanceFactory</code>,
@@ -730,20 +753,8 @@ a test-scoped <code>ExtensionContext</code> in <code>Extension</code> methods ca
 instantiation. This behavior will become the default in future versions of JUnit.</p>
 </li>
 <li>
-<p><code>@TempDir</code> is now supported on test class constructors.</p>
-</li>
-<li>
-<p>Parameterized tests now support argument count validation.
-If the <code>junit.jupiter.params.argumentCountValidation=strict</code> configuration parameter
-or the <code>@ParameterizedTest(argumentCountValidation = STRICT)</code> attribute is set, any
-mismatch between the declared number of arguments and the number of arguments provided
-by the arguments source will result in an error. By default, it&#8217;s still only an error if
-there are fewer arguments provided than declared.</p>
-</li>
-<li>
-<p>The new <code>PreInterruptCallback</code> extension point defines the API for <code>Extensions</code> that
-wish to be called prior to invocations of <code>Thread#interrupt()</code> by the <code>@Timeout</code>
-extension.</p>
+<p>The new <code>PreInterruptCallback</code> interface defines the API for <code>Extensions</code> that wish to
+be called prior to invocations of <code>Thread#interrupt()</code> by the <code>@Timeout</code> extension.</p>
 </li>
 <li>
 <p>When enabled via the <code>junit.jupiter.execution.timeout.threaddump.enabled</code> configuration
@@ -753,10 +764,6 @@ thread dump to <code>System.out</code> prior to interrupting a test thread due t
 <li>
 <p><code>TestReporter</code> now allows publishing files for a test method or test class which can be
 used to include them in test reports, such as the Open Test Reporting format.</p>
-</li>
-<li>
-<p>New <code>from</code> and <code>to</code> attributes added to <code>@EnumSource</code> to support range selection of
-enum constants.</p>
 </li>
 <li>
 <p>Auto-registered extensions can now be
@@ -794,7 +801,7 @@ include and exclude patterns that can be specified as configuration parameters.<
 <div class="ulist">
 <ul>
 <li>
-<p>Introduced support for executing top-level test classes in parallel. Please refer to the
+<p>Support for executing top-level test classes in parallel. Please refer to the
 <a href="../user-guide/index.html#migrating-from-junit4-parallel-execution">User Guide</a> for
 more information.</p>
 </li>

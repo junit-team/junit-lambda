@@ -95,15 +95,14 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="annotations"><a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html" title="class or interface in org.apiguardian.api" class="external-link">@API</a>(<a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html#status()" title="class or interface in org.apiguardian.api" class="external-link">status</a>=<a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.Status.html#EXPERIMENTAL" title="class or interface in org.apiguardian.api" class="external-link">EXPERIMENTAL</a>,
      <a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html#since()" title="class or interface in org.apiguardian.api" class="external-link">since</a>="5.12")
 </span><span class="modifiers">public interface </span><span class="element-name type-name-label">ResourceLocksProvider</span></div>
-<div class="block"><code>@ResourceLocksProvider</code> is used to add shared resources
- to a test class and / or its test methods dynamically at runtime.
+<div class="block">A <code>ResourceLocksProvider</code> is used to programmatically add shared resources
+ to a test class or its test methods dynamically at runtime.
 
  <p>Each shared resource is represented by an instance of <a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel"><code>ResourceLocksProvider.Lock</code></a>.
 
- <p>Adding shared resources using this interface has the same semantics
- as declaring them via <code>@ResourceLock(value, mode)</code> annotation
- but for some cases may be a more flexible and less verbose alternative
- since it allows to add resources programmatically.
+ <p>Adding shared resources via this API has the same semantics as declaring
+ them declaratively via <a href="ResourceLock.html" title="annotation interface in org.junit.jupiter.api.parallel"><code>@ResourceLock(value, mode)</code></a>, but for
+ some use cases the programmatic approach may be more flexible and less verbose.
 
  <p>Implementations must provide a no-args constructor.</div>
 <dl class="notes">
@@ -134,7 +133,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>static final class&nbsp;</code></div>
 <div class="col-second even-row-color"><code><a href="ResourceLocksProvider.Lock.html" class="type-name-link" title="class in org.junit.jupiter.api.parallel">ResourceLocksProvider.Lock</a></code></div>
 <div class="col-last even-row-color">
-<div class="block"><a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel"><code>ResourceLocksProvider.Lock</code></a> represents a shared resource.</div>
+<div class="block"><code>Lock</code> represents a shared resource.</div>
 </div>
 </div>
 </section>
@@ -164,7 +163,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel">ResourceLocksProvider.Lock</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#provideForNestedClass(java.lang.Class)" class="member-name-link">provideForNestedClass</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;testClass)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
-<div class="block">Add shared resources to a <a href="../Nested.html" title="annotation interface in org.junit.jupiter.api">nested</a> test class.</div>
+<div class="block">Add shared resources to a <a href="../Nested.html" title="annotation interface in org.junit.jupiter.api">@Nested</a>
+ test class.</div>
 </div>
 </div>
 </div>
@@ -186,17 +186,17 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel">ResourceLocksProvider.Lock</a>&gt;</span>&nbsp;<span class="element-name">provideForClass</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;testClass)</span></div>
 <div class="block">Add shared resources to a test class.
 
- <p>Invoked in case a test class or its parent class
- is annotated with <code>@ResourceLock(providers)</code>.</div>
+ <p>Invoked in case a test class or its parent class is annotated with
+ <code>@ResourceLock(providers)</code>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>testClass</code> - a test class to add shared resources</dd>
+<dd><code>testClass</code> - a test class for which to add shared resources</dd>
 <dt>Returns:</dt>
 <dd>a set of <a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel"><code>ResourceLocksProvider.Lock</code></a>; may be empty</dd>
 <dt>API Note:</dt>
-<dd>Adding <a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel">a shared resource</a> with this method
- has the same semantics as annotating a test class
- with analogous <code>@ResourceLock(value, mode)</code>.</dd>
+<dd>Adding <a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel">a shared resource</a> via this method has
+ the same semantics as annotating a test class with an analogous
+ <code>@ResourceLock(value, mode)</code> declaration.</dd>
 </dl>
 </section>
 </li>
@@ -204,34 +204,31 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="provideForNestedClass(java.lang.Class)">
 <h3>provideForNestedClass</h3>
 <div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel">ResourceLocksProvider.Lock</a>&gt;</span>&nbsp;<span class="element-name">provideForNestedClass</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;testClass)</span></div>
-<div class="block">Add shared resources to a <a href="../Nested.html" title="annotation interface in org.junit.jupiter.api">nested</a> test class.
+<div class="block">Add shared resources to a <a href="../Nested.html" title="annotation interface in org.junit.jupiter.api">@Nested</a>
+ test class.
 
  <p>Invoked in case:
  <ul>
-     <li>an enclosing test class of any level or its parent class
-     is annotated with <code>@ResourceLock(providers)</code>.</li>
-     <li>a nested test class or its parent class
-           is annotated with <code>@ResourceLock(providers)</code>.</li>
- </ul>
-
- <p>Invoked for a nested test class
- annotated with <code>@ResourceLock(providers)</code>
- and for its child classes.</div>
+   <li>an enclosing test class of any level or its parent class is
+   annotated with <code>@ResourceLock(providers = ...)</code>.</li>
+   <li>a nested test class or its parent class is annotated with
+   <code>@ResourceLock(providers = ...)</code>.</li>
+ </ul></div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>testClass</code> - a nested test class to add shared resources</dd>
+<dd><code>testClass</code> - a nested test class for which to add shared resources</dd>
 <dt>Returns:</dt>
 <dd>a set of <a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel"><code>ResourceLocksProvider.Lock</code></a>; may be empty</dd>
 <dt>See Also:</dt>
 <dd>
 <ul class="tag-list">
-<li><a href="../Nested.html" title="annotation interface in org.junit.jupiter.api"><code>Nested</code></a></li>
+<li><a href="../Nested.html" title="annotation interface in org.junit.jupiter.api"><code>@Nested</code></a></li>
 </ul>
 </dd>
 <dt>API Note:</dt>
-<dd>Adding <a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel">a shared resource</a> with this method
- has the same semantics as annotating a nested test class
- with analogous <code>@ResourceLock(value, mode)</code>.</dd>
+<dd>Adding <a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel">a shared resource</a> via this method has
+ the same semantics as annotating a nested test class with an analogous
+ <code>@ResourceLock(value, mode)</code> declaration.</dd>
 </dl>
 </section>
 </li>
@@ -244,18 +241,23 @@ loadScripts(document, 'script');</script>
 
  <p>Invoked in case:
  <ul>
-     <li>an enclosing test class of any level or its parent class
-     is annotated with <code>@ResourceLock(providers)</code>.</li>
-     <li>a test method
-     is annotated with <code>@ResourceLock(providers)</code>.</li>
+   <li>an enclosing test class of any level or its parent class is
+   annotated with <code>@ResourceLock(providers)</code>.</li>
+   <li>a test method is annotated with <code>@ResourceLock(providers)</code>.</li>
  </ul></div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>testClass</code> - a test class
- or <a href="../Nested.html" title="annotation interface in org.junit.jupiter.api">nested</a> test class containing the <code>testMethod</code></dd>
-<dd><code>testMethod</code> - a test method to add shared resources</dd>
+<dd><code>testClass</code> - the test class or <a href="../Nested.html" title="annotation interface in org.junit.jupiter.api"><code>@Nested</code></a>
+ test class that contains the <code>testMethod</code></dd>
+<dd><code>testMethod</code> - a test method for which to add shared resources</dd>
 <dt>Returns:</dt>
 <dd>a set of <a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel"><code>ResourceLocksProvider.Lock</code></a>; may be empty</dd>
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../Nested.html" title="annotation interface in org.junit.jupiter.api"><code>@Nested</code></a></li>
+</ul>
+</dd>
 <dt>API Note:</dt>
 <dd>Adding <a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel">a shared resource</a> with this method
  has the same semantics as annotating a test method

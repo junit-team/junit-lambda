@@ -98,9 +98,9 @@ loadScripts(document, 'script');</script>
 <div class="block"><code>@ResourceLock</code> is used to declare that the annotated test class or test
  method requires access to a shared resource identified by a key.
 
- <p>The resource key is specified via <a href="#value()"><code>value()</code></a>. In addition,
- <a href="#mode()"><code>mode()</code></a> allows you to specify whether the annotated test class or test
- method requires <a href="ResourceAccessMode.html#READ_WRITE"><code>READ_WRITE</code></a> or only
+ <p>The resource key is specified via <a href="#value()"><code>value()</code></a>. In addition, <a href="#mode()"><code>mode()</code></a>
+ allows one to specify whether the annotated test class or test method requires
+ <a href="ResourceAccessMode.html#READ_WRITE"><code>READ_WRITE</code></a> or
  <a href="ResourceAccessMode.html#READ"><code>READ</code></a> access to the resource. In the former case,
  execution of the annotated element will occur while no other test class or
  test method that uses the shared resource is being executed. In the latter case,
@@ -109,46 +109,38 @@ loadScripts(document, 'script');</script>
  other test that requires <code>READ_WRITE</code> access.
 
  <p>This guarantee extends to lifecycle methods of a test class or method. For
- example, if a test method is annotated with a <code>@ResourceLock</code>
- annotation the "lock" will be acquired before any
- <a href="../BeforeEach.html" title="annotation interface in org.junit.jupiter.api"><code>@BeforeEach</code></a> methods are executed and released after all
+ example, if a test method is annotated with <code>@ResourceLock</code> the lock
+ will be acquired before any <a href="../BeforeEach.html" title="annotation interface in org.junit.jupiter.api"><code>@BeforeEach</code></a>
+ methods are executed and released after all
  <a href="../AfterEach.html" title="annotation interface in org.junit.jupiter.api"><code>@AfterEach</code></a> methods have been executed.
 
  <p>This annotation can be repeated to declare the use of multiple shared resources.
 
- <p>Uniqueness of a shared resource is identified by both <a href="#value()"><code>value()</code></a> and
- <a href="#mode()"><code>mode()</code></a>. Duplicated shared resources do not cause errors.
+ <p>Uniqueness of a shared resource is determined by both the <a href="#value()"><code>value()</code></a>
+ and the <a href="#mode()"><code>mode()</code></a>. Duplicated shared resources do not cause errors.
 
  <p>Since JUnit Jupiter 5.4, this annotation is <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/annotation/Inherited.html" title="class or interface in java.lang.annotation" class="external-link">inherited</a>
  within class hierarchies.
 
  <p>Since JUnit Jupiter 5.12, this annotation supports adding shared resources
- dynamically at runtime via <a href="#providers()"><code>providers()</code></a>.
-
- <p>Resources declared "statically" using <a href="#value()"><code>value()</code></a> and <a href="#mode()"><code>mode()</code></a>
- are combined with "dynamic" resources added via <a href="#providers()"><code>providers()</code></a>.
- For example, declaring resource "A" via <code>@ResourceLock("A")</code>
- and resource "B" via a provider returning <code>new Lock("B")</code> will result
- in two shared resources "A" and "B".
+ dynamically at runtime via <a href="#providers()"><code>providers()</code></a>. Resources declared "statically"
+ using <a href="#value()"><code>value()</code></a> and <a href="#mode()"><code>mode()</code></a> are combined with "dynamic" resources
+ added via <a href="#providers()"><code>providers()</code></a>. For example, declaring resource "A" via
+ <code>@ResourceLock("A")</code> and resource "B" via a provider returning
+ <code>new Lock("B")</code> will result in two shared resources "A" and "B".
 
  <p>Since JUnit Jupiter 5.12, this annotation supports declaring "static"
  shared resources for <em>direct</em> child nodes via the <a href="#target()"><code>target()</code></a>
- attribute.
-
- <p>Using the <a href="ResourceLockTarget.html#CHILDREN"><code>ResourceLockTarget.CHILDREN</code></a> in a class-level
- annotation has the same semantics as adding an annotation with the same
- <a href="#value()"><code>value()</code></a> and <a href="#mode()"><code>mode()</code></a> to each test method and nested test
- class declared in this class.
-
- <p>This may improve parallelization when a test class declares a
+ attribute. Using <a href="ResourceLockTarget.html#CHILDREN"><code>ResourceLockTarget.CHILDREN</code></a> in a class-level annotation
+ has the same semantics as adding an annotation with the same <a href="#value()"><code>value()</code></a>
+ and <a href="#mode()"><code>mode()</code></a> to each test method and nested test class declared in the
+ annotated class. This may improve parallelization when a test class declares a
  <a href="ResourceAccessMode.html#READ"><code>READ</code></a> lock, but only a few methods hold
- <a href="ResourceAccessMode.html#READ_WRITE"><code>READ_WRITE</code></a> lock.
-
- <p>Note that the <code>target = CHILDREN</code> means that
- <a href="#value()"><code>value()</code></a> and <a href="#mode()"><code>mode()</code></a> no longer apply to a node
- declaring the annotation. However, the <a href="#providers()"><code>providers()</code></a> attribute
- remains applicable, and the target of "dynamic" shared resources
- added via implementations of <a href="ResourceLocksProvider.html" title="interface in org.junit.jupiter.api.parallel"><code>ResourceLocksProvider</code></a> is not changed.</div>
+ <a href="ResourceAccessMode.html#READ_WRITE"><code>READ_WRITE</code></a> lock. Note that
+ <code>target = CHILDREN</code> means that <a href="#value()"><code>value()</code></a> and <a href="#mode()"><code>mode()</code></a> no
+ longer apply to a node declaring the annotation. However, the <a href="#providers()"><code>providers()</code></a>
+ attribute remains applicable, and the target of "dynamic" shared resources added
+ via implementations of <a href="ResourceLocksProvider.html" title="interface in org.junit.jupiter.api.parallel"><code>ResourceLocksProvider</code></a> is not changed.</div>
 <dl class="notes">
 <dt>Since:</dt>
 <dd>5.3</dd>
@@ -253,34 +245,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="target()">
-<h3>target</h3>
-<div class="member-signature"><span class="annotations"><a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html" title="class or interface in org.apiguardian.api" class="external-link">@API</a>(<a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html#status()" title="class or interface in org.apiguardian.api" class="external-link">status</a>=<a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.Status.html#EXPERIMENTAL" title="class or interface in org.apiguardian.api" class="external-link">EXPERIMENTAL</a>,
-     <a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html#since()" title="class or interface in org.apiguardian.api" class="external-link">since</a>="5.12")
-</span><span class="return-type"><a href="ResourceLockTarget.html" title="enum class in org.junit.jupiter.api.parallel">ResourceLockTarget</a></span>&nbsp;<span class="element-name">target</span></div>
-<div class="block">The target of a resource created from <a href="#value()"><code>value()</code></a> and <a href="#mode()"><code>mode()</code></a>.
-
- <p>Defaults to <a href="ResourceLockTarget.html#SELF"><code>SELF</code></a>.
-
- <p>Note that using <a href="ResourceLockTarget.html#CHILDREN"><code>ResourceLockTarget.CHILDREN</code></a> in
- a method-level annotation results in an exception.</div>
-<dl class="notes">
-<dt>Since:</dt>
-<dd>5.12</dd>
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="ResourceLockTarget.html" title="enum class in org.junit.jupiter.api.parallel"><code>ResourceLockTarget</code></a></li>
-</ul>
-</dd>
-</dl>
-<dl class="notes">
-<dt>Default:</dt>
-<dd><code>SELF</code></dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="providers()">
 <h3>providers</h3>
 <div class="member-signature"><span class="annotations"><a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html" title="class or interface in org.apiguardian.api" class="external-link">@API</a>(<a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html#status()" title="class or interface in org.apiguardian.api" class="external-link">status</a>=<a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.Status.html#EXPERIMENTAL" title="class or interface in org.apiguardian.api" class="external-link">EXPERIMENTAL</a>,
@@ -302,6 +266,34 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Default:</dt>
 <dd><code>{}</code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="target()">
+<h3>target</h3>
+<div class="member-signature"><span class="annotations"><a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html" title="class or interface in org.apiguardian.api" class="external-link">@API</a>(<a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html#status()" title="class or interface in org.apiguardian.api" class="external-link">status</a>=<a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.Status.html#EXPERIMENTAL" title="class or interface in org.apiguardian.api" class="external-link">EXPERIMENTAL</a>,
+     <a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html#since()" title="class or interface in org.apiguardian.api" class="external-link">since</a>="5.12")
+</span><span class="return-type"><a href="ResourceLockTarget.html" title="enum class in org.junit.jupiter.api.parallel">ResourceLockTarget</a></span>&nbsp;<span class="element-name">target</span></div>
+<div class="block">The target of a resource created from <a href="#value()"><code>value()</code></a> and <a href="#mode()"><code>mode()</code></a>.
+
+ <p>Defaults to <a href="ResourceLockTarget.html#SELF"><code>SELF</code></a>.
+
+ <p>Note that using <a href="ResourceLockTarget.html#CHILDREN"><code>ResourceLockTarget.CHILDREN</code></a> in a method-level
+ annotation results in an exception.</div>
+<dl class="notes">
+<dt>Since:</dt>
+<dd>5.12</dd>
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="ResourceLockTarget.html" title="enum class in org.junit.jupiter.api.parallel"><code>ResourceLockTarget</code></a></li>
+</ul>
+</dd>
+</dl>
+<dl class="notes">
+<dt>Default:</dt>
+<dd><code>SELF</code></dd>
 </dl>
 </section>
 </li>
