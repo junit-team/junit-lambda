@@ -13,6 +13,8 @@ package org.junit.platform.launcher;
 import static org.apiguardian.api.API.Status.STABLE;
 
 import org.apiguardian.api.API;
+import org.junit.platform.engine.Namespace;
+import org.junit.platform.engine.support.store.NamespacedHierarchicalStore;
 
 /**
  * The {@code Launcher} API is the main entry point for client code that
@@ -127,4 +129,5 @@ public interface Launcher {
 	@API(status = STABLE, since = "1.4")
 	void execute(TestPlan testPlan, TestExecutionListener... listeners);
 
+	NamespacedHierarchicalStore<Namespace> getStore(LauncherDiscoveryRequest launcherDiscoveryRequest);
 }

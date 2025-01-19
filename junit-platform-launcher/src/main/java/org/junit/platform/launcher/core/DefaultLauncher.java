@@ -17,10 +17,13 @@ import static org.junit.platform.launcher.core.EngineDiscoveryOrchestrator.Phase
 import java.util.Collection;
 
 import org.junit.platform.commons.util.Preconditions;
+import org.junit.platform.engine.Namespace;
 import org.junit.platform.engine.TestEngine;
+import org.junit.platform.engine.support.store.NamespacedHierarchicalStore;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryListener;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
+import org.junit.platform.launcher.LauncherSession;
 import org.junit.platform.launcher.PostDiscoveryFilter;
 import org.junit.platform.launcher.TestExecutionListener;
 import org.junit.platform.launcher.TestPlan;
@@ -41,6 +44,8 @@ class DefaultLauncher implements Launcher {
 	private final EngineExecutionOrchestrator executionOrchestrator = new EngineExecutionOrchestrator(
 		listenerRegistry.testExecutionListeners);
 	private final EngineDiscoveryOrchestrator discoveryOrchestrator;
+	private final LauncherSession launcherSession;
+	private final NamespacedHierarchicalStore<Namespace> sessionStore;
 
 	/**
 	 * Construct a new {@code DefaultLauncher} with the supplied test engines.
@@ -50,7 +55,8 @@ class DefaultLauncher implements Launcher {
 	 * @param postDiscoveryFilters the additional post discovery filters for
 	 * discovery requests; never {@code null}
 	 */
-	DefaultLauncher(Iterable<TestEngine> testEngines, Collection<PostDiscoveryFilter> postDiscoveryFilters) {
+	DefaultLauncher(Iterable<TestEngine> testEngines, Collection<PostDiscoveryFilter> postDiscoveryFilters,
+			LauncherConfig config) {
 		Preconditions.condition(testEngines != null && testEngines.iterator().hasNext(),
 			() -> "Cannot create Launcher without at least one TestEngine; "
 					+ "consider adding an engine implementation JAR to the classpath");
@@ -59,6 +65,8 @@ class DefaultLauncher implements Launcher {
 			"PostDiscoveryFilter array must not contain null elements");
 		this.discoveryOrchestrator = new EngineDiscoveryOrchestrator(testEngines,
 			unmodifiableCollection(postDiscoveryFilters), listenerRegistry.launcherDiscoveryListeners);
+		this.launcherSession = LauncherFactory.openSession(config);
+		this.sessionStore = launcherSession.getStore();
 	}
 
 	@Override
@@ -92,6 +100,11 @@ class DefaultLauncher implements Launcher {
 		Preconditions.notNull(listeners, "TestExecutionListener array must not be null");
 		Preconditions.containsNoNullElements(listeners, "individual listeners must not be null");
 		execute((InternalTestPlan) testPlan, listeners);
+	}
+
+	@Override
+	public NamespacedHierarchicalStore<Namespace> getStore(LauncherDiscoveryRequest launcherDiscoveryRequest) {
+		return new NamespacedHierarchicalStore<>(this.sessionStore);
 	}
 
 	private LauncherDiscoveryResult discover(LauncherDiscoveryRequest discoveryRequest,

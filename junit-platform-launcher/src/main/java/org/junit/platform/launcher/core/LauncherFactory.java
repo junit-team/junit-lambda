@@ -134,7 +134,7 @@ public class LauncherFactory {
 		Set<TestEngine> engines = collectTestEngines(config);
 		List<PostDiscoveryFilter> filters = collectPostDiscoveryFilters(config);
 
-		DefaultLauncher launcher = new DefaultLauncher(engines, filters);
+		DefaultLauncher launcher = new DefaultLauncher(engines, filters, config);
 
 		registerLauncherDiscoveryListeners(config, launcher);
 		registerTestExecutionListeners(config, launcher, configurationParameters);
