@@ -13,6 +13,8 @@ package org.junit.platform.launcher.core;
 import java.util.List;
 import java.util.function.Supplier;
 
+import org.junit.platform.engine.Namespace;
+import org.junit.platform.engine.support.store.NamespacedHierarchicalStore;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryListener;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
@@ -68,6 +70,13 @@ class SessionPerRequestLauncher implements Launcher {
 	public void execute(TestPlan testPlan, TestExecutionListener... listeners) {
 		try (LauncherSession session = createSession()) {
 			session.getLauncher().execute(testPlan, listeners);
+		}
+	}
+
+	@Override
+	public NamespacedHierarchicalStore<Namespace> getStore(LauncherDiscoveryRequest launcherDiscoveryRequest) {
+		try (LauncherSession session = createSession()) {
+			return session.getLauncher().getStore(launcherDiscoveryRequest);
 		}
 	}
 
