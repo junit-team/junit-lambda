@@ -284,7 +284,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a><wbr>&lt;?&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getWrapperType(java.lang.Class)" class="member-name-link">getWrapperType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;type)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Get the wrapper type for the supplied primitive type (or <code>void</code>).</div>
+<div class="block">Get the wrapper type for the supplied primitive type.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#invokeMethod(java.lang.reflect.Method,java.lang.Object,java.lang.Object...)" class="member-name-link">invokeMethod</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/reflect/Method.html" title="class or interface in java.lang.reflect" class="external-link">Method</a>&nbsp;method,
@@ -804,9 +804,8 @@ loadScripts(document, 'script');</script>
  supplied target type for the purpose of reflective method invocations.
 
  <p>In contrast to <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html#isAssignableFrom(java.lang.Class)" title="class or interface in java.lang" class="external-link"><code>Class.isAssignableFrom(Class)</code></a>, this method
- returns <code>true</code> if the target type represents a primitive type (or
- <code>void</code>) whose wrapper matches the supplied source type. In addition,
- this method also supports
+ returns <code>true</code> if the target type represents a primitive type whose
+ wrapper matches the supplied source type. In addition, this method also supports
  <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-5.html#jls-5.1.2">
  widening conversions</a> for primitive target types.</div>
 <dl class="notes">
@@ -838,9 +837,8 @@ loadScripts(document, 'script');</script>
  type for the purpose of reflective method invocations.
 
  <p>In contrast to <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html#isInstance(java.lang.Object)" title="class or interface in java.lang" class="external-link"><code>Class.isInstance(Object)</code></a>, this method returns
- <code>true</code> if the target type represents a primitive type (or <code>void</code>)
- whose wrapper matches the supplied object's type. In addition, this method
- also supports
+ <code>true</code> if the target type represents a primitive type whose wrapper
+ matches the supplied object's type. In addition, this method also supports
  <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-5.html#jls-5.1.2">
  widening conversions</a> for primitive types and their corresponding
  wrapper types.
@@ -868,14 +866,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getWrapperType(java.lang.Class)">
 <h3>getWrapperType</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;</span>&nbsp;<span class="element-name">getWrapperType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;type)</span></div>
-<div class="block">Get the wrapper type for the supplied primitive type (or <code>void</code>).</div>
+<div class="block">Get the wrapper type for the supplied primitive type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>type</code> - the primitive type (or <code>void</code>) for which to retrieve the
- wrapper type</dd>
+<dd><code>type</code> - the primitive type for which to retrieve the wrapper type</dd>
 <dt>Returns:</dt>
 <dd>the corresponding wrapper type or <code>null</code> if the
- supplied type is <code>null</code> or not a primitive type or <code>void</code></dd>
+ supplied type is <code>null</code> or not a primitive type</dd>
 </dl>
 </section>
 </li>
@@ -2029,7 +2026,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="makeAccessible(java.lang.reflect.Field)">
 <h3>makeAccessible</h3>
 <div class="member-signature"><span class="annotations"><a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html" title="class or interface in org.apiguardian.api" class="external-link">@API</a>(<a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html#status()" title="class or interface in org.apiguardian.api" class="external-link">status</a>=<a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.Status.html#INTERNAL" title="class or interface in org.apiguardian.api" class="external-link">INTERNAL</a>,
-     <a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html#since()" title="class or interface in org.apiguardian.api" class="external-link">since</a>="1.11")
+     <a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html#since()" title="class or interface in org.apiguardian.api" class="external-link">since</a>="1.12")
 </span><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/reflect/Field.html" title="class or interface in java.lang.reflect" class="external-link">Field</a></span>&nbsp;<span class="element-name">makeAccessible</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/reflect/Field.html" title="class or interface in java.lang.reflect" class="external-link">Field</a>&nbsp;field)</span></div>
 </section>
 </li>
