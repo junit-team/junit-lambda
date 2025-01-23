@@ -13,20 +13,20 @@ val jupiterVersion: String by project
 val platformVersion: String by project
 
 dependencies {
-	testImplementation(kotlin("stdlib-jdk8"))
+	testImplementation(kotlin("stdlib"))
 	testImplementation("org.junit.jupiter:junit-jupiter:$jupiterVersion")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher:$platformVersion")
 }
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(8)
+		languageVersion = JavaLanguageVersion.of(17)
 	}
 }
 
 tasks.withType<KotlinCompile>().configureEach {
 	kotlinOptions {
-		jvmTarget = "1.8"
+		jvmTarget = "17"
 		apiVersion = "1.6"
 		languageVersion = "1.6"
 	}

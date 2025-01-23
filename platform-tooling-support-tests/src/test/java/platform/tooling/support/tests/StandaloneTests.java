@@ -160,7 +160,7 @@ class StandaloneTests {
 		var result = ProcessStarters.javaCommand("javac") //
 				.workingDir(workspace) //
 				.addArguments("-Xlint:-options") //
-				.addArguments("--release", "8") //
+				.addArguments("--release", "17") //
 				.addArguments("-proc:none") //
 				.addArguments("-d", workspace.resolve("bin").toString()) //
 				.addArguments("--class-path", MavenRepo.jar("junit-platform-console-standalone").toString()) //
@@ -453,9 +453,9 @@ class StandaloneTests {
 	@Test
 	@Order(4)
 	@Execution(SAME_THREAD)
-	void executeOnJava8(@FilePrefix("console-launcher") OutputFiles outputFiles) throws Exception {
-		var java8Home = Helper.getJavaHome("8").orElseThrow(TestAbortedException::new);
-		var result = ProcessStarters.java(java8Home) //
+	void executeOnJava17(@FilePrefix("console-launcher") OutputFiles outputFiles) throws Exception {
+		var javaHome = Helper.getJavaHome("17").orElseThrow(TestAbortedException::new);
+		var result = ProcessStarters.java(javaHome) //
 				.workingDir(workspace) //
 				.addArguments("-showversion") //
 				.addArguments("-enableassertions") //
@@ -473,7 +473,7 @@ class StandaloneTests {
 		assertEquals(1, result.exitCode());
 
 		var expectedOutLines = Files.readAllLines(workspace.resolve("expected-out.txt"));
-		var expectedErrLines = getExpectedErrLinesOnJava8(workspace);
+		var expectedErrLines = getExpectedErrLinesOnJava17(workspace);
 		assertLinesMatch(expectedOutLines, result.stdOutLines());
 		assertLinesMatch(expectedErrLines, result.stdErrLines());
 
@@ -489,9 +489,9 @@ class StandaloneTests {
 	@Order(5)
 	@Execution(SAME_THREAD)
 	// https://github.com/junit-team/junit5/issues/2600
-	void executeOnJava8SelectPackage(@FilePrefix("console-launcher") OutputFiles outputFiles) throws Exception {
-		var java8Home = Helper.getJavaHome("8").orElseThrow(TestAbortedException::new);
-		var result = ProcessStarters.java(java8Home) //
+	void executeOnJava17SelectPackage(@FilePrefix("console-launcher") OutputFiles outputFiles) throws Exception {
+		var javaHome = Helper.getJavaHome("17").orElseThrow(TestAbortedException::new);
+		var result = ProcessStarters.java(javaHome) //
 				.workingDir(workspace).addArguments("-showversion") //
 				.addArguments("-enableassertions") //
 				.addArguments("-Djava.util.logging.config.file=logging.properties") //
@@ -508,7 +508,7 @@ class StandaloneTests {
 		assertEquals(1, result.exitCode());
 
 		var expectedOutLines = Files.readAllLines(workspace.resolve("expected-out.txt"));
-		var expectedErrLines = getExpectedErrLinesOnJava8(workspace);
+		var expectedErrLines = getExpectedErrLinesOnJava17(workspace);
 		assertLinesMatch(expectedOutLines, result.stdOutLines());
 		assertLinesMatch(expectedErrLines, result.stdErrLines());
 
@@ -520,7 +520,7 @@ class StandaloneTests {
 				+ " (group ID: org.junit.vintage, artifact ID: junit-vintage-engine, version: " + vintageVersion));
 	}
 
-	private static List<String> getExpectedErrLinesOnJava8(Path workspace) throws IOException {
+	private static List<String> getExpectedErrLinesOnJava17(Path workspace) throws IOException {
 		var expectedErrLines = new ArrayList<String>();
 		expectedErrLines.add(">> JAVA VERSION >>");
 		expectedErrLines.addAll(Files.readAllLines(workspace.resolve("expected-err.txt")));

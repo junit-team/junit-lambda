@@ -173,12 +173,12 @@ tasks.test {
 
 	develocity {
 		testDistribution {
-			requirements.add("jdk=8")
+			requirements.add("jdk=17")
 			this as TestDistributionConfigurationInternal
 			preferredMaxDuration = Duration.ofMillis(500)
 		}
 	}
-	jvmArgumentProviders += JavaHomeDir(project, 8, develocity.testDistribution.enabled)
+	jvmArgumentProviders += JavaHomeDir(project, 17, develocity.testDistribution.enabled)
 
 	val gradleJavaVersion = JavaVersion.current().majorVersion.toInt()
 	jvmArgumentProviders += JavaHomeDir(project, gradleJavaVersion, develocity.testDistribution.enabled)

@@ -38,13 +38,13 @@ class GradleStarterTests {
 				.workingDir(copyToWorkspace(Projects.GRADLE_STARTER, workspace)) //
 				.addArguments("-Dmaven.repo=" + MavenRepo.dir()) //
 				.addArguments("build", "--no-daemon", "--stacktrace", "--no-build-cache", "--warning-mode=fail") //
-				.putEnvironment("JDK8", Helper.getJavaHome("8").orElseThrow(TestAbortedException::new).toString()) //
+				.putEnvironment("JDK17", Helper.getJavaHome("17").orElseThrow(TestAbortedException::new).toString()) //
 				.redirectOutput(outputFiles) //
 				.startAndWait();
 
 		assertEquals(0, result.exitCode());
 		assertTrue(result.stdOut().lines().anyMatch(line -> line.contains("BUILD SUCCESSFUL")));
-		assertThat(result.stdOut()).contains("Using Java version: 1.8");
+		assertThat(result.stdOut()).contains("Using Java version: 17");
 
 		var testResultsDir = workspace.resolve("build/test-results/test");
 		verifyContainsExpectedStartedOpenTestReport(testResultsDir);

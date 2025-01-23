@@ -65,7 +65,7 @@ class HelperTests {
 	}
 
 	@ParameterizedTest
-	@ValueSource(ints = 8)
+	@ValueSource(ints = 17)
 	void checkJavaHome(int version) {
 		var home = Helper.getJavaHome(String.valueOf(version));
 		assumeTrue(home.isPresent(), "No 'jdk' element found in Maven toolchain for: " + version);

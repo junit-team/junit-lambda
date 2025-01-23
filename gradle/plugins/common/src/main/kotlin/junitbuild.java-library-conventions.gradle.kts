@@ -184,10 +184,8 @@ val compileModule by tasks.registering(JavaCompile::class) {
 	enabled = project in modularProjects
 	source = fileTree(combinedModuleSourceDir).builtBy(prepareModuleSourceDir)
 	destinationDirectory = moduleOutputDir
-	sourceCompatibility = "9"
-	targetCompatibility = "9"
 	classpath = files()
-	options.release = 9
+	options.release = 17
 	options.compilerArgs.addAll(listOf(
 			// Suppress warnings for automatic modules: org.apiguardian.api, org.opentest4j
 			"-Xlint:all,-requires-automatic,-requires-transitive-automatic",
@@ -262,17 +260,14 @@ tasks.withType<JavaCompile>().configureEach {
 }
 
 tasks.compileJava {
-	// See: https://docs.oracle.com/en/java/javase/12/tools/javac.html
 	options.compilerArgs.addAll(listOf(
 			"-Xlint:all", // Enables all recommended warnings.
 			"-Werror", // Terminates compilation when warnings occur.
-			// Required for compatibility with Java 8's reflection APIs (see https://github.com/junit-team/junit5/issues/3797).
 			"-parameters", // Generates metadata for reflection on method parameters.
 	))
 }
 
 tasks.compileTestJava {
-	// See: https://docs.oracle.com/en/java/javase/12/tools/javac.html
 	options.compilerArgs.addAll(listOf(
 			"-Xlint", // Enables all recommended warnings.
 			"-Xlint:-overrides", // Disables "method overrides" warnings.

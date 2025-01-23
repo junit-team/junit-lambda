@@ -46,7 +46,7 @@ class GradleModuleFileTests {
 			"      \"attributes\": {", //
 			"        \"org.gradle.category\": \"library\",", //
 			"        \"org.gradle.dependency.bundling\": \"external\",", //
-			"        \"org.gradle.jvm.version\": 8,", //
+			"        \"org.gradle.jvm.version\": 17,", //
 			"        \"org.gradle.libraryelements\": \"jar\",", //
 			"        \"org.gradle.usage\": \"java-api\"", //
 			"      },", //
@@ -88,7 +88,7 @@ class GradleModuleFileTests {
 			"      \"attributes\": {", //
 			"        \"org.gradle.category\": \"library\",", //
 			"        \"org.gradle.dependency.bundling\": \"external\",", //
-			"        \"org.gradle.jvm.version\": 8,", //
+			"        \"org.gradle.jvm.version\": 17,", //
 			"        \"org.gradle.libraryelements\": \"jar\",", //
 			"        \"org.gradle.usage\": \"java-runtime\"", //
 			"      },", //

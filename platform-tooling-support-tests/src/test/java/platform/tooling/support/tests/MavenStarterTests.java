@@ -41,7 +41,7 @@ class MavenStarterTests {
 	@Test
 	void verifyMavenStarterProject(@TempDir Path workspace, @FilePrefix("maven") OutputFiles outputFiles)
 			throws Exception {
-		var result = ProcessStarters.maven(Helper.getJavaHome("8").orElseThrow(TestAbortedException::new)) //
+		var result = ProcessStarters.maven(Helper.getJavaHome("17").orElseThrow(TestAbortedException::new)) //
 				.workingDir(copyToWorkspace(Projects.MAVEN_STARTER, workspace)) //
 				.addArguments(localMavenRepo.toCliArgument(), "-Dmaven.repo=" + MavenRepo.dir()) //
 				.addArguments("-Dsnapshot.repo.url=" + mavenRepoProxy.getBaseUri()) //
@@ -53,7 +53,7 @@ class MavenStarterTests {
 		assertEquals("", result.stdErr());
 		assertTrue(result.stdOutLines().contains("[INFO] BUILD SUCCESS"));
 		assertTrue(result.stdOutLines().contains("[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0"));
-		assertThat(result.stdOut()).contains("Using Java version: 1.8");
+		assertThat(result.stdOut()).contains("Using Java version: 17");
 
 		var testResultsDir = workspace.resolve("target/surefire-reports");
 		verifyContainsExpectedStartedOpenTestReport(testResultsDir);

@@ -68,7 +68,7 @@ class UnalignedClasspathTests {
 
 	static Stream<Arguments> javaVersions() {
 		return Stream.concat( //
-			Helper.getJavaHome("8").map(path -> Arguments.of(JRE.JAVA_8, path)).stream(), //
+			Helper.getJavaHome("17").map(path -> Arguments.of(JRE.JAVA_17, path)).stream(), //
 			Stream.of(Arguments.of(JRE.currentVersion(), currentJdkHome())) //
 		);
 	}
