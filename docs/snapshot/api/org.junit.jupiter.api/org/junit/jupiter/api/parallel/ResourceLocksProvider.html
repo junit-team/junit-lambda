@@ -152,19 +152,21 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel">ResourceLocksProvider.Lock</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#provideForClass(java.lang.Class)" class="member-name-link">provideForClass</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;testClass)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
-<div class="block">Add shared resources to a test class.</div>
+<div class="block">Add shared resources for a test class.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel">ResourceLocksProvider.Lock</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#provideForMethod(java.lang.Class,java.lang.reflect.Method)" class="member-name-link">provideForMethod</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;testClass,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#provideForMethod(java.util.List,java.lang.Class,java.lang.reflect.Method)" class="member-name-link">provideForMethod</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&gt;&nbsp;enclosingInstanceTypes,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;testClass,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/reflect/Method.html" title="class or interface in java.lang.reflect" class="external-link">Method</a>&nbsp;testMethod)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
-<div class="block">Add shared resources to a test method.</div>
+<div class="block">Add shared resources for a test method.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel">ResourceLocksProvider.Lock</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#provideForNestedClass(java.lang.Class)" class="member-name-link">provideForNestedClass</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;testClass)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#provideForNestedClass(java.util.List,java.lang.Class)" class="member-name-link">provideForNestedClass</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&gt;&nbsp;enclosingInstanceTypes,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;testClass)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
-<div class="block">Add shared resources to a <a href="../Nested.html" title="annotation interface in org.junit.jupiter.api">@Nested</a>
- test class.</div>
+<div class="block">Add shared resources for a
+ <a href="../Nested.html" title="annotation interface in org.junit.jupiter.api"><code>@Nested</code></a> test class.</div>
 </div>
 </div>
 </div>
@@ -184,7 +186,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="provideForClass(java.lang.Class)">
 <h3>provideForClass</h3>
 <div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel">ResourceLocksProvider.Lock</a>&gt;</span>&nbsp;<span class="element-name">provideForClass</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;testClass)</span></div>
-<div class="block">Add shared resources to a test class.
+<div class="block">Add shared resources for a test class.
 
  <p>Invoked in case a test class or its parent class is annotated with
  <code>@ResourceLock(providers)</code>.</div>
@@ -201,11 +203,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="provideForNestedClass(java.lang.Class)">
+<section class="detail" id="provideForNestedClass(java.util.List,java.lang.Class)">
 <h3>provideForNestedClass</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel">ResourceLocksProvider.Lock</a>&gt;</span>&nbsp;<span class="element-name">provideForNestedClass</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;testClass)</span></div>
-<div class="block">Add shared resources to a <a href="../Nested.html" title="annotation interface in org.junit.jupiter.api">@Nested</a>
- test class.
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel">ResourceLocksProvider.Lock</a>&gt;</span>&nbsp;<span class="element-name">provideForNestedClass</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&gt;&nbsp;enclosingInstanceTypes,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;testClass)</span></div>
+<div class="block">Add shared resources for a
+ <a href="../Nested.html" title="annotation interface in org.junit.jupiter.api"><code>@Nested</code></a> test class.
 
  <p>Invoked in case:
  <ul>
@@ -216,6 +219,9 @@ loadScripts(document, 'script');</script>
  </ul></div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>enclosingInstanceTypes</code> - the runtime types of the enclosing
+ instances for the test class, ordered from outermost to innermost,
+ excluding <code>testClass</code>; never <code>null</code></dd>
 <dd><code>testClass</code> - a nested test class for which to add shared resources</dd>
 <dt>Returns:</dt>
 <dd>a set of <a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel"><code>ResourceLocksProvider.Lock</code></a>; may be empty</dd>
@@ -229,15 +235,21 @@ loadScripts(document, 'script');</script>
 <dd>Adding <a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel">a shared resource</a> via this method has
  the same semantics as annotating a nested test class with an analogous
  <code>@ResourceLock(value, mode)</code> declaration.</dd>
+<dt>Implementation Note:</dt>
+<dd>The classes supplied as <code>enclosingInstanceTypes</code> may
+ differ from the classes returned from invocations of
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html#getEnclosingClass()" title="class or interface in java.lang" class="external-link"><code>Class.getEnclosingClass()</code></a> &mdash; for example, when a nested test
+ class is inherited from a superclass.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="provideForMethod(java.lang.Class,java.lang.reflect.Method)">
+<section class="detail" id="provideForMethod(java.util.List,java.lang.Class,java.lang.reflect.Method)">
 <h3>provideForMethod</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel">ResourceLocksProvider.Lock</a>&gt;</span>&nbsp;<span class="element-name">provideForMethod</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;testClass,
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel">ResourceLocksProvider.Lock</a>&gt;</span>&nbsp;<span class="element-name">provideForMethod</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&gt;&nbsp;enclosingInstanceTypes,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;testClass,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/reflect/Method.html" title="class or interface in java.lang.reflect" class="external-link">Method</a>&nbsp;testMethod)</span></div>
-<div class="block">Add shared resources to a test method.
+<div class="block">Add shared resources for a test method.
 
  <p>Invoked in case:
  <ul>
@@ -247,6 +259,9 @@ loadScripts(document, 'script');</script>
  </ul></div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>enclosingInstanceTypes</code> - the runtime types of the enclosing
+ instances for the test class, ordered from outermost to innermost,
+ excluding <code>testClass</code>; never <code>null</code></dd>
 <dd><code>testClass</code> - the test class or <a href="../Nested.html" title="annotation interface in org.junit.jupiter.api"><code>@Nested</code></a>
  test class that contains the <code>testMethod</code></dd>
 <dd><code>testMethod</code> - a test method for which to add shared resources</dd>
@@ -262,6 +277,14 @@ loadScripts(document, 'script');</script>
 <dd>Adding <a href="ResourceLocksProvider.Lock.html" title="class in org.junit.jupiter.api.parallel">a shared resource</a> with this method
  has the same semantics as annotating a test method
  with analogous <code>@ResourceLock(value, mode)</code>.</dd>
+<dt>Implementation Note:</dt>
+<dd>The classes supplied as <code>enclosingInstanceTypes</code> may
+ differ from the classes returned from invocations of
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html#getEnclosingClass()" title="class or interface in java.lang" class="external-link"><code>Class.getEnclosingClass()</code></a> &mdash; for example, when a nested test
+ class is inherited from a superclass. Similarly, the class instance
+ supplied as <code>testClass</code> may differ from the class returned by
+ <code>testMethod.getDeclaringClass()</code> &mdash; for example, when a test
+ method is inherited from a superclass.</dd>
 </dl>
 </section>
 </li>
