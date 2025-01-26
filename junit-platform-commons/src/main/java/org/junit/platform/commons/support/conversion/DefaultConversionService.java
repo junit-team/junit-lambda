@@ -12,6 +12,7 @@ package org.junit.platform.commons.support.conversion;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
+import static org.apiguardian.api.API.Status.INTERNAL;
 import static org.junit.platform.commons.util.ReflectionUtils.getWrapperType;
 
 import java.io.File;
@@ -25,6 +26,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.apiguardian.api.API;
 import org.junit.platform.commons.util.ClassLoaderUtils;
 
 /**
@@ -43,7 +45,8 @@ import org.junit.platform.commons.util.ClassLoaderUtils;
  *
  * @since 1.12
  */
-class DefaultConversionService implements ConversionService {
+@API(status = INTERNAL, since = "5.12")
+public class DefaultConversionService implements ConversionService {
 
 	static final DefaultConversionService INSTANCE = new DefaultConversionService();
 
