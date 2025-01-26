@@ -663,7 +663,10 @@ implementation for scanning the classpath for classes and resources.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>❓</p>
+<p>Provide <em>runtime</em> enclosing types of <code>@Nested</code> test classes and contained test methods
+to <code>DisplayNameGenerator</code> implementations. Prior to this change, such generators were
+only able to access the enclosing class in which <code>@Nested</code> was declared, but they could
+not access the concrete runtime type of the enclosing instance.</p>
 </li>
 </ul>
 </div>
