@@ -571,7 +571,8 @@ to newer versions of JUnit.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>❓</p>
+<p><code>SearchOption</code> and <code>AnnotationSupport.findAnnotation(Class, Class, SearchOption)</code> from
+<code>junit-platform-commons</code> have been deprecated.</p>
 </li>
 </ul>
 </div>
@@ -652,6 +653,10 @@ to the most recent test or container that was started or has written output.</p>
 <p>New public interface <code>ClasspathScanner</code> allowing third parties to provide a custom
 implementation for scanning the classpath for classes and resources.</p>
 </li>
+<li>
+<p>New <code>AnnotationSupport.findAnnotation(Class, Class, List)</code> method to support searching
+for an annotation on an inner class and its runtime enclosing instance types.</p>
+</li>
 </ul>
 </div>
 </div>
@@ -667,6 +672,11 @@ implementation for scanning the classpath for classes and resources.</p>
 to <code>DisplayNameGenerator</code> implementations. Prior to this change, such generators were
 only able to access the enclosing class in which <code>@Nested</code> was declared, but they could
 not access the concrete runtime type of the enclosing instance.</p>
+</li>
+<li>
+<p><code>@DisplayNameGeneration</code> annotations are now discovered on the <em>runtime</em> enclosing types
+of <code>@Nested</code> test classes instead of the compile-time enclosing class in which the
+<code>@Nested</code> class was <em>declared</em>.</p>
 </li>
 </ul>
 </div>

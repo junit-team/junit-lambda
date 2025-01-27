@@ -436,11 +436,20 @@ loadScripts(document, 'script');</script>
  present</em> on the supplied class, optionally searching recursively
  through the enclosing class hierarchy if not found on the supplied class.</div>
 </dd>
-<dt><a href="../org.junit.platform.commons/org/junit/platform/commons/support/AnnotationSupport.html#findAnnotation(java.lang.Class,java.lang.Class,org.junit.platform.commons.support.SearchOption)" class="member-name-link">findAnnotation(Class&lt;?&gt;, Class&lt;A&gt;, SearchOption)</a> - Static method in class org.junit.platform.commons.support.<a href="../org.junit.platform.commons/org/junit/platform/commons/support/AnnotationSupport.html" title="class in org.junit.platform.commons.support">AnnotationSupport</a></dt>
+<dt><a href="../org.junit.platform.commons/org/junit/platform/commons/support/AnnotationSupport.html#findAnnotation(java.lang.Class,java.lang.Class,java.util.List)" class="member-name-link">findAnnotation(Class&lt;?&gt;, Class&lt;A&gt;, List&lt;Class&lt;?&gt;&gt;)</a> - Static method in class org.junit.platform.commons.support.<a href="../org.junit.platform.commons/org/junit/platform/commons/support/AnnotationSupport.html" title="class in org.junit.platform.commons.support">AnnotationSupport</a></dt>
 <dd>
 <div class="block">Find the first annotation of the specified type that is either
  <em>directly present</em>, <em>meta-present</em>, or <em>indirectly
  present</em> on the supplied class.</div>
+</dd>
+<dt><a href="../org.junit.platform.commons/org/junit/platform/commons/support/AnnotationSupport.html#findAnnotation(java.lang.Class,java.lang.Class,org.junit.platform.commons.support.SearchOption)" class="member-name-link">findAnnotation(Class&lt;?&gt;, Class&lt;A&gt;, SearchOption)</a> - Static method in class org.junit.platform.commons.support.<a href="../org.junit.platform.commons/org/junit/platform/commons/support/AnnotationSupport.html" title="class in org.junit.platform.commons.support">AnnotationSupport</a></dt>
+<dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">Use <a href="../org.junit.platform.commons/org/junit/platform/commons/support/AnnotationSupport.html#findAnnotation(java.lang.Class,java.lang.Class,java.util.List)"><code>AnnotationSupport.findAnnotation(Class, Class, List)</code></a>
+ (for <code>SearchOption.DEFAULT</code>) or
+ <a href="../org.junit.platform.commons/org/junit/platform/commons/support/AnnotationSupport.html#findAnnotation(java.lang.Class,java.lang.Class,java.util.List)"><code>AnnotationSupport.findAnnotation(Class, Class, List)</code></a> (for
+ <code>SearchOption.INCLUDE_ENCLOSING_CLASSES</code>) instead</div>
+</div>
 </dd>
 <dt><a href="../org.junit.jupiter.api/org/junit/jupiter/api/ClassDescriptor.html#findAnnotation(java.lang.Class)" class="member-name-link">findAnnotation(Class&lt;A&gt;)</a> - Method in interface org.junit.jupiter.api.<a href="../org.junit.jupiter.api/org/junit/jupiter/api/ClassDescriptor.html" title="interface in org.junit.jupiter.api">ClassDescriptor</a></dt>
 <dd>

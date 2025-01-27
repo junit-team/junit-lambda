@@ -76,11 +76,13 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>static <a href="../SearchOption.html" title="enum class in org.junit.platform.commons.support">SearchOption</a></code></div>
 <div class="col-second even-row-color"><span class="type-name-label">SearchOption.</span><code><a href="../SearchOption.html#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
 <div class="col-last even-row-color">
+<div class="block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
 <div class="col-first odd-row-color"><code>static <a href="../SearchOption.html" title="enum class in org.junit.platform.commons.support">SearchOption</a>[]</code></div>
 <div class="col-second odd-row-color"><span class="type-name-label">SearchOption.</span><code><a href="../SearchOption.html#values()" class="member-name-link">values</a>()</code></div>
 <div class="col-last odd-row-color">
+<div class="block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -95,9 +97,12 @@ the order they are declared.</div>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;A&gt;&nbsp;annotationType,
  <a href="../SearchOption.html" title="enum class in org.junit.platform.commons.support">SearchOption</a>&nbsp;searchOption)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Find the first annotation of the specified type that is either
- <em>directly present</em>, <em>meta-present</em>, or <em>indirectly
- present</em> on the supplied class.</div>
+<div class="block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">Use <a href="../AnnotationSupport.html#findAnnotation(java.lang.Class,java.lang.Class,java.util.List)"><code>AnnotationSupport.findAnnotation(Class, Class, List)</code></a>
+ (for <code>SearchOption.DEFAULT</code>) or
+ <a href="../AnnotationSupport.html#findAnnotation(java.lang.Class,java.lang.Class,java.util.List)"><code>AnnotationSupport.findAnnotation(Class, Class, List)</code></a> (for
+ <code>SearchOption.INCLUDE_ENCLOSING_CLASSES</code>) instead</div>
+</div>
 </div>
 </div>
 </section>

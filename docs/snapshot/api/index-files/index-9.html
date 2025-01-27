@@ -127,9 +127,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="../org.junit.platform.commons/org/junit/platform/commons/support/SearchOption.html#INCLUDE_ENCLOSING_CLASSES" class="member-name-link">INCLUDE_ENCLOSING_CLASSES</a> - Enum constant in enum class org.junit.platform.commons.support.<a href="../org.junit.platform.commons/org/junit/platform/commons/support/SearchOption.html" title="enum class in org.junit.platform.commons.support">SearchOption</a></dt>
 <dd>
-<div class="block">Search the inheritance hierarchy as with the <a href="../org.junit.platform.commons/org/junit/platform/commons/support/SearchOption.html#DEFAULT"><code>SearchOption.DEFAULT</code></a> search option
- but also search the <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html#getEnclosingClass()" title="class or interface in java.lang" class="external-link">enclosing class</a>
- hierarchy for <em>inner classes</em> (i.e., a non-static member classes).</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">because it is preferable to inspect the runtime enclosing
+ types of a class rather than where they are declared.</div>
+</div>
 </dd>
 <dt><a href="../org.junit.platform.engine/org/junit/platform/engine/discovery/ClassNameFilter.html#includeClassNamePatterns(java.lang.String...)" class="member-name-link">includeClassNamePatterns(String...)</a> - Static method in interface org.junit.platform.engine.discovery.<a href="../org.junit.platform.engine/org/junit/platform/engine/discovery/ClassNameFilter.html" title="interface in org.junit.platform.engine.discovery">ClassNameFilter</a></dt>
 <dd>
