@@ -118,11 +118,6 @@ class DefaultLauncherSession implements LauncherSession {
 		public void execute(TestPlan testPlan, TestExecutionListener... listeners) {
 			throw new PreconditionViolationException("Launcher session has already been closed");
 		}
-
-		@Override
-		public NamespacedHierarchicalStore<Namespace> getStore(LauncherDiscoveryRequest launcherDiscoveryRequest) {
-			throw new PreconditionViolationException("Launcher session has already been closed");
-		}
 	}
 
 	private static LauncherInterceptor composite(List<LauncherInterceptor> interceptors) {
