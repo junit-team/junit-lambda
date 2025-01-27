@@ -19,8 +19,6 @@ import org.junit.platform.engine.ConfigurationParameters;
 import org.junit.platform.engine.DiscoveryFilter;
 import org.junit.platform.engine.DiscoverySelector;
 import org.junit.platform.engine.EngineDiscoveryRequest;
-import org.junit.platform.engine.Namespace;
-import org.junit.platform.engine.support.store.NamespacedHierarchicalStore;
 
 /**
  * {@code LauncherDiscoveryRequest} extends the {@link EngineDiscoveryRequest} API
@@ -97,7 +95,5 @@ public interface LauncherDiscoveryRequest extends EngineDiscoveryRequest {
 	default LauncherDiscoveryListener getDiscoveryListener() {
 		return LauncherDiscoveryListener.NOOP;
 	}
-
-	NamespacedHierarchicalStore<Namespace> getStore();
 
 }

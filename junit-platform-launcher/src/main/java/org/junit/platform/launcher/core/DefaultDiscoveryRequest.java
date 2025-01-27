@@ -20,9 +20,7 @@ import org.junit.platform.engine.ConfigurationParameters;
 import org.junit.platform.engine.DiscoveryFilter;
 import org.junit.platform.engine.DiscoverySelector;
 import org.junit.platform.engine.EngineDiscoveryRequest;
-import org.junit.platform.engine.Namespace;
 import org.junit.platform.engine.reporting.OutputDirectoryProvider;
-import org.junit.platform.engine.support.store.NamespacedHierarchicalStore;
 import org.junit.platform.launcher.EngineFilter;
 import org.junit.platform.launcher.LauncherDiscoveryListener;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
@@ -56,17 +54,14 @@ final class DefaultDiscoveryRequest implements LauncherDiscoveryRequest {
 
 	private final OutputDirectoryProvider outputDirectoryProvider;
 
-	private final NamespacedHierarchicalStore<Namespace> store;
-
 	DefaultDiscoveryRequest(List<DiscoverySelector> selectors, List<EngineFilter> engineFilters,
 			List<DiscoveryFilter<?>> discoveryFilters, List<PostDiscoveryFilter> postDiscoveryFilters,
-			NamespacedHierarchicalStore<Namespace> store, LauncherConfigurationParameters configurationParameters,
-			LauncherDiscoveryListener discoveryListener, OutputDirectoryProvider outputDirectoryProvider) {
+			LauncherConfigurationParameters configurationParameters, LauncherDiscoveryListener discoveryListener,
+			OutputDirectoryProvider outputDirectoryProvider) {
 		this.selectors = selectors;
 		this.engineFilters = engineFilters;
 		this.discoveryFilters = discoveryFilters;
 		this.postDiscoveryFilters = postDiscoveryFilters;
-		this.store = store;
 		this.configurationParameters = configurationParameters;
 		this.discoveryListener = discoveryListener;
 		this.outputDirectoryProvider = outputDirectoryProvider;
@@ -102,11 +97,6 @@ final class DefaultDiscoveryRequest implements LauncherDiscoveryRequest {
 	@Override
 	public LauncherDiscoveryListener getDiscoveryListener() {
 		return this.discoveryListener;
-	}
-
-	@Override
-	public NamespacedHierarchicalStore<Namespace> getStore() {
-		return this.store;
 	}
 
 	@Override

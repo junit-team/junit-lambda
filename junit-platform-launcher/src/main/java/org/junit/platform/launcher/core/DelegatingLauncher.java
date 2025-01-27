@@ -10,6 +10,8 @@
 
 package org.junit.platform.launcher.core;
 
+import org.junit.platform.engine.Namespace;
+import org.junit.platform.engine.support.store.NamespacedHierarchicalStore;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryListener;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
@@ -50,6 +52,11 @@ class DelegatingLauncher implements Launcher {
 	@Override
 	public void execute(TestPlan testPlan, TestExecutionListener... listeners) {
 		delegate.execute(testPlan, listeners);
+	}
+
+	@Override
+	public NamespacedHierarchicalStore<Namespace> getStore(LauncherDiscoveryRequest launcherDiscoveryRequest) {
+		return delegate.getStore(launcherDiscoveryRequest);
 	}
 
 }

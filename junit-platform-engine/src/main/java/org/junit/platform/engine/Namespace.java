@@ -71,7 +71,7 @@ public class Namespace {
 	 * existing sequence of parts in this namespace.
 	 *
 	 * @return new namespace; never {@code null}
-	 * @since 5.13
+	 * @since 5.8
 	 */
 	@API(status = STABLE, since = "5.13")
 	public Namespace append(Object... parts) {
