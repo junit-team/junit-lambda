@@ -102,11 +102,6 @@ class DefaultLauncher implements Launcher {
 		execute((InternalTestPlan) testPlan, listeners);
 	}
 
-	@Override
-	public NamespacedHierarchicalStore<Namespace> getStore(LauncherDiscoveryRequest launcherDiscoveryRequest) {
-		return new NamespacedHierarchicalStore<>(this.sessionStore);
-	}
-
 	private LauncherDiscoveryResult discover(LauncherDiscoveryRequest discoveryRequest,
 			EngineDiscoveryOrchestrator.Phase phase) {
 		return discoveryOrchestrator.discover(discoveryRequest, phase);

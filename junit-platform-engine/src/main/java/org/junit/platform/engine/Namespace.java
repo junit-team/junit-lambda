@@ -71,7 +71,7 @@ public class Namespace {
 	 * existing sequence of parts in this namespace.
 	 *
 	 * @return new namespace; never {@code null}
-	 * @since 5.8
+	 * @since 5.13
 	 */
 	@API(status = STABLE, since = "5.13")
 	public Namespace append(Object... parts) {
@@ -80,6 +80,6 @@ public class Namespace {
 		ArrayList<Object> newParts = new ArrayList<>(this.parts.size() + parts.length);
 		newParts.addAll(this.parts);
 		Collections.addAll(newParts, parts);
-		return new Namespgitace(newParts);
+		return new Namespace(newParts);
 	}
 }

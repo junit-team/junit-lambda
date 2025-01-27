@@ -29,7 +29,9 @@ import org.junit.platform.engine.ConfigurationParameters;
 import org.junit.platform.engine.DiscoveryFilter;
 import org.junit.platform.engine.DiscoverySelector;
 import org.junit.platform.engine.Filter;
+import org.junit.platform.engine.Namespace;
 import org.junit.platform.engine.reporting.OutputDirectoryProvider;
+import org.junit.platform.engine.support.store.NamespacedHierarchicalStore;
 import org.junit.platform.launcher.EngineFilter;
 import org.junit.platform.launcher.LauncherConstants;
 import org.junit.platform.launcher.LauncherDiscoveryListener;
@@ -110,6 +112,8 @@ public final class LauncherDiscoveryRequestBuilder {
 	private final Map<String, String> configurationParameters = new HashMap<>();
 	private final List<String> configurationParametersResources = new ArrayList<>();
 	private final List<LauncherDiscoveryListener> discoveryListeners = new ArrayList<>();
+	// TODO[#4252] Use the session-level store as its parent.
+	private final NamespacedHierarchicalStore<Namespace> store = new NamespacedHierarchicalStore<>(null);
 	private boolean implicitConfigurationParametersEnabled = true;
 	private ConfigurationParameters parentConfigurationParameters;
 	private OutputDirectoryProvider outputDirectoryProvider;
@@ -336,7 +340,8 @@ public final class LauncherDiscoveryRequestBuilder {
 		LauncherDiscoveryListener discoveryListener = getLauncherDiscoveryListener(launcherConfigurationParameters);
 		OutputDirectoryProvider outputDirectoryProvider = getOutputDirectoryProvider(launcherConfigurationParameters);
 		return new DefaultDiscoveryRequest(this.selectors, this.engineFilters, this.discoveryFilters,
-			this.postDiscoveryFilters, launcherConfigurationParameters, discoveryListener, outputDirectoryProvider);
+			this.postDiscoveryFilters, this.store, launcherConfigurationParameters, discoveryListener,
+			outputDirectoryProvider);
 	}
 
 	private OutputDirectoryProvider getOutputDirectoryProvider(
