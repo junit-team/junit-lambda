@@ -1274,7 +1274,7 @@ in the <code>junit-jupiter-api</code> module.</p>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>@TempDir</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Used to supply a <a href="#writing-tests-built-in-extensions-TempDirectory">temporary directory</a> via field injection or parameter injection in a lifecycle method or test method; located in the <code>org.junit.jupiter.api.io</code> package.  Such fields are inherited.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Used to supply a <a href="#writing-tests-built-in-extensions-TempDirectory">temporary directory</a> via field injection or parameter injection in a test class constructor, lifecycle method, or test method; located in the <code>org.junit.jupiter.api.io</code> package. Such fields are inherited.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>@ExtendWith</code></p></td>
@@ -7484,9 +7484,9 @@ injection so that each test method uses a separate directory.</p>
 </div>
 <div class="paragraph">
 <p>The <code>@TempDir</code> annotation has an optional <code>cleanup</code> attribute that can be set to either
-<code>NEVER</code>, <code>ON_SUCCESS</code>, or <code>ALWAYS</code>. If the cleanup mode is set to <code>NEVER</code>, temporary
-directories are not deleted after a test completes. If it is set to <code>ON_SUCCESS</code>,
-temporary directories are deleted only after a test completed successfully.</p>
+<code>NEVER</code>, <code>ON_SUCCESS</code>, or <code>ALWAYS</code>. If the cleanup mode is set to <code>NEVER</code>, the temporary
+directory will not be deleted after the test completes. If it is set to <code>ON_SUCCESS</code>, the
+temporary directory will only be deleted after the test if the test completed successfully.</p>
 </div>
 <div class="paragraph">
 <p>The default cleanup mode is <code>ALWAYS</code>. You can use the
@@ -7552,7 +7552,7 @@ prefix instead of the <code>junit</code> constant value.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>It&#8217;s also possible to use an in-memory file system like <code><a href="https://google.github.io/jimfs/">Jimfs</a></code> for the creation of the
+<p>It is also possible to use an in-memory file system like <code><a href="https://google.github.io/jimfs/">Jimfs</a></code> for the creation of the
 temporary directory. The following example demonstrates how to achieve that.</p>
 </div>
 <div class="listingblock">
@@ -7621,20 +7621,18 @@ annotation that can be used as a drop-in replacement for
 <p>Meta-annotations or additional annotations on the field or parameter the <code>TempDir</code>
 annotation is declared on might expose additional attributes to configure the factory.
 Such annotations and related attributes can be accessed via the <code>AnnotatedElementContext</code>
-parameter of <code>createTempDirectory</code>.</p>
+parameter of the <code>createTempDirectory(&#8230;&#8203;)</code> method.</p>
 </div>
 <div class="paragraph">
-<p>You can use the <code>junit.jupiter.tempdir.factory.default</code>
-<a href="#running-tests-config-params">configuration parameter</a> to specify the fully qualified
-class name of the <code>TempDirFactory</code> you would like to use by default. Just like for
-factories configured via the <code>factory</code> attribute of the <code>@TempDir</code> annotation,
-the supplied class has to implement the <code>TempDirFactory</code> interface. The default factory
-will be used for all <code>@TempDir</code> annotations unless the <code>factory</code> attribute of the
-annotation specifies a different factory.</p>
+<p>You can use the <code>junit.jupiter.tempdir.factory.default</code> <a href="#running-tests-config-params">configuration parameter</a> to specify the fully qualified class name of the
+<code>TempDirFactory</code> you would like to use by default. Just like for factories configured via
+the <code>factory</code> attribute of the <code>@TempDir</code> annotation, the supplied class has to implement
+the <code>TempDirFactory</code> interface. The default factory will be used for all <code>@TempDir</code>
+annotations unless the <code>factory</code> attribute of the annotation specifies a different factory.</p>
 </div>
 <div class="paragraph">
-<p>In summary, the factory for a temporary directory is determined according to the
-following precedence rules:</p>
+<p>In summary, the factory for a temporary directory is determined according to the following
+precedence rules:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">

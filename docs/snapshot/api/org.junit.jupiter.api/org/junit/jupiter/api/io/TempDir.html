@@ -94,44 +94,39 @@ loadScripts(document, 'script');</script>
 <a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html" title="class or interface in org.apiguardian.api" class="external-link">@API</a>(<a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html#status()" title="class or interface in org.apiguardian.api" class="external-link">status</a>=<a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.Status.html#STABLE" title="class or interface in org.apiguardian.api" class="external-link">STABLE</a>,
      <a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html#since()" title="class or interface in org.apiguardian.api" class="external-link">since</a>="5.10")
 </span><span class="modifiers">public @interface </span><span class="element-name type-name-label">TempDir</span></div>
-<div class="block"><code>@TempDir</code> can be used to annotate a field in a test class or a
- parameter in a lifecycle method or test method of type <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link"><code>Path</code></a> or
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link"><code>File</code></a> that should be resolved into a temporary directory.
-
- <p>Please note that <code>@TempDir</code> is not supported on constructor
- parameters. Please use field injection instead by annotating an instance
- field with <code>@TempDir</code>.
+<div class="block"><code>@TempDir</code> can be used to annotate a field in a test class or a parameter
+ in a test class constructor, lifecycle method, or test method of type
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link"><code>Path</code></a> or <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link"><code>File</code></a> that should be resolved into a temporary directory.
 
  <h2 id="creation-heading">Creation</h2>
 
  <p>The temporary directory is only created if a field in a test class or a
- parameter in a lifecycle method or test method is annotated with
- <code>@TempDir</code>.
- An <a href="../extension/ExtensionConfigurationException.html" title="class in org.junit.jupiter.api.extension"><code>ExtensionConfigurationException</code></a> or a
- <a href="../extension/ParameterResolutionException.html" title="class in org.junit.jupiter.api.extension"><code>ParameterResolutionException</code></a> will be thrown in one of the following
+ parameter in a test class constructor, lifecycle method, or test method is
+ annotated with <code>@TempDir</code>. An <a href="../extension/ExtensionConfigurationException.html" title="class in org.junit.jupiter.api.extension"><code>ExtensionConfigurationException</code></a> or
+ a <a href="../extension/ParameterResolutionException.html" title="class in org.junit.jupiter.api.extension"><code>ParameterResolutionException</code></a> will be thrown in one of the following
  cases:
 
  <ul>
- <li>If the field type or parameter type is neither <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link"><code>Path</code></a> nor
-       <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link"><code>File</code></a>.</li>
+ <li>If the field type or parameter type is neither <code>Path</code> nor <code>File</code>.</li>
  <li>If a field is declared as <code>final</code>.</li>
  <li>If the temporary directory cannot be created.</li>
  <li>If the field type or parameter type is <code>File</code> and a custom
-     <a href="#factory()">factory</a> is used, which creates a temporary
+     <a href="#factory()"><code>factory</code></a> is used, which creates a temporary
      directory that does not belong to the
      <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/nio/file/FileSystems.html#getDefault()" title="class or interface in java.nio.file" class="external-link">default file system</a>.
  </li>
  </ul>
 
- In addition, a <code>ParameterResolutionException</code> will be thrown for a
- constructor parameter annotated with <code>@TempDir</code>.
-
  <h2 id="scope-heading">Scope</h2>
 
- <p>By default, a separate temporary directory is created for every
- declaration of the <code>@TempDir</code> annotation. If you want to share a
- temporary directory across all tests in a test class, you should declare the
- annotation on a <code>static</code> field or on a parameter of a
+ <p>By default, a separate temporary directory is created for every declaration
+ of the <code>@TempDir</code> annotation. For better isolation when using
+ <a href="../TestInstance.Lifecycle.html#PER_METHOD"><code>@TestInstance(Lifecycle.PER_METHOD)</code></a>
+ semantics, you can annotate an instance field or a parameter in the test class
+ constructor with <code>@TempDir</code> so that each test method uses a separate
+ temporary directory. Alternatively, if you want to share a temporary directory
+ across all tests in a test class, you should declare the annotation on a
+ <code>static</code> field or on a parameter of a
  <a href="../BeforeAll.html" title="annotation interface in org.junit.jupiter.api"><code>@BeforeAll</code></a> method.
 
  <h3 id="old-behavior-heading">Old behavior</h3>
@@ -274,9 +269,10 @@ loadScripts(document, 'script');</script>
  <h4 id="supported-values-heading1">Supported Values</h4>
  <ul>
  <li><code>per_context</code>: creates a single temporary directory for the
- entire test class or method, depending on where it's first declared
+ entire test class or method, depending on where <code>@TempDir</code> is first
+ declared</li>
  <li><code>per_declaration</code>: creates separate temporary directories for
- each declaration site of the <code>@TempDir</code> annotation.
+ each declaration site of the <code>@TempDir</code> annotation</li>
  </ul>
 
  <p>If not specified, the default is <code>per_declaration</code>.</div>
