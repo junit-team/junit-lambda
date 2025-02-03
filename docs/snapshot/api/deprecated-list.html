@@ -173,111 +173,115 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-summary-item-name even-row-color"><a href="org.junit.jupiter.api/org/junit/jupiter/api/DisplayNameGenerator.html#generateDisplayNameForMethod(java.lang.Class,java.lang.reflect.Method)">org.junit.jupiter.api.DisplayNameGenerator.generateDisplayNameForMethod<wbr>(Class&lt;?&gt;, Method)</a></div>
+<div class="col-summary-item-name even-row-color"><a href="org.junit.jupiter.api/org/junit/jupiter/api/condition/JRE.html#currentVersion()">org.junit.jupiter.api.condition.JRE.currentVersion()</a></div>
 <div class="col-last even-row-color">
+<div class="block">in favor of <a href="org.junit.jupiter.api/org/junit/jupiter/api/condition/JRE.html#currentJre()"><code>JRE.currentJre()</code></a></div>
+</div>
+<div class="col-summary-item-name odd-row-color"><a href="org.junit.jupiter.api/org/junit/jupiter/api/DisplayNameGenerator.html#generateDisplayNameForMethod(java.lang.Class,java.lang.reflect.Method)">org.junit.jupiter.api.DisplayNameGenerator.generateDisplayNameForMethod<wbr>(Class&lt;?&gt;, Method)</a></div>
+<div class="col-last odd-row-color">
 <div class="block">in favor of <a href="org.junit.jupiter.api/org/junit/jupiter/api/DisplayNameGenerator.html#generateDisplayNameForMethod(java.util.List,java.lang.Class,java.lang.reflect.Method)"><code>DisplayNameGenerator.generateDisplayNameForMethod(List, Class, Method)</code></a></div>
 </div>
-<div class="col-summary-item-name odd-row-color"><a href="org.junit.jupiter.api/org/junit/jupiter/api/DisplayNameGenerator.html#generateDisplayNameForNestedClass(java.lang.Class)">org.junit.jupiter.api.DisplayNameGenerator.generateDisplayNameForNestedClass<wbr>(Class&lt;?&gt;)</a></div>
-<div class="col-last odd-row-color">
+<div class="col-summary-item-name even-row-color"><a href="org.junit.jupiter.api/org/junit/jupiter/api/DisplayNameGenerator.html#generateDisplayNameForNestedClass(java.lang.Class)">org.junit.jupiter.api.DisplayNameGenerator.generateDisplayNameForNestedClass<wbr>(Class&lt;?&gt;)</a></div>
+<div class="col-last even-row-color">
 <div class="block">in favor of <a href="org.junit.jupiter.api/org/junit/jupiter/api/DisplayNameGenerator.html#generateDisplayNameForNestedClass(java.util.List,java.lang.Class)"><code>DisplayNameGenerator.generateDisplayNameForNestedClass(List, Class)</code></a></div>
 </div>
-<div class="col-summary-item-name even-row-color"><a href="org.junit.jupiter.api/org/junit/jupiter/api/extension/InvocationInterceptor.html#interceptDynamicTest(org.junit.jupiter.api.extension.InvocationInterceptor.Invocation,org.junit.jupiter.api.extension.ExtensionContext)">org.junit.jupiter.api.extension.InvocationInterceptor.interceptDynamicTest<wbr>(InvocationInterceptor.Invocation&lt;Void&gt;, ExtensionContext)</a></div>
-<div class="col-last even-row-color">
+<div class="col-summary-item-name odd-row-color"><a href="org.junit.jupiter.api/org/junit/jupiter/api/extension/InvocationInterceptor.html#interceptDynamicTest(org.junit.jupiter.api.extension.InvocationInterceptor.Invocation,org.junit.jupiter.api.extension.ExtensionContext)">org.junit.jupiter.api.extension.InvocationInterceptor.interceptDynamicTest<wbr>(InvocationInterceptor.Invocation&lt;Void&gt;, ExtensionContext)</a></div>
+<div class="col-last odd-row-color">
 <div class="block">use <a href="org.junit.jupiter.api/org/junit/jupiter/api/extension/InvocationInterceptor.html#interceptDynamicTest(org.junit.jupiter.api.extension.InvocationInterceptor.Invocation,org.junit.jupiter.api.extension.DynamicTestInvocationContext,org.junit.jupiter.api.extension.ExtensionContext)"><code>InvocationInterceptor.interceptDynamicTest(Invocation, DynamicTestInvocationContext, ExtensionContext)</code></a> instead</div>
 </div>
-<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.commons/org/junit/platform/commons/support/AnnotationSupport.html#findAnnotation(java.lang.Class,java.lang.Class,org.junit.platform.commons.support.SearchOption)">org.junit.platform.commons.support.AnnotationSupport.findAnnotation<wbr>(Class&lt;?&gt;, Class&lt;A&gt;, SearchOption)</a></div>
-<div class="col-last odd-row-color">
+<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.commons/org/junit/platform/commons/support/AnnotationSupport.html#findAnnotation(java.lang.Class,java.lang.Class,org.junit.platform.commons.support.SearchOption)">org.junit.platform.commons.support.AnnotationSupport.findAnnotation<wbr>(Class&lt;?&gt;, Class&lt;A&gt;, SearchOption)</a></div>
+<div class="col-last even-row-color">
 <div class="block">Use <a href="org.junit.platform.commons/org/junit/platform/commons/support/AnnotationSupport.html#findAnnotation(java.lang.Class,java.lang.Class,java.util.List)"><code>AnnotationSupport.findAnnotation(Class, Class, List)</code></a>
  (for <code>SearchOption.DEFAULT</code>) or
  <a href="org.junit.platform.commons/org/junit/platform/commons/support/AnnotationSupport.html#findAnnotation(java.lang.Class,java.lang.Class,java.util.List)"><code>AnnotationSupport.findAnnotation(Class, Class, List)</code></a> (for
  <code>SearchOption.INCLUDE_ENCLOSING_CLASSES</code>) instead</div>
 </div>
-<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.commons/org/junit/platform/commons/support/ReflectionSupport.html#loadClass(java.lang.String)">org.junit.platform.commons.support.ReflectionSupport.loadClass<wbr>(String)</a></div>
-<div class="col-last even-row-color">
+<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.commons/org/junit/platform/commons/support/ReflectionSupport.html#loadClass(java.lang.String)">org.junit.platform.commons.support.ReflectionSupport.loadClass<wbr>(String)</a></div>
+<div class="col-last odd-row-color">
 <div class="block">Please use <a href="org.junit.platform.commons/org/junit/platform/commons/support/ReflectionSupport.html#tryToLoadClass(java.lang.String)"><code>ReflectionSupport.tryToLoadClass(String)</code></a> instead.</div>
 </div>
-<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.commons/org/junit/platform/commons/util/BlacklistedExceptions.html#rethrowIfBlacklisted(java.lang.Throwable)">org.junit.platform.commons.util.BlacklistedExceptions.rethrowIfBlacklisted<wbr>(Throwable)</a></div>
-<div class="col-last odd-row-color">
+<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.commons/org/junit/platform/commons/util/BlacklistedExceptions.html#rethrowIfBlacklisted(java.lang.Throwable)">org.junit.platform.commons.util.BlacklistedExceptions.rethrowIfBlacklisted<wbr>(Throwable)</a></div>
+<div class="col-last even-row-color">
 <div class="block">Use <a href="org.junit.platform.commons/org/junit/platform/commons/util/UnrecoverableExceptions.html#rethrowIfUnrecoverable(java.lang.Throwable)"><code>UnrecoverableExceptions.rethrowIfUnrecoverable(java.lang.Throwable)</code></a>
  instead.</div>
 </div>
-<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.commons/org/junit/platform/commons/util/ReflectionUtils.html#loadClass(java.lang.String)">org.junit.platform.commons.util.ReflectionUtils.loadClass<wbr>(String)</a></div>
-<div class="col-last even-row-color">
+<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.commons/org/junit/platform/commons/util/ReflectionUtils.html#loadClass(java.lang.String)">org.junit.platform.commons.util.ReflectionUtils.loadClass<wbr>(String)</a></div>
+<div class="col-last odd-row-color">
 <div class="block">Please use <a href="org.junit.platform.commons/org/junit/platform/commons/util/ReflectionUtils.html#tryToLoadClass(java.lang.String)"><code>ReflectionUtils.tryToLoadClass(String)</code></a> instead.</div>
 </div>
-<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.commons/org/junit/platform/commons/util/ReflectionUtils.html#loadClass(java.lang.String,java.lang.ClassLoader)">org.junit.platform.commons.util.ReflectionUtils.loadClass<wbr>(String, ClassLoader)</a></div>
-<div class="col-last odd-row-color">
+<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.commons/org/junit/platform/commons/util/ReflectionUtils.html#loadClass(java.lang.String,java.lang.ClassLoader)">org.junit.platform.commons.util.ReflectionUtils.loadClass<wbr>(String, ClassLoader)</a></div>
+<div class="col-last even-row-color">
 <div class="block">Please use <a href="org.junit.platform.commons/org/junit/platform/commons/util/ReflectionUtils.html#tryToLoadClass(java.lang.String,java.lang.ClassLoader)"><code>ReflectionUtils.tryToLoadClass(String, ClassLoader)</code></a>
  instead.</div>
 </div>
-<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.commons/org/junit/platform/commons/util/ReflectionUtils.html#readFieldValue(java.lang.Class,java.lang.String,T)">org.junit.platform.commons.util.ReflectionUtils.readFieldValue<wbr>(Class&lt;T&gt;, String, T)</a></div>
-<div class="col-last even-row-color">
+<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.commons/org/junit/platform/commons/util/ReflectionUtils.html#readFieldValue(java.lang.Class,java.lang.String,T)">org.junit.platform.commons.util.ReflectionUtils.readFieldValue<wbr>(Class&lt;T&gt;, String, T)</a></div>
+<div class="col-last odd-row-color">
 <div class="block">Please use <a href="org.junit.platform.commons/org/junit/platform/commons/util/ReflectionUtils.html#tryToReadFieldValue(java.lang.Class,java.lang.String,T)"><code>ReflectionUtils.tryToReadFieldValue(Class, String, Object)</code></a>
  instead.</div>
 </div>
-<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.commons/org/junit/platform/commons/util/ReflectionUtils.html#readFieldValue(java.lang.reflect.Field)">org.junit.platform.commons.util.ReflectionUtils.readFieldValue<wbr>(Field)</a></div>
-<div class="col-last odd-row-color">
+<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.commons/org/junit/platform/commons/util/ReflectionUtils.html#readFieldValue(java.lang.reflect.Field)">org.junit.platform.commons.util.ReflectionUtils.readFieldValue<wbr>(Field)</a></div>
+<div class="col-last even-row-color">
 <div class="block">Please use <a href="org.junit.platform.commons/org/junit/platform/commons/util/ReflectionUtils.html#tryToReadFieldValue(java.lang.reflect.Field)"><code>ReflectionUtils.tryToReadFieldValue(Field)</code></a> instead.</div>
 </div>
-<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.commons/org/junit/platform/commons/util/ReflectionUtils.html#readFieldValue(java.lang.reflect.Field,java.lang.Object)">org.junit.platform.commons.util.ReflectionUtils.readFieldValue<wbr>(Field, Object)</a></div>
-<div class="col-last even-row-color">
+<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.commons/org/junit/platform/commons/util/ReflectionUtils.html#readFieldValue(java.lang.reflect.Field,java.lang.Object)">org.junit.platform.commons.util.ReflectionUtils.readFieldValue<wbr>(Field, Object)</a></div>
+<div class="col-last odd-row-color">
 <div class="block">Please use <a href="org.junit.platform.commons/org/junit/platform/commons/util/ReflectionUtils.html#tryToReadFieldValue(java.lang.reflect.Field,java.lang.Object)"><code>ReflectionUtils.tryToReadFieldValue(Field, Object)</code></a>
  instead.</div>
 </div>
-<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.engine/org/junit/platform/engine/ConfigurationParameters.html#size()">org.junit.platform.engine.ConfigurationParameters.size()</a></div>
-<div class="col-last odd-row-color">
+<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.engine/org/junit/platform/engine/ConfigurationParameters.html#size()">org.junit.platform.engine.ConfigurationParameters.size()</a></div>
+<div class="col-last even-row-color">
 <div class="block">as of JUnit Platform 1.9 in favor of <a href="org.junit.platform.engine/org/junit/platform/engine/ConfigurationParameters.html#keySet()"><code>ConfigurationParameters.keySet()</code></a></div>
 </div>
-<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.engine/org/junit/platform/engine/discovery/MethodSelector.html#getMethodParameterTypes()">org.junit.platform.engine.discovery.MethodSelector.getMethodParameterTypes()</a></div>
-<div class="col-last even-row-color">
+<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.engine/org/junit/platform/engine/discovery/MethodSelector.html#getMethodParameterTypes()">org.junit.platform.engine.discovery.MethodSelector.getMethodParameterTypes()</a></div>
+<div class="col-last odd-row-color">
 <div class="block">since 1.10 in favor of <a href="org.junit.platform.engine/org/junit/platform/engine/discovery/MethodSelector.html#getParameterTypeNames()"><code>MethodSelector.getParameterTypeNames()</code></a></div>
 </div>
-<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.engine/org/junit/platform/engine/discovery/NestedMethodSelector.html#getMethodParameterTypes()">org.junit.platform.engine.discovery.NestedMethodSelector.getMethodParameterTypes()</a></div>
-<div class="col-last odd-row-color">
+<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.engine/org/junit/platform/engine/discovery/NestedMethodSelector.html#getMethodParameterTypes()">org.junit.platform.engine.discovery.NestedMethodSelector.getMethodParameterTypes()</a></div>
+<div class="col-last even-row-color">
 <div class="block">since 1.10 in favor or <a href="org.junit.platform.engine/org/junit/platform/engine/discovery/NestedMethodSelector.html#getParameterTypeNames()"><code>NestedMethodSelector.getParameterTypeNames()</code></a></div>
 </div>
-<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.engine/org/junit/platform/engine/ExecutionRequest.html#create(org.junit.platform.engine.TestDescriptor,org.junit.platform.engine.EngineExecutionListener,org.junit.platform.engine.ConfigurationParameters)">org.junit.platform.engine.ExecutionRequest.create<wbr>(TestDescriptor, EngineExecutionListener, ConfigurationParameters)</a></div>
-<div class="col-last even-row-color">
+<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.engine/org/junit/platform/engine/ExecutionRequest.html#create(org.junit.platform.engine.TestDescriptor,org.junit.platform.engine.EngineExecutionListener,org.junit.platform.engine.ConfigurationParameters)">org.junit.platform.engine.ExecutionRequest.create<wbr>(TestDescriptor, EngineExecutionListener, ConfigurationParameters)</a></div>
+<div class="col-last odd-row-color">
 <div class="block">Use <a href="org.junit.platform.engine/org/junit/platform/engine/ExecutionRequest.html#create(org.junit.platform.engine.TestDescriptor,org.junit.platform.engine.EngineExecutionListener,org.junit.platform.engine.ConfigurationParameters,org.junit.platform.engine.reporting.OutputDirectoryProvider)"><code>ExecutionRequest.create(TestDescriptor, EngineExecutionListener, ConfigurationParameters, OutputDirectoryProvider)</code></a></div>
 </div>
-<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.engine/org/junit/platform/engine/support/filter/ClasspathScanningSupport.html#buildClassFilter(org.junit.platform.engine.EngineDiscoveryRequest,java.util.function.Predicate)">org.junit.platform.engine.support.filter.ClasspathScanningSupport.buildClassFilter<wbr>(EngineDiscoveryRequest, Predicate&lt;Class&lt;?&gt;&gt;)</a></div>
-<div class="col-last odd-row-color">
-<div class="block">Please use <a href="org.junit.platform.engine/org/junit/platform/engine/support/discovery/EngineDiscoveryRequestResolver.html" title="class in org.junit.platform.engine.support.discovery"><code>EngineDiscoveryRequestResolver</code></a> instead.</div>
-</div>
-<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.engine/org/junit/platform/engine/support/filter/ClasspathScanningSupport.html#buildClassNamePredicate(org.junit.platform.engine.EngineDiscoveryRequest)">org.junit.platform.engine.support.filter.ClasspathScanningSupport.buildClassNamePredicate<wbr>(EngineDiscoveryRequest)</a></div>
+<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.engine/org/junit/platform/engine/support/filter/ClasspathScanningSupport.html#buildClassFilter(org.junit.platform.engine.EngineDiscoveryRequest,java.util.function.Predicate)">org.junit.platform.engine.support.filter.ClasspathScanningSupport.buildClassFilter<wbr>(EngineDiscoveryRequest, Predicate&lt;Class&lt;?&gt;&gt;)</a></div>
 <div class="col-last even-row-color">
 <div class="block">Please use <a href="org.junit.platform.engine/org/junit/platform/engine/support/discovery/EngineDiscoveryRequestResolver.html" title="class in org.junit.platform.engine.support.discovery"><code>EngineDiscoveryRequestResolver</code></a> instead.</div>
 </div>
-<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.launcher/org/junit/platform/launcher/TestPlan.html#add(org.junit.platform.launcher.TestIdentifier)">org.junit.platform.launcher.TestPlan.add<wbr>(TestIdentifier)</a></div>
+<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.engine/org/junit/platform/engine/support/filter/ClasspathScanningSupport.html#buildClassNamePredicate(org.junit.platform.engine.EngineDiscoveryRequest)">org.junit.platform.engine.support.filter.ClasspathScanningSupport.buildClassNamePredicate<wbr>(EngineDiscoveryRequest)</a></div>
 <div class="col-last odd-row-color">
+<div class="block">Please use <a href="org.junit.platform.engine/org/junit/platform/engine/support/discovery/EngineDiscoveryRequestResolver.html" title="class in org.junit.platform.engine.support.discovery"><code>EngineDiscoveryRequestResolver</code></a> instead.</div>
+</div>
+<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.launcher/org/junit/platform/launcher/TestPlan.html#add(org.junit.platform.launcher.TestIdentifier)">org.junit.platform.launcher.TestPlan.add<wbr>(TestIdentifier)</a></div>
+<div class="col-last even-row-color">
 <div class="block">Calling this method is no longer supported and will throw an
  exception.</div>
 </div>
-<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.launcher/org/junit/platform/launcher/TestPlan.html#getChildren(java.lang.String)">org.junit.platform.launcher.TestPlan.getChildren<wbr>(String)</a></div>
-<div class="col-last even-row-color">
+<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.launcher/org/junit/platform/launcher/TestPlan.html#getChildren(java.lang.String)">org.junit.platform.launcher.TestPlan.getChildren<wbr>(String)</a></div>
+<div class="col-last odd-row-color">
 <div class="block">Use <a href="org.junit.platform.launcher/org/junit/platform/launcher/TestPlan.html#getChildren(org.junit.platform.engine.UniqueId)"><code>TestPlan.getChildren(UniqueId)</code></a></div>
 </div>
-<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.launcher/org/junit/platform/launcher/TestPlan.html#getTestIdentifier(java.lang.String)">org.junit.platform.launcher.TestPlan.getTestIdentifier<wbr>(String)</a></div>
-<div class="col-last odd-row-color">
+<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.launcher/org/junit/platform/launcher/TestPlan.html#getTestIdentifier(java.lang.String)">org.junit.platform.launcher.TestPlan.getTestIdentifier<wbr>(String)</a></div>
+<div class="col-last even-row-color">
 <div class="block">Use <a href="org.junit.platform.launcher/org/junit/platform/launcher/TestPlan.html#getTestIdentifier(org.junit.platform.engine.UniqueId)"><code>TestPlan.getTestIdentifier(UniqueId)</code></a></div>
 </div>
-<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.suite.commons/org/junit/platform/suite/commons/SuiteLauncherDiscoveryRequestBuilder.html#suite(java.lang.Class)">org.junit.platform.suite.commons.SuiteLauncherDiscoveryRequestBuilder.suite<wbr>(Class&lt;?&gt;)</a></div>
-<div class="col-last even-row-color">
+<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.suite.commons/org/junit/platform/suite/commons/SuiteLauncherDiscoveryRequestBuilder.html#suite(java.lang.Class)">org.junit.platform.suite.commons.SuiteLauncherDiscoveryRequestBuilder.suite<wbr>(Class&lt;?&gt;)</a></div>
+<div class="col-last odd-row-color">
 <div class="block">as of JUnit Platform 1.11 in favor of
  <a href="org.junit.platform.suite.commons/org/junit/platform/suite/commons/SuiteLauncherDiscoveryRequestBuilder.html#applyConfigurationParametersFromSuite(java.lang.Class)"><code>SuiteLauncherDiscoveryRequestBuilder.applyConfigurationParametersFromSuite(java.lang.Class&lt;?&gt;)</code></a> and
  <a href="org.junit.platform.suite.commons/org/junit/platform/suite/commons/SuiteLauncherDiscoveryRequestBuilder.html#applySelectorsAndFiltersFromSuite(java.lang.Class)"><code>SuiteLauncherDiscoveryRequestBuilder.applySelectorsAndFiltersFromSuite(java.lang.Class&lt;?&gt;)</code></a></div>
 </div>
-<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.testkit/org/junit/platform/testkit/engine/EngineTestKit.Builder.html#filters(org.junit.platform.engine.DiscoveryFilter...)">org.junit.platform.testkit.engine.EngineTestKit.Builder.filters<wbr>(DiscoveryFilter&lt;?&gt;...)</a></div>
-<div class="col-last odd-row-color">
+<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.testkit/org/junit/platform/testkit/engine/EngineTestKit.Builder.html#filters(org.junit.platform.engine.DiscoveryFilter...)">org.junit.platform.testkit.engine.EngineTestKit.Builder.filters<wbr>(DiscoveryFilter&lt;?&gt;...)</a></div>
+<div class="col-last even-row-color">
 <div class="block">Please use <a href="org.junit.platform.testkit/org/junit/platform/testkit/engine/EngineTestKit.Builder.html#filters(org.junit.platform.engine.Filter...)"><code>EngineTestKit.Builder.filters(Filter...)</code></a> instead.</div>
 </div>
-<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.testkit/org/junit/platform/testkit/engine/EngineTestKit.html#execute(java.lang.String,org.junit.platform.engine.EngineDiscoveryRequest)">org.junit.platform.testkit.engine.EngineTestKit.execute<wbr>(String, EngineDiscoveryRequest)</a></div>
-<div class="col-last even-row-color">
+<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.testkit/org/junit/platform/testkit/engine/EngineTestKit.html#execute(java.lang.String,org.junit.platform.engine.EngineDiscoveryRequest)">org.junit.platform.testkit.engine.EngineTestKit.execute<wbr>(String, EngineDiscoveryRequest)</a></div>
+<div class="col-last odd-row-color">
 <div class="block">Please use <a href="org.junit.platform.testkit/org/junit/platform/testkit/engine/EngineTestKit.html#execute(java.lang.String,org.junit.platform.launcher.LauncherDiscoveryRequest)"><code>EngineTestKit.execute(String, LauncherDiscoveryRequest)</code></a>
  instead.</div>
 </div>
-<div class="col-summary-item-name odd-row-color"><a href="org.junit.platform.testkit/org/junit/platform/testkit/engine/EngineTestKit.html#execute(org.junit.platform.engine.TestEngine,org.junit.platform.engine.EngineDiscoveryRequest)">org.junit.platform.testkit.engine.EngineTestKit.execute<wbr>(TestEngine, EngineDiscoveryRequest)</a></div>
-<div class="col-last odd-row-color">
+<div class="col-summary-item-name even-row-color"><a href="org.junit.platform.testkit/org/junit/platform/testkit/engine/EngineTestKit.html#execute(org.junit.platform.engine.TestEngine,org.junit.platform.engine.EngineDiscoveryRequest)">org.junit.platform.testkit.engine.EngineTestKit.execute<wbr>(TestEngine, EngineDiscoveryRequest)</a></div>
+<div class="col-last even-row-color">
 <div class="block">Please use <a href="org.junit.platform.testkit/org/junit/platform/testkit/engine/EngineTestKit.html#execute(org.junit.platform.engine.TestEngine,org.junit.platform.launcher.LauncherDiscoveryRequest)"><code>EngineTestKit.execute(TestEngine, LauncherDiscoveryRequest)</code></a>
  instead.</div>
 </div>

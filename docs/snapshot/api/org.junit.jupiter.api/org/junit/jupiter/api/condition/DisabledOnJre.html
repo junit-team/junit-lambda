@@ -43,7 +43,7 @@ loadScripts(document, 'script');</script>
 <p>Summary:</p>
 <ul>
 <li>Field</li>
-<li><a href="#annotation-interface-required-element-summary">Required</a></li>
+<li>Required</li>
 <li><a href="#annotation-interface-optional-element-summary">Optional</a></li>
 </ul>
 </li>
@@ -61,7 +61,7 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li><a href="#annotation-interface-required-element-summary">Required</a>&nbsp;|&nbsp;</li>
+<li>Required&nbsp;|&nbsp;</li>
 <li><a href="#annotation-interface-optional-element-summary">Optional</a></li>
 </ul>
 <ul class="sub-nav-list">
@@ -97,7 +97,10 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public @interface </span><span class="element-name type-name-label">DisabledOnJre</span></div>
 <div class="block"><code>@DisabledOnJre</code> is used to signal that the annotated test class or
  test method is <em>disabled</em> on one or more specified Java Runtime
- Environment (JRE) <a href="#value()">versions</a>.
+ Environment (JRE) versions.
+
+ <p>Versions can be specified as <a href="JRE.html" title="enum class in org.junit.jupiter.api.condition"><code>JRE</code></a> enum constants via <a href="#value()"><code>value()</code></a>
+ or as integers via <a href="#versions()"><code>versions()</code></a>.
 
  <p>When applied at the class level, all test methods within that class
  will be disabled on the same specified JRE versions.
@@ -155,24 +158,6 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="summary">
 <ul class="summary-list">
-<!-- =========== ANNOTATION INTERFACE REQUIRED MEMBER SUMMARY =========== -->
-<li>
-<section class="member-summary" id="annotation-interface-required-element-summary">
-<h2>Required Element Summary</h2>
-<div class="caption"><span>Required Elements</span></div>
-<div class="summary-table three-column-summary">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Required Element</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="JRE.html" title="enum class in org.junit.jupiter.api.condition">JRE</a>[]</code></div>
-<div class="col-second even-row-color"><code><a href="#value()" class="member-name-link">value</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Java Runtime Environment versions on which the annotated class or
- method should be disabled.</div>
-</div>
-</div>
-</section>
-</li>
 <!-- =========== ANNOTATION INTERFACE OPTIONAL MEMBER SUMMARY =========== -->
 <li>
 <section class="member-summary" id="annotation-interface-optional-element-summary">
@@ -186,6 +171,18 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color"><code><a href="#disabledReason()" class="member-name-link">disabledReason</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Custom reason to provide if the test or container is disabled.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="JRE.html" title="enum class in org.junit.jupiter.api.condition">JRE</a>[]</code></div>
+<div class="col-second odd-row-color"><code><a href="#value()" class="member-name-link">value</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Java Runtime Environment versions on which the annotated class or method
+ should be disabled, specified as <a href="JRE.html" title="enum class in org.junit.jupiter.api.condition"><code>JRE</code></a> enum constants.</div>
+</div>
+<div class="col-first even-row-color"><code>int[]</code></div>
+<div class="col-second even-row-color"><code><a href="#versions()" class="member-name-link">versions</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Java Runtime Environment versions on which the annotated class or method
+ should be disabled, specified as integers.</div>
 </div>
 </div>
 </section>
@@ -203,15 +200,52 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="value()">
 <h3>value</h3>
 <div class="member-signature"><span class="return-type"><a href="JRE.html" title="enum class in org.junit.jupiter.api.condition">JRE</a>[]</span>&nbsp;<span class="element-name">value</span></div>
-<div class="block">Java Runtime Environment versions on which the annotated class or
- method should be disabled.</div>
+<div class="block">Java Runtime Environment versions on which the annotated class or method
+ should be disabled, specified as <a href="JRE.html" title="enum class in org.junit.jupiter.api.condition"><code>JRE</code></a> enum constants.
+
+ <p>If a <code>JRE</code> enum constant does not exist for a particular JRE
+ version, you can specify the version via <a href="#versions()"><code>versions()</code></a> instead.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
 <ul class="tag-list">
 <li><a href="JRE.html" title="enum class in org.junit.jupiter.api.condition"><code>JRE</code></a></li>
+<li><a href="#versions()"><code>versions()</code></a></li>
 </ul>
 </dd>
+</dl>
+<dl class="notes">
+<dt>Default:</dt>
+<dd><code>{}</code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="versions()">
+<h3>versions</h3>
+<div class="member-signature"><span class="annotations"><a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html" title="class or interface in org.apiguardian.api" class="external-link">@API</a>(<a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html#status()" title="class or interface in org.apiguardian.api" class="external-link">status</a>=<a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.Status.html#EXPERIMENTAL" title="class or interface in org.apiguardian.api" class="external-link">EXPERIMENTAL</a>,
+     <a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html#since()" title="class or interface in org.apiguardian.api" class="external-link">since</a>="5.12")
+</span><span class="return-type">int[]</span>&nbsp;<span class="element-name">versions</span></div>
+<div class="block">Java Runtime Environment versions on which the annotated class or method
+ should be disabled, specified as integers.
+
+ <p>If a <code>JRE</code> enum constant exists for a particular JRE version, you
+ can specify the version via <a href="#value()"><code>value()</code></a> instead.</div>
+<dl class="notes">
+<dt>Since:</dt>
+<dd>5.12</dd>
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="#value()"><code>value()</code></a></li>
+<li><a href="JRE.html#version()"><code>JRE.version()</code></a></li>
+<li><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Runtime.Version.html#feature()" title="class or interface in java.lang" class="external-link"><code>Runtime.Version.feature()</code></a></li>
+</ul>
+</dd>
+</dl>
+<dl class="notes">
+<dt>Default:</dt>
+<dd><code>{}</code></dd>
 </dl>
 </section>
 </li>

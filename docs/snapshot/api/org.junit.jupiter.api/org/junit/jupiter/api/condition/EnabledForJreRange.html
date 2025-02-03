@@ -97,7 +97,10 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public @interface </span><span class="element-name type-name-label">EnabledForJreRange</span></div>
 <div class="block"><code>@EnabledForJreRange</code> is used to signal that the annotated test class or
  test method is only <em>enabled</em> for a specific range of Java Runtime
- Environment (JRE) versions from <a href="#min()"><code>min()</code></a> to <a href="#max()"><code>max()</code></a>.
+ Environment (JRE) versions.
+
+ <p>Version ranges can be specified as <a href="JRE.html" title="enum class in org.junit.jupiter.api.condition"><code>JRE</code></a> enum constants via <a href="#min()"><code>min()</code></a>
+ and <a href="#max()"><code>max()</code></a> or as integers via <a href="#minVersion()"><code>minVersion()</code></a> and <a href="#maxVersion()"><code>maxVersion()</code></a>.
 
  <p>When applied at the class level, all test methods within that class will
  be enabled on the same specified JRE versions.
@@ -172,16 +175,30 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code><a href="JRE.html" title="enum class in org.junit.jupiter.api.condition">JRE</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#max()" class="member-name-link">max</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Java Runtime Environment version which should be used as the upper boundary
- for the version range that determines if the annotated class or method
- should be enabled.</div>
+<div class="block">Java Runtime Environment version which is used as the upper boundary for
+ the version range that determines if the annotated class or method should
+ be enabled, specified as a <a href="JRE.html" title="enum class in org.junit.jupiter.api.condition"><code>JRE</code></a> enum constant.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="JRE.html" title="enum class in org.junit.jupiter.api.condition">JRE</a></code></div>
-<div class="col-second even-row-color"><code><a href="#min()" class="member-name-link">min</a></code></div>
+<div class="col-first even-row-color"><code>int</code></div>
+<div class="col-second even-row-color"><code><a href="#maxVersion()" class="member-name-link">maxVersion</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Java Runtime Environment version which should be used as the lower boundary
- for the version range that determines if the annotated class or method
- should be enabled.</div>
+<div class="block">Java Runtime Environment version which is used as the upper boundary for
+ the version range that determines if the annotated class or method should
+ be enabled, specified as an integer.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="JRE.html" title="enum class in org.junit.jupiter.api.condition">JRE</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#min()" class="member-name-link">min</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Java Runtime Environment version which is used as the lower boundary for
+ the version range that determines if the annotated class or method should
+ be enabled, specified as a <a href="JRE.html" title="enum class in org.junit.jupiter.api.condition"><code>JRE</code></a> enum constant.</div>
+</div>
+<div class="col-first even-row-color"><code>int</code></div>
+<div class="col-second even-row-color"><code><a href="#minVersion()" class="member-name-link">minVersion</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Java Runtime Environment version which is used as the lower boundary for
+ the version range that determines if the annotated class or method should
+ be enabled, specified as an integer.</div>
 </div>
 </div>
 </section>
@@ -199,23 +216,28 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="min()">
 <h3>min</h3>
 <div class="member-signature"><span class="return-type"><a href="JRE.html" title="enum class in org.junit.jupiter.api.condition">JRE</a></span>&nbsp;<span class="element-name">min</span></div>
-<div class="block">Java Runtime Environment version which should be used as the lower boundary
- for the version range that determines if the annotated class or method
- should be enabled.
+<div class="block">Java Runtime Environment version which is used as the lower boundary for
+ the version range that determines if the annotated class or method should
+ be enabled, specified as a <a href="JRE.html" title="enum class in org.junit.jupiter.api.condition"><code>JRE</code></a> enum constant.
 
- <p>Defaults to <a href="JRE.html#JAVA_8"><code>JAVA_8</code></a>, as this is the lowest
- supported JRE version.</div>
+ <p>If a <code>JRE</code> enum constant does not exist for a particular JRE
+ version, you can specify the minimum version via <a href="#minVersion()"><code>minVersion()</code></a>
+ instead.
+
+ <p>Defaults to <a href="JRE.html#UNDEFINED"><code>UNDEFINED</code></a>, which will be interpreted
+ as <a href="JRE.html#JAVA_8"><code>JAVA_8</code></a> if the <a href="#minVersion()"><code>minVersion()</code></a> is not set.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
 <ul class="tag-list">
 <li><a href="JRE.html" title="enum class in org.junit.jupiter.api.condition"><code>JRE</code></a></li>
+<li><a href="#minVersion()"><code>minVersion()</code></a></li>
 </ul>
 </dd>
 </dl>
 <dl class="notes">
 <dt>Default:</dt>
-<dd><code>JAVA_8</code></dd>
+<dd><code>UNDEFINED</code></dd>
 </dl>
 </section>
 </li>
@@ -223,23 +245,92 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="max()">
 <h3>max</h3>
 <div class="member-signature"><span class="return-type"><a href="JRE.html" title="enum class in org.junit.jupiter.api.condition">JRE</a></span>&nbsp;<span class="element-name">max</span></div>
-<div class="block">Java Runtime Environment version which should be used as the upper boundary
- for the version range that determines if the annotated class or method
- should be enabled.
+<div class="block">Java Runtime Environment version which is used as the upper boundary for
+ the version range that determines if the annotated class or method should
+ be enabled, specified as a <a href="JRE.html" title="enum class in org.junit.jupiter.api.condition"><code>JRE</code></a> enum constant.
 
- <p>Defaults to <a href="JRE.html#OTHER"><code>OTHER</code></a>, as this will always be the highest
- possible version.</div>
+ <p>If a <code>JRE</code> enum constant does not exist for a particular JRE
+ version, you can specify the maximum version via <a href="#maxVersion()"><code>maxVersion()</code></a>
+ instead.
+
+ <p>Defaults to <a href="JRE.html#UNDEFINED"><code>UNDEFINED</code></a>, which will be interpreted
+ as <a href="JRE.html#OTHER"><code>OTHER</code></a> if the <a href="#maxVersion()"><code>maxVersion()</code></a> is not set.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
 <ul class="tag-list">
 <li><a href="JRE.html" title="enum class in org.junit.jupiter.api.condition"><code>JRE</code></a></li>
+<li><a href="#maxVersion()"><code>maxVersion()</code></a></li>
 </ul>
 </dd>
 </dl>
 <dl class="notes">
 <dt>Default:</dt>
-<dd><code>OTHER</code></dd>
+<dd><code>UNDEFINED</code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="minVersion()">
+<h3>minVersion</h3>
+<div class="member-signature"><span class="annotations"><a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html" title="class or interface in org.apiguardian.api" class="external-link">@API</a>(<a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html#status()" title="class or interface in org.apiguardian.api" class="external-link">status</a>=<a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.Status.html#EXPERIMENTAL" title="class or interface in org.apiguardian.api" class="external-link">EXPERIMENTAL</a>,
+     <a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html#since()" title="class or interface in org.apiguardian.api" class="external-link">since</a>="5.12")
+</span><span class="return-type">int</span>&nbsp;<span class="element-name">minVersion</span></div>
+<div class="block">Java Runtime Environment version which is used as the lower boundary for
+ the version range that determines if the annotated class or method should
+ be enabled, specified as an integer.
+
+ <p>If a <code>JRE</code> enum constant exists for the particular JRE version,
+ you can specify the minimum version via <a href="#min()"><code>min()</code></a> instead.
+
+ <p>Defaults to <code>-1</code> to signal that <a href="#min()"><code>min()</code></a> should be used instead.</div>
+<dl class="notes">
+<dt>Since:</dt>
+<dd>5.12</dd>
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="#min()"><code>min()</code></a></li>
+<li><a href="JRE.html#version()"><code>JRE.version()</code></a></li>
+<li><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Runtime.Version.html#feature()" title="class or interface in java.lang" class="external-link"><code>Runtime.Version.feature()</code></a></li>
+</ul>
+</dd>
+</dl>
+<dl class="notes">
+<dt>Default:</dt>
+<dd><code>-1</code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="maxVersion()">
+<h3>maxVersion</h3>
+<div class="member-signature"><span class="annotations"><a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html" title="class or interface in org.apiguardian.api" class="external-link">@API</a>(<a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html#status()" title="class or interface in org.apiguardian.api" class="external-link">status</a>=<a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.Status.html#EXPERIMENTAL" title="class or interface in org.apiguardian.api" class="external-link">EXPERIMENTAL</a>,
+     <a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html#since()" title="class or interface in org.apiguardian.api" class="external-link">since</a>="5.12")
+</span><span class="return-type">int</span>&nbsp;<span class="element-name">maxVersion</span></div>
+<div class="block">Java Runtime Environment version which is used as the upper boundary for
+ the version range that determines if the annotated class or method should
+ be enabled, specified as an integer.
+
+ <p>If a <code>JRE</code> enum constant exists for the particular JRE version,
+ you can specify the maximum version via <a href="#max()"><code>max()</code></a> instead.
+
+ <p>Defaults to <code>-1</code> to signal that <a href="#max()"><code>max()</code></a> should be used instead.</div>
+<dl class="notes">
+<dt>Since:</dt>
+<dd>5.12</dd>
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="#max()"><code>max()</code></a></li>
+<li><a href="JRE.html#version()"><code>JRE.version()</code></a></li>
+<li><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Runtime.Version.html#feature()" title="class or interface in java.lang" class="external-link"><code>Runtime.Version.feature()</code></a></li>
+</ul>
+</dd>
+</dl>
+<dl class="notes">
+<dt>Default:</dt>
+<dd><code>-1</code></dd>
 </dl>
 </section>
 </li>

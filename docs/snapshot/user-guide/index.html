@@ -2700,36 +2700,39 @@ annotations.</p>
 <div class="sect3">
 <h4 id="writing-tests-conditional-execution-jre"><a class="anchor" href="#writing-tests-conditional-execution-jre"></a>2.9.2. Java Runtime Environment Conditions</h4>
 <div class="paragraph">
-<p>A container or test may be enabled or disabled on particular versions of the Java
-Runtime Environment (JRE) via the <code><a href="../api/org.junit.jupiter.api/org/junit/jupiter/api/condition/EnabledOnJre.html">@EnabledOnJre</a></code> and <code><a href="../api/org.junit.jupiter.api/org/junit/jupiter/api/condition/DisabledOnJre.html">@DisabledOnJre</a></code> annotations
-or on a particular range of versions of the JRE via the <code><a href="../api/org.junit.jupiter.api/org/junit/jupiter/api/condition/EnabledForJreRange.html">@EnabledForJreRange</a></code> and
-<code><a href="../api/org.junit.jupiter.api/org/junit/jupiter/api/condition/DisabledForJreRange.html">@DisabledForJreRange</a></code> annotations. The range defaults to <code><a href="../api/org.junit.jupiter.api/org/junit/jupiter/api/condition/JRE.html">JRE</a>.JAVA_8</code> as the lower
-border (<code>min</code>) and <code><a href="../api/org.junit.jupiter.api/org/junit/jupiter/api/condition/JRE.html">JRE</a>.OTHER</code> as the higher border (<code>max</code>), which allows usage of
-half open ranges.</p>
+<p>A container or test may be enabled or disabled on particular versions of the Java Runtime
+Environment (JRE) via the <code><a href="../api/org.junit.jupiter.api/org/junit/jupiter/api/condition/EnabledOnJre.html">@EnabledOnJre</a></code> and <code><a href="../api/org.junit.jupiter.api/org/junit/jupiter/api/condition/DisabledOnJre.html">@DisabledOnJre</a></code> annotations or on a
+particular range of versions of the JRE via the <code><a href="../api/org.junit.jupiter.api/org/junit/jupiter/api/condition/EnabledForJreRange.html">@EnabledForJreRange</a></code> and
+<code><a href="../api/org.junit.jupiter.api/org/junit/jupiter/api/condition/DisabledForJreRange.html">@DisabledForJreRange</a></code> annotations. The range effectively defaults to <code>JRE.JAVA_8</code> as the
+lower bound and <code>JRE.OTHER</code> as the upper bound, which allows usage of half open ranges.</p>
+</div>
+<div class="paragraph">
+<p>The following listing demonstrates the use of these annotations with predefined <a href="../api/org.junit.jupiter.api/org/junit/jupiter/api/condition/JRE.html">JRE</a> enum
+constants.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="java"><span class="nd">@Test</span>
-<span class="nd">@EnabledOnJre</span><span class="o">(</span><span class="no">JAVA_8</span><span class="o">)</span>
-<span class="kt">void</span> <span class="nf">onlyOnJava8</span><span class="o">()</span> <span class="o">{</span>
+<span class="nd">@EnabledOnJre</span><span class="o">(</span><span class="no">JAVA_17</span><span class="o">)</span>
+<span class="kt">void</span> <span class="nf">onlyOnJava17</span><span class="o">()</span> <span class="o">{</span>
     <span class="c1">// ...</span>
 <span class="o">}</span>
 
 <span class="nd">@Test</span>
-<span class="nd">@EnabledOnJre</span><span class="o">({</span> <span class="no">JAVA_9</span><span class="o">,</span> <span class="no">JAVA_10</span> <span class="o">})</span>
-<span class="kt">void</span> <span class="nf">onJava9Or10</span><span class="o">()</span> <span class="o">{</span>
+<span class="nd">@EnabledOnJre</span><span class="o">({</span> <span class="no">JAVA_17</span><span class="o">,</span> <span class="no">JAVA_21</span> <span class="o">})</span>
+<span class="kt">void</span> <span class="nf">onJava17And21</span><span class="o">()</span> <span class="o">{</span>
     <span class="c1">// ...</span>
 <span class="o">}</span>
 
 <span class="nd">@Test</span>
 <span class="nd">@EnabledForJreRange</span><span class="o">(</span><span class="n">min</span> <span class="o">=</span> <span class="no">JAVA_9</span><span class="o">,</span> <span class="n">max</span> <span class="o">=</span> <span class="no">JAVA_11</span><span class="o">)</span>
-<span class="kt">void</span> <span class="nf">fromJava9to11</span><span class="o">()</span> <span class="o">{</span>
+<span class="kt">void</span> <span class="nf">fromJava9To11</span><span class="o">()</span> <span class="o">{</span>
     <span class="c1">// ...</span>
 <span class="o">}</span>
 
 <span class="nd">@Test</span>
 <span class="nd">@EnabledForJreRange</span><span class="o">(</span><span class="n">min</span> <span class="o">=</span> <span class="no">JAVA_9</span><span class="o">)</span>
-<span class="kt">void</span> <span class="nf">fromJava9toCurrentJavaFeatureNumber</span><span class="o">()</span> <span class="o">{</span>
+<span class="kt">void</span> <span class="nf">onJava9AndHigher</span><span class="o">()</span> <span class="o">{</span>
     <span class="c1">// ...</span>
 <span class="o">}</span>
 
@@ -2747,19 +2750,83 @@ half open ranges.</p>
 
 <span class="nd">@Test</span>
 <span class="nd">@DisabledForJreRange</span><span class="o">(</span><span class="n">min</span> <span class="o">=</span> <span class="no">JAVA_9</span><span class="o">,</span> <span class="n">max</span> <span class="o">=</span> <span class="no">JAVA_11</span><span class="o">)</span>
-<span class="kt">void</span> <span class="nf">notFromJava9to11</span><span class="o">()</span> <span class="o">{</span>
+<span class="kt">void</span> <span class="nf">notFromJava9To11</span><span class="o">()</span> <span class="o">{</span>
     <span class="c1">// ...</span>
 <span class="o">}</span>
 
 <span class="nd">@Test</span>
 <span class="nd">@DisabledForJreRange</span><span class="o">(</span><span class="n">min</span> <span class="o">=</span> <span class="no">JAVA_9</span><span class="o">)</span>
-<span class="kt">void</span> <span class="nf">notFromJava9toCurrentJavaFeatureNumber</span><span class="o">()</span> <span class="o">{</span>
+<span class="kt">void</span> <span class="nf">notOnJava9AndHigher</span><span class="o">()</span> <span class="o">{</span>
     <span class="c1">// ...</span>
 <span class="o">}</span>
 
 <span class="nd">@Test</span>
 <span class="nd">@DisabledForJreRange</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="no">JAVA_11</span><span class="o">)</span>
-<span class="kt">void</span> <span class="nf">notFromJava8to11</span><span class="o">()</span> <span class="o">{</span>
+<span class="kt">void</span> <span class="nf">notFromJava8To11</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">// ...</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Since the enum constants defined in <a href="../api/org.junit.jupiter.api/org/junit/jupiter/api/condition/JRE.html">JRE</a> are static for any given JUnit release, you
+might find that you need to configure a Java version that is not supported by the <code>JRE</code>
+enum. For example, as of JUnit Jupiter 5.12 the <code>JRE</code> enum defines <code>JAVA_25</code> as the
+highest supported Java version. However, you may wish to run your tests against later
+versions of Java. To support such use cases, you can specify arbitrary Java versions via
+the <code>versions</code> attributes in <code>@EnabledOnJre</code> and <code>@DisabledOnJre</code> and via the <code>minVersion</code>
+and <code>maxVersion</code> attributes in <code>@EnabledForJreRange</code> and <code>@DisabledForJreRange</code>.</p>
+</div>
+<div class="paragraph">
+<p>The following listing demonstrates the use of these annotations with arbitrary Java
+versions.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nd">@Test</span>
+<span class="nd">@EnabledOnJre</span><span class="o">(</span><span class="n">versions</span> <span class="o">=</span> <span class="mi">26</span><span class="o">)</span>
+<span class="kt">void</span> <span class="nf">onlyOnJava26</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">// ...</span>
+<span class="o">}</span>
+
+<span class="nd">@Test</span>
+<span class="nd">@EnabledOnJre</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="no">JAVA_25</span><span class="o">,</span> <span class="n">versions</span> <span class="o">=</span> <span class="mi">26</span><span class="o">)</span>
+<span class="kt">void</span> <span class="nf">onJava25And26</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">// ...</span>
+<span class="o">}</span>
+
+<span class="nd">@Test</span>
+<span class="nd">@EnabledForJreRange</span><span class="o">(</span><span class="n">minVersion</span> <span class="o">=</span> <span class="mi">26</span><span class="o">)</span>
+<span class="kt">void</span> <span class="nf">onJava26AndHigher</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">// ...</span>
+<span class="o">}</span>
+
+<span class="nd">@Test</span>
+<span class="nd">@EnabledForJreRange</span><span class="o">(</span><span class="n">min</span> <span class="o">=</span> <span class="no">JAVA_25</span><span class="o">,</span> <span class="n">maxVersion</span> <span class="o">=</span> <span class="mi">27</span><span class="o">)</span>
+<span class="kt">void</span> <span class="nf">fromJava25To27</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">// ...</span>
+<span class="o">}</span>
+
+<span class="nd">@Test</span>
+<span class="nd">@DisabledOnJre</span><span class="o">(</span><span class="n">versions</span> <span class="o">=</span> <span class="mi">26</span><span class="o">)</span>
+<span class="kt">void</span> <span class="nf">notOnJava26</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">// ...</span>
+<span class="o">}</span>
+
+<span class="nd">@Test</span>
+<span class="nd">@DisabledOnJre</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="no">JAVA_25</span><span class="o">,</span> <span class="n">versions</span> <span class="o">=</span> <span class="mi">26</span><span class="o">)</span>
+<span class="kt">void</span> <span class="nf">notOnJava25And26</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">// ...</span>
+<span class="o">}</span>
+
+<span class="nd">@Test</span>
+<span class="nd">@DisabledForJreRange</span><span class="o">(</span><span class="n">minVersion</span> <span class="o">=</span> <span class="mi">26</span><span class="o">)</span>
+<span class="kt">void</span> <span class="nf">notOnJava26AndHigher</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">// ...</span>
+<span class="o">}</span>
+
+<span class="nd">@Test</span>
+<span class="nd">@DisabledForJreRange</span><span class="o">(</span><span class="n">min</span> <span class="o">=</span> <span class="no">JAVA_25</span><span class="o">,</span> <span class="n">maxVersion</span> <span class="o">=</span> <span class="mi">27</span><span class="o">)</span>
+<span class="kt">void</span> <span class="nf">notFromJava25To27</span><span class="o">()</span> <span class="o">{</span>
     <span class="c1">// ...</span>
 <span class="o">}</span></code></pre>
 </div>
@@ -14416,6 +14483,51 @@ value of lower stability.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>5.12</code></p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.junit.jupiter.api.condition</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>DisabledForJreRange.maxVersion()</code> <em>(annotation attribute)</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>5.12</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.junit.jupiter.api.condition</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>DisabledForJreRange.minVersion()</code> <em>(annotation attribute)</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>5.12</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.junit.jupiter.api.condition</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>DisabledOnJre.versions()</code> <em>(annotation attribute)</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>5.12</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.junit.jupiter.api.condition</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EnabledForJreRange.maxVersion()</code> <em>(annotation attribute)</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>5.12</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.junit.jupiter.api.condition</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EnabledForJreRange.minVersion()</code> <em>(annotation attribute)</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>5.12</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.junit.jupiter.api.condition</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EnabledOnJre.versions()</code> <em>(annotation attribute)</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>5.12</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.junit.jupiter.api.condition</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>JRE.currentVersionNumber()</code> <em>(method)</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>5.12</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.junit.jupiter.api.condition</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>JRE.isCurrentVersion(int)</code> <em>(method)</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>5.12</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.junit.jupiter.api.condition</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>JRE.version()</code> <em>(method)</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>5.12</code></p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.junit.jupiter.api.extension</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>AnnotatedElementContext</code> <em>(interface)</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>5.10</code></p></td>
@@ -15233,6 +15345,11 @@ since such APIs will likely be removed in an upcoming release.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.junit.jupiter.api</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>MethodOrderer$Alphanumeric</code> <em>(class)</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>5.7</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.junit.jupiter.api.condition</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>JRE.currentVersion()</code> <em>(method)</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>5.12</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.junit.jupiter.api.extension</code></p></td>
