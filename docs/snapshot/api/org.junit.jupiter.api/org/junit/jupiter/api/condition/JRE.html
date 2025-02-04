@@ -107,10 +107,12 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="JRE.html" title="enum class in org.junit.jupiter.api.condition">JRE</a>&gt;</span></div>
 <div class="block">Enumeration of Java Runtime Environment (JRE) versions.
 
- <p>If the current JRE version cannot be detected &mdash; for example, if the
- <code>java.version</code> JVM system property is undefined &mdash; then none of
- the constants defined in this enum will be considered to be the
- <a href="#isCurrentVersion()">current JRE version</a>.</div>
+ <p>If the current JRE version can be detected but is not one of the predefined
+ constants in this enum, <a href="#OTHER"><code>OTHER</code></a> will be considered to be the
+ <a href="#isCurrentVersion()">current JRE version</a>. If the current JRE version
+ cannot be detected &mdash; for example, if the <code>java.version</code> JVM system
+ property is undefined &mdash; <a href="#UNDEFINED"><code>UNDEFINED</code></a> will be considered to be the
+ current JRE version.</div>
 <dl class="notes">
 <dt>Since:</dt>
 <dd>5.1</dd>
@@ -559,7 +561,8 @@ the order they are declared.</div>
  or <a href="#JAVA_25"><code>JAVA_25</code></a>.
 
  <p>This constant returns <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html#MAX_VALUE" title="class or interface in java.lang" class="external-link"><code>Integer.MAX_VALUE</code></a> for its
- <a href="#version()">version</a>.</div>
+ <a href="#version()">version</a>. To retrieve the actual version number,
+ use <a href="#currentVersionNumber()"><code>currentVersionNumber()</code></a>.</div>
 </section>
 </li>
 </ul>

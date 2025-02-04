@@ -99,8 +99,9 @@ loadScripts(document, 'script');</script>
  test method is only <em>enabled</em> for a specific range of Java Runtime
  Environment (JRE) versions.
 
- <p>Version ranges can be specified as <a href="JRE.html" title="enum class in org.junit.jupiter.api.condition"><code>JRE</code></a> enum constants via <a href="#min()"><code>min()</code></a>
- and <a href="#max()"><code>max()</code></a> or as integers via <a href="#minVersion()"><code>minVersion()</code></a> and <a href="#maxVersion()"><code>maxVersion()</code></a>.
+ <p>Version ranges can be specified as <a href="JRE.html" title="enum class in org.junit.jupiter.api.condition"><code>JRE</code></a> enum constants via
+ <a href="#min()"><code>min</code></a> and <a href="#max()"><code>max</code></a> or as integers via
+ <a href="#minVersion()"><code>minVersion</code></a> and <a href="#maxVersion()"><code>maxVersion</code></a>.
 
  <p>When applied at the class level, all test methods within that class will
  be enabled on the same specified JRE versions.
@@ -221,11 +222,12 @@ loadScripts(document, 'script');</script>
  be enabled, specified as a <a href="JRE.html" title="enum class in org.junit.jupiter.api.condition"><code>JRE</code></a> enum constant.
 
  <p>If a <code>JRE</code> enum constant does not exist for a particular JRE
- version, you can specify the minimum version via <a href="#minVersion()"><code>minVersion()</code></a>
- instead.
+ version, you can specify the minimum version via
+ <a href="#minVersion()"><code>minVersion</code></a> instead.
 
  <p>Defaults to <a href="JRE.html#UNDEFINED"><code>UNDEFINED</code></a>, which will be interpreted
- as <a href="JRE.html#JAVA_8"><code>JAVA_8</code></a> if the <a href="#minVersion()"><code>minVersion()</code></a> is not set.</div>
+ as <a href="JRE.html#JAVA_8"><code>JAVA_8</code></a> if the <a href="#minVersion()"><code>minVersion</code></a> is
+ not set.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -250,11 +252,12 @@ loadScripts(document, 'script');</script>
  be enabled, specified as a <a href="JRE.html" title="enum class in org.junit.jupiter.api.condition"><code>JRE</code></a> enum constant.
 
  <p>If a <code>JRE</code> enum constant does not exist for a particular JRE
- version, you can specify the maximum version via <a href="#maxVersion()"><code>maxVersion()</code></a>
- instead.
+ version, you can specify the maximum version via
+ <a href="#maxVersion()"><code>maxVersion</code></a> instead.
 
  <p>Defaults to <a href="JRE.html#UNDEFINED"><code>UNDEFINED</code></a>, which will be interpreted
- as <a href="JRE.html#OTHER"><code>OTHER</code></a> if the <a href="#maxVersion()"><code>maxVersion()</code></a> is not set.</div>
+ as <a href="JRE.html#OTHER"><code>OTHER</code></a> if the <a href="#maxVersion()"><code>maxVersion</code></a> is not
+ set.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -281,9 +284,10 @@ loadScripts(document, 'script');</script>
  be enabled, specified as an integer.
 
  <p>If a <code>JRE</code> enum constant exists for the particular JRE version,
- you can specify the minimum version via <a href="#min()"><code>min()</code></a> instead.
+ you can specify the minimum version via <a href="#min()"><code>min</code></a> instead.
 
- <p>Defaults to <code>-1</code> to signal that <a href="#min()"><code>min()</code></a> should be used instead.</div>
+ <p>Defaults to <code>-1</code> to signal that <a href="#min()"><code>min</code></a> should be used
+ instead.</div>
 <dl class="notes">
 <dt>Since:</dt>
 <dd>5.12</dd>
@@ -313,9 +317,10 @@ loadScripts(document, 'script');</script>
  be enabled, specified as an integer.
 
  <p>If a <code>JRE</code> enum constant exists for the particular JRE version,
- you can specify the maximum version via <a href="#max()"><code>max()</code></a> instead.
+ you can specify the maximum version via <a href="#max()"><code>max</code></a> instead.
 
- <p>Defaults to <code>-1</code> to signal that <a href="#max()"><code>max()</code></a> should be used instead.</div>
+ <p>Defaults to <code>-1</code> to signal that <a href="#max()"><code>max</code></a> should be used
+ instead.</div>
 <dl class="notes">
 <dt>Since:</dt>
 <dd>5.12</dd>

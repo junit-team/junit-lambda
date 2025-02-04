@@ -2789,7 +2789,9 @@ versions.</p>
 <span class="o">}</span>
 
 <span class="nd">@Test</span>
-<span class="nd">@EnabledOnJre</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="no">JAVA_25</span><span class="o">,</span> <span class="n">versions</span> <span class="o">=</span> <span class="mi">26</span><span class="o">)</span>
+<span class="nd">@EnabledOnJre</span><span class="o">(</span><span class="n">versions</span> <span class="o">=</span> <span class="o">{</span> <span class="mi">25</span><span class="o">,</span> <span class="mi">26</span> <span class="o">})</span>
+<span class="c1">// Can also be expressed as follows.</span>
+<span class="c1">// @EnabledOnJre(value = JAVA_25, versions = 26)</span>
 <span class="kt">void</span> <span class="nf">onJava25And26</span><span class="o">()</span> <span class="o">{</span>
     <span class="c1">// ...</span>
 <span class="o">}</span>
@@ -2801,7 +2803,9 @@ versions.</p>
 <span class="o">}</span>
 
 <span class="nd">@Test</span>
-<span class="nd">@EnabledForJreRange</span><span class="o">(</span><span class="n">min</span> <span class="o">=</span> <span class="no">JAVA_25</span><span class="o">,</span> <span class="n">maxVersion</span> <span class="o">=</span> <span class="mi">27</span><span class="o">)</span>
+<span class="nd">@EnabledForJreRange</span><span class="o">(</span><span class="n">minVersion</span> <span class="o">=</span> <span class="mi">25</span><span class="o">,</span> <span class="n">maxVersion</span> <span class="o">=</span> <span class="mi">27</span><span class="o">)</span>
+<span class="c1">// Can also be expressed as follows.</span>
+<span class="c1">// @EnabledForJreRange(min = JAVA_25, maxVersion = 27)</span>
 <span class="kt">void</span> <span class="nf">fromJava25To27</span><span class="o">()</span> <span class="o">{</span>
     <span class="c1">// ...</span>
 <span class="o">}</span>
@@ -2813,7 +2817,9 @@ versions.</p>
 <span class="o">}</span>
 
 <span class="nd">@Test</span>
-<span class="nd">@DisabledOnJre</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="no">JAVA_25</span><span class="o">,</span> <span class="n">versions</span> <span class="o">=</span> <span class="mi">26</span><span class="o">)</span>
+<span class="nd">@DisabledOnJre</span><span class="o">(</span><span class="n">versions</span> <span class="o">=</span> <span class="o">{</span> <span class="mi">25</span><span class="o">,</span> <span class="mi">26</span> <span class="o">})</span>
+<span class="c1">// Can also be expressed as follows.</span>
+<span class="c1">// @DisabledOnJre(value = JAVA_25, versions = 26)</span>
 <span class="kt">void</span> <span class="nf">notOnJava25And26</span><span class="o">()</span> <span class="o">{</span>
     <span class="c1">// ...</span>
 <span class="o">}</span>
@@ -2825,7 +2831,9 @@ versions.</p>
 <span class="o">}</span>
 
 <span class="nd">@Test</span>
-<span class="nd">@DisabledForJreRange</span><span class="o">(</span><span class="n">min</span> <span class="o">=</span> <span class="no">JAVA_25</span><span class="o">,</span> <span class="n">maxVersion</span> <span class="o">=</span> <span class="mi">27</span><span class="o">)</span>
+<span class="nd">@DisabledForJreRange</span><span class="o">(</span><span class="n">minVersion</span> <span class="o">=</span> <span class="mi">25</span><span class="o">,</span> <span class="n">maxVersion</span> <span class="o">=</span> <span class="mi">27</span><span class="o">)</span>
+<span class="c1">// Can also be expressed as follows.</span>
+<span class="c1">// @DisabledForJreRange(min = JAVA_25, maxVersion = 27)</span>
 <span class="kt">void</span> <span class="nf">notFromJava25To27</span><span class="o">()</span> <span class="o">{</span>
     <span class="c1">// ...</span>
 <span class="o">}</span></code></pre>
