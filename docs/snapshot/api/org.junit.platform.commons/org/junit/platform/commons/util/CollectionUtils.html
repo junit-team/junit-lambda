@@ -248,8 +248,7 @@ loadScripts(document, 'script');</script>
  <pre class="code">
  public static &lt;T&gt; Collector&lt;T, ?, List&lt;T&gt;&gt; toUnmodifiableList(Supplier&lt;List&lt;T&gt;&gt; listSupplier) {
      return Collectors.collectingAndThen(Collectors.toCollection(listSupplier), Collections::unmodifiableList);
- }
- </pre></div>
+ }</pre></div>
 <dl class="notes">
 <dt>Type Parameters:</dt>
 <dd><code>T</code> - the type of the input elements</dd>

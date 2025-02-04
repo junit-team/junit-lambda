@@ -198,8 +198,7 @@ loadScripts(document, 'script');</script>
       class NestedTests {}
 
       static class StaticTests {}
-   }
- </pre>
+   }</pre>
 
  <p>If the context in which <code>TestInfo</code> is used is at the test level,
  the default display name is the name of the test method concatenated with
@@ -209,8 +208,7 @@ loadScripts(document, 'script');</script>
 
  <pre class="code">
    @Test
-   void testUser(TestInfo testInfo, @Mock User user) {}
- </pre>
+   void testUser(TestInfo testInfo, @Mock User user) {}</pre>
 
  <p>Note that display names are typically used for test reporting in IDEs
  and build tools and may contain spaces, special characters, and even emoji.</div>

@@ -5052,7 +5052,7 @@ record may optionally be used to supply CSV headers (see the Javadoc for the
 <div class="content">
 <pre class="rouge highlight"><code data-lang="java"><span class="nd">@ParameterizedTest</span>
 <span class="nd">@CsvSource</span><span class="o">({</span>
-    <span class="s">"apple,         1"</span><span class="o">,</span>
+    <span class="s">"apple,      1"</span><span class="o">,</span>
     <span class="s">"banana,        2"</span><span class="o">,</span>
     <span class="s">"'lemon, lime', 0xF1"</span><span class="o">,</span>
     <span class="s">"strawberry,    700_000"</span>
@@ -5882,10 +5882,11 @@ test method. In addition, type conversion is supported as discussed in
     <span class="s">"John, Doe, M, 1990-10-22"</span>
 <span class="o">})</span>
 <span class="kt">void</span> <span class="nf">testWithArgumentsAccessor</span><span class="o">(</span><span class="nc">ArgumentsAccessor</span> <span class="n">arguments</span><span class="o">)</span> <span class="o">{</span>
-    <span class="nc">Person</span> <span class="n">person</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Person</span><span class="o">(</span><span class="n">arguments</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="mi">0</span><span class="o">),</span>
-                               <span class="n">arguments</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="mi">1</span><span class="o">),</span>
-                               <span class="n">arguments</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="nc">Gender</span><span class="o">.</span><span class="na">class</span><span class="o">),</span>
-                               <span class="n">arguments</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="nc">LocalDate</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
+    <span class="nc">Person</span> <span class="n">person</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Person</span><span class="o">(</span>
+                                <span class="n">arguments</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="mi">0</span><span class="o">),</span>
+                                <span class="n">arguments</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="mi">1</span><span class="o">),</span>
+                                <span class="n">arguments</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="nc">Gender</span><span class="o">.</span><span class="na">class</span><span class="o">),</span>
+                                <span class="n">arguments</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="nc">LocalDate</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
 
     <span class="k">if</span> <span class="o">(</span><span class="n">person</span><span class="o">.</span><span class="na">getFirstName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">"Jane"</span><span class="o">))</span> <span class="o">{</span>
         <span class="n">assertEquals</span><span class="o">(</span><span class="nc">Gender</span><span class="o">.</span><span class="na">F</span><span class="o">,</span> <span class="n">person</span><span class="o">.</span><span class="na">getGender</span><span class="o">());</span>
@@ -5934,10 +5935,11 @@ class or as a <code>static</code> nested class.</p>
 <pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PersonAggregator</span> <span class="kd">implements</span> <span class="nc">ArgumentsAggregator</span> <span class="o">{</span>
     <span class="nd">@Override</span>
     <span class="kd">public</span> <span class="nc">Person</span> <span class="nf">aggregateArguments</span><span class="o">(</span><span class="nc">ArgumentsAccessor</span> <span class="n">arguments</span><span class="o">,</span> <span class="nc">ParameterContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="k">new</span> <span class="nf">Person</span><span class="o">(</span><span class="n">arguments</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="mi">0</span><span class="o">),</span>
-                          <span class="n">arguments</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="mi">1</span><span class="o">),</span>
-                          <span class="n">arguments</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="nc">Gender</span><span class="o">.</span><span class="na">class</span><span class="o">),</span>
-                          <span class="n">arguments</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="nc">LocalDate</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Person</span><span class="o">(</span>
+                            <span class="n">arguments</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="mi">0</span><span class="o">),</span>
+                            <span class="n">arguments</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="mi">1</span><span class="o">),</span>
+                            <span class="n">arguments</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="nc">Gender</span><span class="o">.</span><span class="na">class</span><span class="o">),</span>
+                            <span class="n">arguments</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="nc">LocalDate</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
     <span class="o">}</span>
 <span class="o">}</span></code></pre>
 </div>
