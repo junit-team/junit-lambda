@@ -244,25 +244,30 @@ loadScripts(document, 'script');</script>
 <div class="block">Determine if this descriptor may register dynamic tests during execution.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#prune()" class="member-name-link">prune</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#orderChildren(java.util.function.UnaryOperator)" class="member-name-link">orderChildren</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/UnaryOperator.html" title="class or interface in java.util.function" class="external-link">UnaryOperator</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="TestDescriptor.html" title="interface in org.junit.platform.engine">TestDescriptor</a>&gt;&gt;&nbsp;orderer)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Order the children from this descriptor.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#prune()" class="member-name-link">prune</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
 <div class="block">Remove this descriptor from the hierarchy unless it is a root or contains
  tests.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeChild(org.junit.platform.engine.TestDescriptor)" class="member-name-link">removeChild</a><wbr>(<a href="TestDescriptor.html" title="interface in org.junit.platform.engine">TestDescriptor</a>&nbsp;descriptor)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeChild(org.junit.platform.engine.TestDescriptor)" class="member-name-link">removeChild</a><wbr>(<a href="TestDescriptor.html" title="interface in org.junit.platform.engine">TestDescriptor</a>&nbsp;descriptor)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Remove a <em>child</em> from this descriptor.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeFromHierarchy()" class="member-name-link">removeFromHierarchy</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeFromHierarchy()" class="member-name-link">removeFromHierarchy</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Remove this non-root descriptor from its parent and remove all the
  children from this descriptor.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setParent(org.junit.platform.engine.TestDescriptor)" class="member-name-link">setParent</a><wbr>(<a href="TestDescriptor.html" title="interface in org.junit.platform.engine">TestDescriptor</a>&nbsp;parent)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setParent(org.junit.platform.engine.TestDescriptor)" class="member-name-link">setParent</a><wbr>(<a href="TestDescriptor.html" title="interface in org.junit.platform.engine">TestDescriptor</a>&nbsp;parent)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Set the <em>parent</em> of this descriptor.</div>
 </div>
 </div>
@@ -473,6 +478,26 @@ loadScripts(document, 'script');</script>
  <p>If this method is invoked on a <a href="#isRoot()">root</a> descriptor,
  this method must throw a <a href="../../../../../org.junit.platform.commons/org/junit/platform/commons/JUnitException.html" title="class in org.junit.platform.commons"><code>JUnitException</code></a> explaining that a root cannot be removed from the
  hierarchy.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="orderChildren(java.util.function.UnaryOperator)">
+<h3>orderChildren</h3>
+<div class="member-signature"><span class="annotations"><a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html" title="class or interface in org.apiguardian.api" class="external-link">@API</a>(<a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html#since()" title="class or interface in org.apiguardian.api" class="external-link">since</a>="5.12",
+     <a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.html#status()" title="class or interface in org.apiguardian.api" class="external-link">status</a>=<a href="https://apiguardian-team.github.io/apiguardian/docs/1.1.2/api/org/apiguardian/api/API.Status.html#EXPERIMENTAL" title="class or interface in org.apiguardian.api" class="external-link">EXPERIMENTAL</a>)
+</span><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">orderChildren</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/UnaryOperator.html" title="class or interface in java.util.function" class="external-link">UnaryOperator</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="TestDescriptor.html" title="interface in org.junit.platform.engine">TestDescriptor</a>&gt;&gt;&nbsp;orderer)</span></div>
+<div class="block">Order the children from this descriptor.
+
+ <p>The <code>orderer</code> is provided a modifiable list of child test
+ descriptors in this test descriptor; never <code>null</code>. The
+ <code>orderer</code> must return a list containing the same descriptors in any
+ order; potentially the same list, but never <code>null</code>. If descriptors
+ were added or removed, an exception is thrown.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>orderer</code> - a unary operator to order the children of this test
+ descriptor.</dd>
+</dl>
 </section>
 </li>
 <li>

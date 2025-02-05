@@ -232,24 +232,29 @@ implements <a href="../../TestDescriptor.html" title="interface in org.junit.pla
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeChild(org.junit.platform.engine.TestDescriptor)" class="member-name-link">removeChild</a><wbr>(<a href="../../TestDescriptor.html" title="interface in org.junit.platform.engine">TestDescriptor</a>&nbsp;child)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#orderChildren(java.util.function.UnaryOperator)" class="member-name-link">orderChildren</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/UnaryOperator.html" title="class or interface in java.util.function" class="external-link">UnaryOperator</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../TestDescriptor.html" title="interface in org.junit.platform.engine">TestDescriptor</a>&gt;&gt;&nbsp;orderer)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Remove a <em>child</em> from this descriptor.</div>
+<div class="block">Order the children from this descriptor.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeFromHierarchy()" class="member-name-link">removeFromHierarchy</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeChild(org.junit.platform.engine.TestDescriptor)" class="member-name-link">removeChild</a><wbr>(<a href="../../TestDescriptor.html" title="interface in org.junit.platform.engine">TestDescriptor</a>&nbsp;child)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Remove a <em>child</em> from this descriptor.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeFromHierarchy()" class="member-name-link">removeFromHierarchy</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove this non-root descriptor from its parent and remove all the
  children from this descriptor.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setParent(org.junit.platform.engine.TestDescriptor)" class="member-name-link">setParent</a><wbr>(<a href="../../TestDescriptor.html" title="interface in org.junit.platform.engine">TestDescriptor</a>&nbsp;parent)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setParent(org.junit.platform.engine.TestDescriptor)" class="member-name-link">setParent</a><wbr>(<a href="../../TestDescriptor.html" title="interface in org.junit.platform.engine">TestDescriptor</a>&nbsp;parent)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set the <em>parent</em> of this descriptor.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -522,6 +527,26 @@ implements <a href="../../TestDescriptor.html" title="interface in org.junit.pla
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../TestDescriptor.html#removeFromHierarchy()">removeFromHierarchy</a></code>&nbsp;in interface&nbsp;<code><a href="../../TestDescriptor.html" title="interface in org.junit.platform.engine">TestDescriptor</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="orderChildren(java.util.function.UnaryOperator)">
+<h3>orderChildren</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">orderChildren</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/UnaryOperator.html" title="class or interface in java.util.function" class="external-link">UnaryOperator</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../TestDescriptor.html" title="interface in org.junit.platform.engine">TestDescriptor</a>&gt;&gt;&nbsp;orderer)</span></div>
+<div class="block">Order the children from this descriptor.
+
+ <p>The <code>orderer</code> is provided a modifiable list of child test
+ descriptors in this test descriptor; never <code>null</code>. The
+ <code>orderer</code> must return a list containing the same descriptors in any
+ order; potentially the same list, but never <code>null</code>. If descriptors
+ were added or removed, an exception is thrown.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../TestDescriptor.html#orderChildren(java.util.function.UnaryOperator)">orderChildren</a></code>&nbsp;in interface&nbsp;<code><a href="../../TestDescriptor.html" title="interface in org.junit.platform.engine">TestDescriptor</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>orderer</code> - a unary operator to order the children of this test
+ descriptor.</dd>
 </dl>
 </section>
 </li>
