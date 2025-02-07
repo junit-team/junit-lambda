@@ -8428,8 +8428,7 @@ additional dependency to the runtime classpath.</p>
 <div class="sect3">
 <h4 id="running-tests-build-maven"><a class="anchor" href="#running-tests-build-maven"></a>4.2.2. Maven</h4>
 <div class="paragraph">
-<p>Starting with <a href="https://issues.apache.org/jira/browse/SUREFIRE-1330">version 2.22.0</a>, Maven
-Surefire and Maven Failsafe provide
+<p>Maven Surefire and Maven Failsafe provide
 <a href="https://maven.apache.org/surefire/maven-surefire-plugin/examples/junit-platform.html">native support</a>
 for executing tests on the JUnit Platform. The <code>pom.xml</code> file in the
 <code><a href="https://github.com/junit-team/junit5-samples/tree/HEAD/junit5-jupiter-starter-maven">junit5-jupiter-starter-maven</a></code> project demonstrates how to use the Maven Surefire plugin
@@ -8442,17 +8441,17 @@ and can serve as a starting point for configuring your Maven build.</p>
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-<div class="title">Use Maven Surefire/Failsafe 3.0.0-M4 or later to avoid interoperability issues</div>
+<div class="title">Use recent version of Maven Surefire/Failsafe to avoid interoperability issues</div>
 <div class="paragraph">
-<p>Maven Surefire/Failsafe 3.0.0-M4
-<a href="https://issues.apache.org/jira/browse/SUREFIRE-1585">introduced support</a> for aligning the
-version of the JUnit Platform Launcher it uses with the JUnit Platform version found on
-the test runtime classpath. Therefore, it is recommended to use version 3.0.0-M4 or later
-to avoid interoperability issues.</p>
+<p>To avoid interoperability issues, it is recommended to use a recent version of Maven
+Surefire/Failsafe (3.0.0 or later) because it automatically aligns the version of the
+JUnit Platform Launcher that is used with the JUnit Platform version found on the test
+runtime classpath.</p>
 </div>
 <div class="paragraph">
-<p>Alternatively, you can add a test dependency on the matching version of the JUnit Platform
-Launcher to your Maven build as follows.</p>
+<p>If you are using a version older than 3.0.0-M4, you can work around the missing alignment
+by adding a test dependency on the matching version of the JUnit Platform Launcher to your
+Maven build as follows.</p>
 </div>
 <div class="listingblock">
 <div class="content">
