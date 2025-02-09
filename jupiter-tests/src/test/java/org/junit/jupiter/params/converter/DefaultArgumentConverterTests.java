@@ -186,7 +186,7 @@ class DefaultArgumentConverterTests {
 	void throwsExceptionWhenImplicitConverstionIsUnsupported() {
 		assertThatExceptionOfType(ArgumentConversionException.class) //
 				.isThrownBy(() -> convert("foo", Enigma.class)) //
-				.withMessage("No built-in converter for source type java.lang.String and target type %s", // FIXME enhance DefaultConversionService::canConvert
+				.withMessage("No registered or built-in converter for source type java.lang.String and target type %s",
 					Enigma.class.getName());
 
 		assertThatExceptionOfType(ArgumentConversionException.class) //

@@ -78,7 +78,20 @@ public class DefaultConversionService implements ConversionService {
 	 */
 	@Override
 	public boolean canConvert(Object source, Class<?> targetType, ClassLoader classLoader) {
-		return source instanceof String;
+		if (source == null && targetType.isPrimitive()) {
+			return false;
+		}
+
+		if (!(source instanceof String)) {
+			return false;
+		}
+
+		if (String.class.equals(targetType)) {
+			return true;
+		}
+
+		return stringToObjectConverters.stream().anyMatch(
+			candidate -> candidate.canConvertTo(toWrapperType(targetType)));
 	}
 
 	/**
@@ -145,7 +158,6 @@ public class DefaultConversionService implements ConversionService {
 			return source;
 		}
 
-		// FIXME move/copy next three lines to canConvert?
 		Class<?> targetTypeToUse = toWrapperType(targetType);
 		Optional<StringToObjectConverter> converter = stringToObjectConverters.stream().filter(
 			candidate -> candidate.canConvertTo(targetTypeToUse)).findFirst();
