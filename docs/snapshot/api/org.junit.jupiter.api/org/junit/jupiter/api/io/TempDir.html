@@ -150,8 +150,11 @@ loadScripts(document, 'script');</script>
  &mdash; when the test method or class has finished execution &mdash; JUnit will
  attempt to clean up the temporary directory by recursively deleting all files
  and directories in the temporary directory and, finally, the temporary directory
- itself. In case deletion of a file or directory fails, an <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link"><code>IOException</code></a>
- will be thrown that will cause the test or test class to fail.
+ itself. Symbolic and other types of links, such as junctions on Windows, are
+ not followed. A warning is logged when deleting a link that targets a
+ location outside the temporary directory. In case deletion of a file or
+ directory fails, an <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link"><code>IOException</code></a> will be thrown that will cause the
+ test or test class to fail.
 
  <p>The <a href="#cleanup()"><code>cleanup()</code></a> attribute allows you to configure the <a href="CleanupMode.html" title="enum class in org.junit.jupiter.api.io"><code>CleanupMode</code></a>.
  If the cleanup mode is set to <a href="CleanupMode.html#NEVER"><code>NEVER</code></a>, the temporary
