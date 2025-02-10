@@ -7853,7 +7853,7 @@ discovered tests before executing them (see <a href="#running-tests">Running Tes
 <div class="sect2">
 <h3 id="migrating-from-junit4-parallel-execution"><a class="anchor" href="#migrating-from-junit4-parallel-execution"></a>3.2. Parallel Execution</h3>
 <div class="paragraph">
-<p>The JUnit Vintage test engine supports parallel execution of top-level test classes,
+<p>The JUnit Vintage test engine supports parallel execution of top-level test classes and test methods,
 allowing existing JUnit 3 and JUnit 4 tests to benefit from improved performance through
 concurrent test execution. It can be enabled and configured using the following
 <a href="#running-tests-config-params">configuration parameters</a>:</p>
@@ -7862,7 +7862,16 @@ concurrent test execution. It can be enabled and configured using the following
 <dl>
 <dt class="hdlist1"><code>junit.vintage.execution.parallel.enabled=true|false</code></dt>
 <dd>
-<p>Enable/disable parallel execution (defaults to <code>false</code>).</p>
+<p>Enable/disable parallel execution (defaults to <code>false</code>). Requires opt-in for <code>classes</code>
+or <code>methods</code> to be executed in parallel using the configuration parameters below.</p>
+</dd>
+<dt class="hdlist1"><code>junit.vintage.execution.parallel.classes=true|false</code></dt>
+<dd>
+<p>Enable/disable parallel execution of test classes (defaults to <code>false</code>).</p>
+</dd>
+<dt class="hdlist1"><code>junit.vintage.execution.parallel.methods=true|false</code></dt>
+<dd>
+<p>Enable/disable parallel execution of test methods (defaults to <code>false</code>).</p>
 </dd>
 <dt class="hdlist1"><code>junit.vintage.execution.parallel.pool-size=&lt;number&gt;</code></dt>
 <dd>
@@ -7877,6 +7886,8 @@ number of available processors is used.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="properties"><span class="py">junit.vintage.execution.parallel.enabled</span><span class="p">=</span><span class="s">true</span>
+<span class="py">junit.vintage.execution.parallel.classes</span><span class="p">=</span><span class="s">true</span>
+<span class="py">junit.vintage.execution.parallel.methods</span><span class="p">=</span><span class="s">true</span>
 <span class="py">junit.vintage.execution.parallel.pool-size</span><span class="p">=</span><span class="s">4</span></code></pre>
 </div>
 </div>
