@@ -57,8 +57,7 @@ import org.apiguardian.api.API;
  *     class SecondaryTests {
  *         // {@literal @}Test methods ...
  *     }
- * }
- * </pre>
+ * }</pre>
  *
  * @since 5.8
  * @see ClassOrderer

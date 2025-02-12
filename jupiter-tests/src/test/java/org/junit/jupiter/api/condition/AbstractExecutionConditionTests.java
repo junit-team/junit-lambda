@@ -65,7 +65,7 @@ abstract class AbstractExecutionConditionTests {
 		List<String> localTestMethods = findMethods(getClass(), isTestMethod, TOP_DOWN).stream()//
 				.map(Method::getName).sorted().toList();
 
-		assertThat(localTestMethods).isEqualTo(methodsToTest);
+		assertThat(localTestMethods).containsExactlyElementsOf(methodsToTest);
 	}
 
 	@BeforeEach

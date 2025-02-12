@@ -10,15 +10,16 @@
 
 package org.junit.jupiter.engine.discovery;
 
+import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor;
@@ -60,9 +61,8 @@ abstract class AbstractOrderingVisitor<PARENT extends TestDescriptor, CHILD exte
 	protected void orderChildrenTestDescriptors(TestDescriptor parentTestDescriptor, Class<CHILD> matchingChildrenType,
 			Function<CHILD, WRAPPER> descriptorWrapperFactory, DescriptorWrapperOrderer descriptorWrapperOrderer) {
 
-		Set<? extends TestDescriptor> children = parentTestDescriptor.getChildren();
-
-		List<WRAPPER> matchingDescriptorWrappers = children.stream()//
+		List<WRAPPER> matchingDescriptorWrappers = parentTestDescriptor.getChildren()//
+				.stream()//
 				.filter(matchingChildrenType::isInstance)//
 				.map(matchingChildrenType::cast)//
 				.map(descriptorWrapperFactory)//
@@ -74,50 +74,33 @@ abstract class AbstractOrderingVisitor<PARENT extends TestDescriptor, CHILD exte
 		}
 
 		if (descriptorWrapperOrderer.canOrderWrappers()) {
-			List<TestDescriptor> nonMatchingTestDescriptors = children.stream()//
-					.filter(childTestDescriptor -> !matchingChildrenType.isInstance(childTestDescriptor))//
-					.collect(Collectors.toList());
+			parentTestDescriptor.orderChildren(children -> {
+				Stream<TestDescriptor> nonMatchingTestDescriptors = children.stream()//
+						.filter(childTestDescriptor -> !matchingChildrenType.isInstance(childTestDescriptor));
 
-			// Make a local copy for later validation
-			Set<WRAPPER> originalWrappers = new LinkedHashSet<>(matchingDescriptorWrappers);
+				descriptorWrapperOrderer.orderWrappers(matchingDescriptorWrappers);
 
-			descriptorWrapperOrderer.orderWrappers(matchingDescriptorWrappers);
+				Stream<TestDescriptor> orderedTestDescriptors = matchingDescriptorWrappers.stream()//
+						.map(AbstractAnnotatedDescriptorWrapper::getTestDescriptor);
 
-			int difference = matchingDescriptorWrappers.size() - originalWrappers.size();
-			if (difference > 0) {
-				descriptorWrapperOrderer.logDescriptorsAddedWarning(difference);
-			}
-			else if (difference < 0) {
-				descriptorWrapperOrderer.logDescriptorsRemovedWarning(difference);
-			}
-
-			Set<TestDescriptor> orderedTestDescriptors = matchingDescriptorWrappers.stream()//
-					.filter(originalWrappers::contains)//
-					.map(AbstractAnnotatedDescriptorWrapper::getTestDescriptor)//
-					.collect(toCollection(LinkedHashSet::new));
-
-			// There is currently no way to removeAll or addAll children at once, so we
-			// first remove them all and then add them all back.
-			Stream.concat(orderedTestDescriptors.stream(), nonMatchingTestDescriptors.stream())//
-					.forEach(parentTestDescriptor::removeChild);
-
-			// If we are ordering children of type ClassBasedTestDescriptor, that means we
-			// are ordering top-level classes or @Nested test classes. Thus, the
-			// nonMatchingTestDescriptors list is either empty (for top-level classes) or
-			// contains only local test methods (for @Nested classes) which must be executed
-			// before tests in @Nested test classes. So we add the test methods before adding
-			// the @Nested test classes.
-			if (matchingChildrenType == ClassBasedTestDescriptor.class) {
-				Stream.concat(nonMatchingTestDescriptors.stream(), orderedTestDescriptors.stream())//
-						.forEach(parentTestDescriptor::addChild);
-			}
-			// Otherwise, we add the ordered descriptors before the non-matching descriptors,
-			// which is the case when we are ordering test methods. In other words, local
-			// test methods always get added before @Nested test classes.
-			else {
-				Stream.concat(orderedTestDescriptors.stream(), nonMatchingTestDescriptors.stream())//
-						.forEach(parentTestDescriptor::addChild);
-			}
+				// If we are ordering children of type ClassBasedTestDescriptor, that means we
+				// are ordering top-level classes or @Nested test classes. Thus, the
+				// nonMatchingTestDescriptors list is either empty (for top-level classes) or
+				// contains only local test methods (for @Nested classes) which must be executed
+				// before tests in @Nested test classes. So we add the test methods before adding
+				// the @Nested test classes.
+				if (matchingChildrenType == ClassBasedTestDescriptor.class) {
+					return Stream.concat(nonMatchingTestDescriptors, orderedTestDescriptors)//
+							.collect(toList());
+				}
+				// Otherwise, we add the ordered descriptors before the non-matching descriptors,
+				// which is the case when we are ordering test methods. In other words, local
+				// test methods always get added before @Nested test classes.
+				else {
+					return Stream.concat(orderedTestDescriptors, nonMatchingTestDescriptors)//
+							.collect(toList());
+				}
+			});
 		}
 
 		// Recurse through the children in order to support ordering for @Nested test classes.
@@ -167,7 +150,32 @@ abstract class AbstractOrderingVisitor<PARENT extends TestDescriptor, CHILD exte
 		}
 
 		private void orderWrappers(List<WRAPPER> wrappers) {
-			this.orderingAction.accept(wrappers);
+			List<WRAPPER> orderedWrappers = new ArrayList<>(wrappers);
+			this.orderingAction.accept(orderedWrappers);
+			Map<Object, Integer> distinctWrappersToIndex = distinctWrappersToIndex(orderedWrappers);
+
+			int difference = orderedWrappers.size() - wrappers.size();
+			int distinctDifference = distinctWrappersToIndex.size() - wrappers.size();
+			if (difference > 0) { // difference >= distinctDifference
+				logDescriptorsAddedWarning(difference);
+			}
+			if (distinctDifference < 0) { // distinctDifference <= difference
+				logDescriptorsRemovedWarning(distinctDifference);
+			}
+
+			wrappers.sort(comparing(wrapper -> distinctWrappersToIndex.getOrDefault(wrapper, -1)));
+		}
+
+		private Map<Object, Integer> distinctWrappersToIndex(List<?> wrappers) {
+			Map<Object, Integer> toIndex = new HashMap<>();
+			for (int i = 0; i < wrappers.size(); i++) {
+				// Avoid ClassCastException if a misbehaving ordering action added a non-WRAPPER
+				Object wrapper = wrappers.get(i);
+				if (!toIndex.containsKey(wrapper)) {
+					toIndex.put(wrapper, i);
+				}
+			}
+			return toIndex;
 		}
 
 		private void logDescriptorsAddedWarning(int number) {

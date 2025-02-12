@@ -36,7 +36,7 @@ import org.apiguardian.api.API;
  * {@linkplain #registerTestExecutionListeners register} one or more
  * {@link TestExecutionListener} instances in order to get feedback about the
  * progress and results of test execution. Listeners will be notified of events
- * in the order in which they were registered.  The default implementation
+ * in the order in which they were registered. The default implementation
  * returned by {@link org.junit.platform.launcher.core.LauncherFactory#create}
  * dynamically discovers test execution listeners via Java's
  * {@link java.util.ServiceLoader ServiceLoader} mechanism.

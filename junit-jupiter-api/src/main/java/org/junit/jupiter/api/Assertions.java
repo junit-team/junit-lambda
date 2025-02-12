@@ -1493,7 +1493,7 @@ public class Assertions {
 	 * iterators must return equal elements in the same order as each other. <strong>Note:</strong>
 	 * this means that the iterables <em>do not</em> need to be of the same type. Example: <pre>{@code
 	 * import static java.util.Arrays.asList;
-	 *  . . .
+	 *  ...
 	 * Iterable<Integer> i0 = new ArrayList<>(asList(1, 2, 3));
 	 * Iterable<Integer> i1 = new LinkedList<>(asList(1, 2, 3));
 	 * assertIterableEquals(i0, i1); // Passes
@@ -1516,7 +1516,7 @@ public class Assertions {
 	 * elements in the same order as each other. <strong>Note:</strong> this means that the iterables
 	 * <em>do not</em> need to be of the same type. Example: <pre>{@code
 	 * import static java.util.Arrays.asList;
-	 *  . . .
+	 *  ...
 	 * Iterable<Integer> i0 = new ArrayList<>(asList(1, 2, 3));
 	 * Iterable<Integer> i1 = new LinkedList<>(asList(1, 2, 3));
 	 * assertIterableEquals(i0, i1); // Passes
@@ -1540,7 +1540,7 @@ public class Assertions {
 	 * elements in the same order as each other. <strong>Note:</strong> this means that the iterables
 	 * <em>do not</em> need to be of the same type. Example: <pre>{@code
 	 * import static java.util.Arrays.asList;
-	 *  . . .
+	 *  ...
 	 * Iterable<Integer> i0 = new ArrayList<>(asList(1, 2, 3));
 	 * Iterable<Integer> i1 = new LinkedList<>(asList(1, 2, 3));
 	 * assertIterableEquals(i0, i1); // Passes

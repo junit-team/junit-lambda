@@ -10,12 +10,16 @@
 
 package org.junit.platform.engine;
 
+import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 import static org.apiguardian.api.API.Status.STABLE;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.UnaryOperator;
 
 import org.apiguardian.api.API;
 import org.junit.platform.commons.util.Preconditions;
@@ -171,6 +175,39 @@ public interface TestDescriptor {
 	 * hierarchy.
 	 */
 	void removeFromHierarchy();
+
+	/**
+	 * Order the children from this descriptor.
+	 *
+	 * <p>The {@code orderer} is provided a modifiable list of child test
+	 * descriptors in this test descriptor; never {@code null}. The
+	 * {@code orderer} must return a list containing the same descriptors in any
+	 * order; potentially the same list, but never {@code null}. If descriptors
+	 * were added or removed, an exception is thrown.
+	 *
+	 * @param orderer a unary operator to order the children of this test
+	 * descriptor.
+	 */
+	@API(since = "5.12", status = EXPERIMENTAL)
+	default void orderChildren(UnaryOperator<List<TestDescriptor>> orderer) {
+		Preconditions.notNull(orderer, "orderer must not be null");
+		Set<? extends TestDescriptor> originalChildren = getChildren();
+		List<TestDescriptor> suggestedOrder = orderer.apply(new ArrayList<>(originalChildren));
+		Preconditions.notNull(suggestedOrder, "orderer may not return null");
+
+		Set<? extends TestDescriptor> orderedChildren = new LinkedHashSet<>(suggestedOrder);
+		boolean unmodified = originalChildren.equals(orderedChildren);
+		Preconditions.condition(unmodified && originalChildren.size() == suggestedOrder.size(),
+			"orderer may not add or remove test descriptors");
+
+		suggestedOrder.stream() //
+				.distinct() //
+				.filter(originalChildren::contains)//
+				.forEach(testDescriptor -> {
+					removeChild(testDescriptor);
+					addChild(testDescriptor);
+				});
+	}
 
 	/**
 	 * Determine if this descriptor is a <em>root</em> descriptor.

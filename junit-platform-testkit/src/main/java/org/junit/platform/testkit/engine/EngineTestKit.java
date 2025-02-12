@@ -435,7 +435,7 @@ public final class EngineTestKit {
 		 * to avoid accidentally writing output files to the file system.
 		 *
 		 * @param outputDirectoryProvider the output directory provider to use;
-		 *                                never {@code null}
+		 * never {@code null}
 		 * @return this builder for method chaining
 		 * @since 1.12
 		 * @see OutputDirectoryProvider

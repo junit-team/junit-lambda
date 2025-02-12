@@ -46,9 +46,9 @@ public class LegacyReportingUtils {
 	 * {@linkplain TestIdentifier#getLegacyReportingName legacy reporting name}.
 	 *
 	 * @param testPlan the test plan that contains the {@code TestIdentifier};
-	 *                 never {@code null}
+	 * never {@code null}
 	 * @param testIdentifier the identifier to determine the class name for;
-	 *                 never {@code null}
+	 * never {@code null}
 	 * @see TestIdentifier#getLegacyReportingName
 	 */
 	public static String getClassName(TestPlan testPlan, TestIdentifier testIdentifier) {

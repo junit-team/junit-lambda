@@ -285,6 +285,7 @@ class KotlinAssertionsTests {
     fun `assertInstanceOf with message supplier and compiler smart cast`() {
         val maybeString: Any = "string"
 
+        @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
         val valueInMessageSupplier: Int
 
         assertInstanceOf<String>(maybeString) {
@@ -318,6 +319,7 @@ class KotlinAssertionsTests {
     fun `assertNull with message supplier and compiler smart cast`() {
         val nullableString: String? = null
 
+        @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
         val valueInMessageSupplier: Int
 
         assertNull(nullableString) {

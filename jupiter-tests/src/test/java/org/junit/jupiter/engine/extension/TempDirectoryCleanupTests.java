@@ -13,6 +13,7 @@ package org.junit.jupiter.engine.extension;
 import static java.nio.file.Files.deleteIfExists;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.condition.OS.WINDOWS;
 import static org.junit.jupiter.api.io.CleanupMode.ALWAYS;
 import static org.junit.jupiter.api.io.CleanupMode.NEVER;
 import static org.junit.jupiter.api.io.CleanupMode.ON_SUCCESS;
@@ -21,7 +22,10 @@ import static org.junit.platform.engine.discovery.DiscoverySelectors.selectMetho
 import static org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder.request;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -29,9 +33,12 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.fixtures.TrackLogRecords;
 import org.junit.jupiter.api.io.CleanupMode;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.engine.AbstractJupiterTestEngineTests;
+import org.junit.platform.commons.logging.LogRecordListener;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
 
 /**
@@ -450,6 +457,64 @@ class TempDirectoryCleanupTests extends AbstractJupiterTestEngineTests {
 			}
 		}
 
+	}
+
+	@Nested
+	@EnabledOnOs(WINDOWS)
+	class WindowsTests {
+
+		@Test
+		void deletesBrokenJunctions(@TempDir Path dir) throws Exception {
+			var test = Files.createDirectory(dir.resolve("test"));
+			createWindowsJunction(dir.resolve("link"), test);
+			// The error might also occur without the source folder being deleted
+			// but it depends on the order that the TempDir cleanup does its work,
+			// so the following line forces the error to occur always
+			Files.delete(test);
+		}
+
+		@Test
+		void doesNotFollowJunctions(@TempDir Path tempDir, @TrackLogRecords LogRecordListener listener)
+				throws IOException {
+			var outsideDir = Files.createDirectory(tempDir.resolve("outside"));
+			var testFile = Files.writeString(outsideDir.resolve("test.txt"), "test");
+
+			JunctionTestCase.target = outsideDir;
+			try {
+				executeTestsForClass(JunctionTestCase.class).testEvents() //
+						.assertStatistics(stats -> stats.started(1).succeeded(1));
+			}
+			finally {
+				JunctionTestCase.target = null;
+			}
+
+			assertThat(outsideDir).exists();
+			assertThat(testFile).exists();
+			assertThat(listener.stream(Level.WARNING)) //
+					.map(LogRecord::getMessage) //
+					.anyMatch(m -> m.matches(
+						"Deleting link from location inside of temp dir \\(.+\\) to location outside of temp dir \\(.+\\) but not the target file/directory"));
+		}
+
+		@SuppressWarnings("JUnitMalformedDeclaration")
+		static class JunctionTestCase {
+			public static Path target;
+
+			@Test
+			void createJunctionToTarget(@TempDir Path dir) throws Exception {
+				var link = createWindowsJunction(dir.resolve("link"), target);
+				try (var files = Files.list(link)) {
+					files.forEach(it -> System.out.println("- " + it));
+				}
+			}
+		}
+
+		private static Path createWindowsJunction(Path link, Path target) throws Exception {
+			// This creates a Windows "junction" which you can't do with Java code
+			String[] command = { "cmd.exe", "/c", "mklink", "/j", link.toString(), target.toString() };
+			Runtime.getRuntime().exec(command).waitFor();
+			return link;
+		}
 	}
 
 }

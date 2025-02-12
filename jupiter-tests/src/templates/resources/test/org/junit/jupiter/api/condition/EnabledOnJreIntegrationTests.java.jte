@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 --%>import static org.junit.jupiter.api.condition.JRE.JAVA_${jre.getVersion()};
 @endfor<%--
 --%>import static org.junit.jupiter.api.condition.JRE.OTHER;
+import static org.junit.jupiter.api.condition.JRE.UNDEFINED;
 @for(var jre : jresSortedByStringValue)<%--
 --%>import static org.junit.jupiter.api.condition.JavaVersionPredicates.onJava${jre.getVersion()};
 @endfor<%--
@@ -22,7 +23,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
- * Integration tests for {@link EnabledOnJre}.
+ * Integration tests for {@link EnabledOnJre @EnabledOnJre}, generated from
+ * {@code EnabledOnJreIntegrationTests.java.jte}.
  *
  * @since 5.1
  */
@@ -36,7 +38,19 @@ class EnabledOnJreIntegrationTests {
 	@Test
 	@Disabled("Only used in a unit test via reflection")
 	@EnabledOnJre({})
-	void missingJreDeclaration() {
+	void missingVersionDeclaration() {
+	}
+
+	@Test
+	@Disabled("Only used in a unit test via reflection")
+	@EnabledOnJre(UNDEFINED)
+	void jreUndefined() {
+	}
+
+	@Test
+	@Disabled("Only used in a unit test via reflection")
+	@EnabledOnJre(versions = 7)
+	void version7() {
 	}
 
 	@Test
@@ -51,7 +65,14 @@ class EnabledOnJreIntegrationTests {
 @for(var jre : jres)
 	@Test
 	@EnabledOnJre(JAVA_${jre.getVersion()})
-	void java${jre.getVersion()}() {
+	void jre${jre.getVersion()}() {
+		assertTrue(onJava${jre.getVersion()}());
+	}
+@endfor<%--
+--%>@for(var jre : jres)
+	@Test
+	@EnabledOnJre(versions = ${jre.getVersion()})
+	void version${jre.getVersion()}() {
 		assertTrue(onJava${jre.getVersion()}());
 	}
 @endfor

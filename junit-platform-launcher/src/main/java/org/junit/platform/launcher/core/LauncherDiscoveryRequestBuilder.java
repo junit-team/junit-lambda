@@ -80,8 +80,7 @@ import org.junit.platform.launcher.listeners.discovery.LauncherDiscoveryListener
  *     )
  *     .configurationParameter("key1", "value1")
  *     .configurationParameters(configParameterMap)
- *     .build();
- * </pre>
+ *     .build();</pre>
  *
  * @since 1.0
  * @see org.junit.platform.engine.discovery.DiscoverySelectors

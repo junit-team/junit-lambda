@@ -1,0 +1,141 @@
+dynamic-directory: false
+snapshot-name: open-test-report.xml
+snapshot-number: 0
+test-class: platform.tooling.support.tests.GradleStarterTests
+test-method: gradle_wrapper
+
+<?xml version="1.0" encoding="UTF-8"?>
+<e:events xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0" xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0"
+			xmlns:git="https://schemas.opentest4j.org/reporting/git/0.2.0"
+			xmlns:java="https://schemas.opentest4j.org/reporting/java/0.2.0"
+			xmlns:junit="https://schemas.junit.org/open-test-reporting"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://schemas.junit.org/open-test-reporting https://junit.org/junit5/schemas/open-test-reporting/junit-1.9.xsd">
+  
+  <infrastructure>
+    <hostName>obfuscated</hostName>
+    <userName>obfuscated</userName>
+    <operatingSystem>Linux</operatingSystem>
+    <cpuCores>16</cpuCores>
+    <java:javaVersion>1.8.0_422</java:javaVersion>
+    <java:fileEncoding>UTF-8</java:fileEncoding>
+    <java:heapSize max="514850816"/>
+  </infrastructure>
+  
+  <e:started id="1" name="JUnit Jupiter" time="2025-02-11T13:40:40.710Z">
+    <metadata>
+      <junit:uniqueId>[engine:junit-jupiter]</junit:uniqueId>
+      <junit:legacyReportingName>JUnit Jupiter</junit:legacyReportingName>
+      <junit:type>CONTAINER</junit:type>
+    </metadata>
+  </e:started>
+  
+  <e:started id="2" name="CalculatorTests" parentId="1" time="2025-02-11T13:40:40.729Z">
+    <metadata>
+      <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]</junit:uniqueId>
+      <junit:legacyReportingName>com.example.project.CalculatorTests</junit:legacyReportingName>
+      <junit:type>CONTAINER</junit:type>
+    </metadata>
+    <sources>
+      <java:classSource className="com.example.project.CalculatorTests"/>
+    </sources>
+  </e:started>
+  
+  <e:started id="3" name="1 + 1 = 2" parentId="2" time="2025-02-11T13:40:40.745Z">
+    <metadata>
+      <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]/[method:addsTwoNumbers()]</junit:uniqueId>
+      <junit:legacyReportingName>addsTwoNumbers()</junit:legacyReportingName>
+      <junit:type>TEST</junit:type>
+    </metadata>
+    <sources>
+      <java:methodSource className="com.example.project.CalculatorTests" methodName="addsTwoNumbers" methodParameterTypes=""/>
+    </sources>
+  </e:started>
+  
+  <e:finished id="3" time="2025-02-11T13:40:40.755Z">
+    <result status="SUCCESSFUL"/>
+  </e:finished>
+  
+  <e:started id="4" name="add(int, int, int)" parentId="2" time="2025-02-11T13:40:40.758Z">
+    <metadata>
+      <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]/[test-template:add(int, int, int)]</junit:uniqueId>
+      <junit:legacyReportingName>add(int, int, int)</junit:legacyReportingName>
+      <junit:type>CONTAINER</junit:type>
+    </metadata>
+    <sources>
+      <java:methodSource className="com.example.project.CalculatorTests" methodName="add" methodParameterTypes="int, int, int"/>
+    </sources>
+  </e:started>
+  
+  <e:started id="5" name="0 + 1 = 1" parentId="4" time="2025-02-11T13:40:40.784Z">
+    <metadata>
+      <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]/[test-template:add(int, int, int)]/[test-template-invocation:#1]</junit:uniqueId>
+      <junit:legacyReportingName>add(int, int, int)[1]</junit:legacyReportingName>
+      <junit:type>TEST</junit:type>
+    </metadata>
+    <sources>
+      <java:methodSource className="com.example.project.CalculatorTests" methodName="add" methodParameterTypes="int, int, int"/>
+    </sources>
+  </e:started>
+  
+  <e:finished id="5" time="2025-02-11T13:40:40.794Z">
+    <result status="SUCCESSFUL"/>
+  </e:finished>
+  
+  <e:started id="6" name="1 + 2 = 3" parentId="4" time="2025-02-11T13:40:40.797Z">
+    <metadata>
+      <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]/[test-template:add(int, int, int)]/[test-template-invocation:#2]</junit:uniqueId>
+      <junit:legacyReportingName>add(int, int, int)[2]</junit:legacyReportingName>
+      <junit:type>TEST</junit:type>
+    </metadata>
+    <sources>
+      <java:methodSource className="com.example.project.CalculatorTests" methodName="add" methodParameterTypes="int, int, int"/>
+    </sources>
+  </e:started>
+  
+  <e:finished id="6" time="2025-02-11T13:40:40.798Z">
+    <result status="SUCCESSFUL"/>
+  </e:finished>
+  
+  <e:started id="7" name="49 + 51 = 100" parentId="4" time="2025-02-11T13:40:40.799Z">
+    <metadata>
+      <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]/[test-template:add(int, int, int)]/[test-template-invocation:#3]</junit:uniqueId>
+      <junit:legacyReportingName>add(int, int, int)[3]</junit:legacyReportingName>
+      <junit:type>TEST</junit:type>
+    </metadata>
+    <sources>
+      <java:methodSource className="com.example.project.CalculatorTests" methodName="add" methodParameterTypes="int, int, int"/>
+    </sources>
+  </e:started>
+  
+  <e:finished id="7" time="2025-02-11T13:40:40.800Z">
+    <result status="SUCCESSFUL"/>
+  </e:finished>
+  
+  <e:started id="8" name="1 + 100 = 101" parentId="4" time="2025-02-11T13:40:40.801Z">
+    <metadata>
+      <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]/[test-template:add(int, int, int)]/[test-template-invocation:#4]</junit:uniqueId>
+      <junit:legacyReportingName>add(int, int, int)[4]</junit:legacyReportingName>
+      <junit:type>TEST</junit:type>
+    </metadata>
+    <sources>
+      <java:methodSource className="com.example.project.CalculatorTests" methodName="add" methodParameterTypes="int, int, int"/>
+    </sources>
+  </e:started>
+  
+  <e:finished id="8" time="2025-02-11T13:40:40.802Z">
+    <result status="SUCCESSFUL"/>
+  </e:finished>
+  
+  <e:finished id="4" time="2025-02-11T13:40:40.803Z">
+    <result status="SUCCESSFUL"/>
+  </e:finished>
+  
+  <e:finished id="2" time="2025-02-11T13:40:40.804Z">
+    <result status="SUCCESSFUL"/>
+  </e:finished>
+  
+  <e:finished id="1" time="2025-02-11T13:40:40.804Z">
+    <result status="SUCCESSFUL"/>
+  </e:finished>
+  
+</e:events>

@@ -18,6 +18,9 @@ import static platform.tooling.support.tests.XmlAssertions.verifyContainsExpecte
 
 import java.nio.file.Path;
 
+import de.skuzzle.test.snapshots.Snapshot;
+import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.platform.tests.process.OutputFiles;
@@ -30,6 +33,7 @@ import platform.tooling.support.ProcessStarters;
 /**
  * @since 1.3
  */
+@EnableSnapshotTests
 class MavenStarterTests {
 
 	@ManagedResource
@@ -39,10 +43,11 @@ class MavenStarterTests {
 	MavenRepoProxy mavenRepoProxy;
 
 	@Test
-	void verifyMavenStarterProject(@TempDir Path workspace, @FilePrefix("maven") OutputFiles outputFiles)
-			throws Exception {
+	void verifyJupiterStarterProject(@TempDir Path workspace, @FilePrefix("maven") OutputFiles outputFiles,
+			Snapshot snapshot) throws Exception {
+
 		var result = ProcessStarters.maven(Helper.getJavaHome("8").orElseThrow(TestAbortedException::new)) //
-				.workingDir(copyToWorkspace(Projects.MAVEN_STARTER, workspace)) //
+				.workingDir(copyToWorkspace(Projects.JUPITER_STARTER, workspace)) //
 				.addArguments(localMavenRepo.toCliArgument(), "-Dmaven.repo=" + MavenRepo.dir()) //
 				.addArguments("-Dsnapshot.repo.url=" + mavenRepoProxy.getBaseUri()) //
 				.addArguments("--update-snapshots", "--batch-mode", "verify") //
@@ -56,6 +61,6 @@ class MavenStarterTests {
 		assertThat(result.stdOut()).contains("Using Java version: 1.8");
 
 		var testResultsDir = workspace.resolve("target/surefire-reports");
-		verifyContainsExpectedStartedOpenTestReport(testResultsDir);
+		verifyContainsExpectedStartedOpenTestReport(testResultsDir, snapshot);
 	}
 }

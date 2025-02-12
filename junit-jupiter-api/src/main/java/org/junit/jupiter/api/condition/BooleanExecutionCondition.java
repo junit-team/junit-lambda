@@ -23,31 +23,32 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 abstract class BooleanExecutionCondition<A extends Annotation> implements ExecutionCondition {
 
-	private final Class<A> annotationType;
+	protected final Class<A> annotationType;
 	private final String enabledReason;
 	private final String disabledReason;
 	private final Function<A, String> customDisabledReason;
 
 	BooleanExecutionCondition(Class<A> annotationType, String enabledReason, String disabledReason,
 			Function<A, String> customDisabledReason) {
+
 		this.annotationType = annotationType;
 		this.enabledReason = enabledReason;
 		this.disabledReason = disabledReason;
 		this.customDisabledReason = customDisabledReason;
 	}
 
-	abstract boolean isEnabled(A annotation);
-
 	@Override
 	public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
-		return findAnnotation(context.getElement(), annotationType) //
-				.map(annotation -> isEnabled(annotation) ? enabled(enabledReason)
-						: disabled(disabledReason, customDisabledReason.apply(annotation))) //
+		return findAnnotation(context.getElement(), this.annotationType) //
+				.map(annotation -> isEnabled(annotation) ? enabled(this.enabledReason)
+						: disabled(this.disabledReason, this.customDisabledReason.apply(annotation))) //
 				.orElseGet(this::enabledByDefault);
 	}
 
+	abstract boolean isEnabled(A annotation);
+
 	private ConditionEvaluationResult enabledByDefault() {
-		String reason = String.format("@%s is not present", annotationType.getSimpleName());
+		String reason = String.format("@%s is not present", this.annotationType.getSimpleName());
 		return enabled(reason);
 	}
 

@@ -10,6 +10,7 @@
 
 package org.junit.jupiter.engine.extension;
 
+import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 import static org.junit.jupiter.api.MethodOrderer.Random.RANDOM_SEED_PROPERTY_NAME;
@@ -19,10 +20,14 @@ import static org.junit.jupiter.engine.Constants.DEFAULT_TEST_METHOD_ORDER_PROPE
 import static org.junit.jupiter.engine.Constants.PARALLEL_EXECUTION_ENABLED_PROPERTY_NAME;
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -270,7 +275,7 @@ class OrderedMethodTests {
 
 		executeTestsInParallel(testClass).assertStatistics(stats -> stats.succeeded(2));
 
-		assertThat(callSequence).containsExactlyInAnyOrder("test1()", "test2()");
+		assertThat(callSequence).containsExactly("test1()", "test2()");
 
 		var expectedMessage = "MethodOrderer [" + MisbehavingByAdding.class.getName()
 				+ "] added 2 MethodDescriptor(s) for test class [" + testClass.getName() + "] which will be ignored.";
@@ -279,12 +284,29 @@ class OrderedMethodTests {
 	}
 
 	@Test
+	void misbehavingMethodOrdererThatImpersonatesElements(@TrackLogRecords LogRecordListener listener) {
+		Class<?> testClass = MisbehavingByImpersonatingTestCase.class;
+
+		executeTestsInParallel(testClass).assertStatistics(stats -> stats.succeeded(2));
+
+		assertThat(callSequence).containsExactlyInAnyOrder("test1()", "test2()");
+
+		assertThat(listener.stream(Level.WARNING)).isEmpty();
+	}
+
+	@Test
 	void misbehavingMethodOrdererThatRemovesElements(@TrackLogRecords LogRecordListener listener) {
 		Class<?> testClass = MisbehavingByRemovingTestCase.class;
 
-		executeTestsInParallel(testClass).assertStatistics(stats -> stats.succeeded(3));
+		executeTestsInParallel(testClass).assertStatistics(stats -> stats.succeeded(4));
 
-		assertThat(callSequence).containsExactlyInAnyOrder("test1()", "test2()", "test3()");
+		assertThat(callSequence) //
+				.containsExactlyInAnyOrder("test1()", "test2()", "test3()", "test4()") //
+				.containsSubsequence("test3()", "test4()") // ordered in MisbehavingByRemoving
+				.containsSubsequence("test1()", "test3()") // removed item is re-added before ordered item
+				.containsSubsequence("test1()", "test4()") // removed item is re-added before ordered item
+				.containsSubsequence("test2()", "test3()") // removed item is re-added before ordered item
+				.containsSubsequence("test2()", "test4()");// removed item is re-added before ordered item
 
 		var expectedMessage = "MethodOrderer [" + MisbehavingByRemoving.class.getName()
 				+ "] removed 2 MethodDescriptor(s) for test class [" + testClass.getName()
@@ -640,11 +662,29 @@ class OrderedMethodTests {
 		}
 
 		@Test
+		void test2() {
+		}
+
+		@Test
 		void test1() {
+		}
+	}
+
+	@SuppressWarnings("JUnitMalformedDeclaration")
+	@TestMethodOrder(MisbehavingByImpersonating.class)
+	static class MisbehavingByImpersonatingTestCase {
+
+		@BeforeEach
+		void trackInvocations(TestInfo testInfo) {
+			callSequence.add(testInfo.getDisplayName());
 		}
 
 		@Test
 		void test2() {
+		}
+
+		@Test
+		void test1() {
 		}
 	}
 
@@ -659,6 +699,10 @@ class OrderedMethodTests {
 
 		@Test
 		void test1() {
+		}
+
+		@Test
+		void test4() {
 		}
 
 		@Test
@@ -698,6 +742,7 @@ class OrderedMethodTests {
 
 		@Override
 		public void orderMethods(MethodOrdererContext context) {
+			context.getMethodDescriptors().sort(comparing(MethodDescriptor::getDisplayName));
 			context.getMethodDescriptors().add(mockMethodDescriptor());
 			context.getMethodDescriptors().add(mockMethodDescriptor());
 		}
@@ -709,10 +754,66 @@ class OrderedMethodTests {
 
 	}
 
+	static class MisbehavingByImpersonating implements MethodOrderer {
+
+		@Override
+		public void orderMethods(MethodOrdererContext context) {
+			context.getMethodDescriptors().sort(comparing(MethodDescriptor::getDisplayName));
+			MethodDescriptor method1 = context.getMethodDescriptors().get(0);
+			MethodDescriptor method2 = context.getMethodDescriptors().get(1);
+
+			context.getMethodDescriptors().set(0, createMethodDescriptorImpersonator(method1));
+			context.getMethodDescriptors().set(1, createMethodDescriptorImpersonator(method2));
+		}
+
+		@SuppressWarnings("unchecked")
+		static <T> T createMethodDescriptorImpersonator(MethodDescriptor method) {
+			MethodDescriptor stub = new MethodDescriptor() {
+				@Override
+				public Method getMethod() {
+					return null;
+				}
+
+				@Override
+				public String getDisplayName() {
+					return null;
+				}
+
+				@Override
+				public boolean isAnnotated(Class<? extends Annotation> annotationType) {
+					return false;
+				}
+
+				@Override
+				public <A extends Annotation> Optional<A> findAnnotation(Class<A> annotationType) {
+					return null;
+				}
+
+				@Override
+				public <A extends Annotation> List<A> findRepeatableAnnotations(Class<A> annotationType) {
+					return null;
+				}
+
+				@SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
+				@Override
+				public boolean equals(Object obj) {
+					return method.equals(obj);
+				}
+
+				@Override
+				public int hashCode() {
+					return method.hashCode();
+				}
+			};
+			return (T) stub;
+		}
+	}
+
 	static class MisbehavingByRemoving implements MethodOrderer {
 
 		@Override
 		public void orderMethods(MethodOrdererContext context) {
+			context.getMethodDescriptors().sort(comparing(MethodDescriptor::getDisplayName));
 			context.getMethodDescriptors().remove(0);
 			context.getMethodDescriptors().remove(0);
 		}

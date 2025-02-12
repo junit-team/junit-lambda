@@ -126,8 +126,7 @@ public final class CollectionUtils {
 	 * <pre class="code">
 	 * public static &lt;T&gt; Collector&lt;T, ?, List&lt;T&gt;&gt; toUnmodifiableList(Supplier&lt;List&lt;T&gt;&gt; listSupplier) {
 	 *     return Collectors.collectingAndThen(Collectors.toCollection(listSupplier), Collections::unmodifiableList);
-	 * }
-	 * </pre>
+	 * }</pre>
 	 *
 	 * @param <T> the type of the input elements
 	 * @return a {@code Collector} which collects all the input elements into

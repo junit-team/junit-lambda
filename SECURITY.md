@@ -2,6 +2,11 @@
 
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/9607/badge)](https://www.bestpractices.dev/projects/9607) [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/junit-team/junit5/badge)](https://scorecard.dev/viewer/?uri=github.com/junit-team/junit5)
 
+## JAR Signing
+
+JUnit JARs released on Maven Central are signed.
+You'll find more information about the key here: [KEYS](./KEYS)
+
 ## Supported Versions
 
 | Version | Supported          |

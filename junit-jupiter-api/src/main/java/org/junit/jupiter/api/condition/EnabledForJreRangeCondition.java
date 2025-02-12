@@ -10,11 +10,7 @@
 
 package org.junit.jupiter.api.condition;
 
-import static org.junit.jupiter.api.condition.EnabledOnJreCondition.DISABLED_ON_CURRENT_JRE;
-import static org.junit.jupiter.api.condition.EnabledOnJreCondition.ENABLED_ON_CURRENT_JRE;
-
 import org.junit.jupiter.api.extension.ExecutionCondition;
-import org.junit.platform.commons.util.Preconditions;
 
 /**
  * {@link ExecutionCondition} for {@link EnabledForJreRange @EnabledForJreRange}.
@@ -22,24 +18,15 @@ import org.junit.platform.commons.util.Preconditions;
  * @since 5.6
  * @see EnabledForJreRange
  */
-class EnabledForJreRangeCondition extends BooleanExecutionCondition<EnabledForJreRange> {
+class EnabledForJreRangeCondition extends AbstractJreRangeCondition<EnabledForJreRange> {
 
 	EnabledForJreRangeCondition() {
-		super(EnabledForJreRange.class, ENABLED_ON_CURRENT_JRE, DISABLED_ON_CURRENT_JRE,
-			EnabledForJreRange::disabledReason);
+		super(EnabledForJreRange.class, EnabledForJreRange::disabledReason);
 	}
 
 	@Override
-	boolean isEnabled(EnabledForJreRange annotation) {
-		JRE min = annotation.min();
-		JRE max = annotation.max();
-
-		Preconditions.condition((min != JRE.JAVA_8 || max != JRE.OTHER),
-			"You must declare a non-default value for min or max in @EnabledForJreRange");
-		Preconditions.condition(max.compareTo(min) >= 0,
-			"@EnabledForJreRange.min must be less than or equal to @EnabledForJreRange.max");
-
-		return JRE.isCurrentVersionWithinRange(min, max);
+	boolean isEnabled(EnabledForJreRange range) {
+		return isCurrentVersionWithinRange(range.min(), range.max(), range.minVersion(), range.maxVersion());
 	}
 
 }

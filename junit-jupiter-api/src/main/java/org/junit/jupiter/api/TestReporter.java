@@ -93,9 +93,9 @@ public interface TestReporter {
 	 * The file will be copied to the report output directory replacing any
 	 * potentially existing file with the same name.
 	 *
-	 * @param file      the file to be attached; never {@code null} or blank
+	 * @param file the file to be attached; never {@code null} or blank
 	 * @param mediaType the media type of the file; never {@code null}; use
-	 *                  {@link MediaType#APPLICATION_OCTET_STREAM} if unknown
+	 * {@link MediaType#APPLICATION_OCTET_STREAM} if unknown
 	 * @since 5.12
 	 */
 	@API(status = EXPERIMENTAL, since = "5.12")
@@ -146,12 +146,11 @@ public interface TestReporter {
 	 * The {@link Path} passed to the supplied action will be relative to the
 	 * report output directory, but it's up to the action to write the file.
 	 *
-	 * @param name      the name of the file to be attached; never {@code null}
-	 *                  or blank and must not contain any path separators
+	 * @param name the name of the file to be attached; never {@code null} or
+	 * blank and must not contain any path separators
 	 * @param mediaType the media type of the file; never {@code null}; use
-	 *                  {@link MediaType#APPLICATION_OCTET_STREAM} if unknown
-	 * @param action    the action to be executed to write the file; never
-	 *                  {@code null}
+	 * {@link MediaType#APPLICATION_OCTET_STREAM} if unknown
+	 * @param action the action to be executed to write the file; never {@code null}
 	 * @since 5.12
 	 */
 	@API(status = EXPERIMENTAL, since = "5.12")
@@ -168,9 +167,8 @@ public interface TestReporter {
 	 * to the action to write files to it.
 	 *
 	 * @param name the name of the directory to be attached; never {@code null}
-	 *                 or blank and must not contain any path separators
-	 * @param action   the action to be executed to write the file; never
-	 *                 {@code null}
+	 * or blank and must not contain any path separators
+	 * @param action the action to be executed to write the file; never {@code null}
 	 * @since 5.12
 	 */
 	@API(status = EXPERIMENTAL, since = "5.12")

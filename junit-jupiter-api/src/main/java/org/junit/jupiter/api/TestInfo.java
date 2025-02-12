@@ -68,8 +68,7 @@ public interface TestInfo {
 	 *      class NestedTests {}
 	 *
 	 *      static class StaticTests {}
-	 *   }
-	 * </pre>
+	 *   }</pre>
 	 *
 	 * <p>If the context in which {@code TestInfo} is used is at the test level,
 	 * the default display name is the name of the test method concatenated with
@@ -79,8 +78,7 @@ public interface TestInfo {
 	 *
 	 * <pre class="code">
 	 *   {@literal @}Test
-	 *   void testUser(TestInfo testInfo, {@literal @}Mock User user) {}
-	 * </pre>
+	 *   void testUser(TestInfo testInfo, {@literal @}Mock User user) {}</pre>
 	 *
 	 * <p>Note that display names are typically used for test reporting in IDEs
 	 * and build tools and may contain spaces, special characters, and even emoji.

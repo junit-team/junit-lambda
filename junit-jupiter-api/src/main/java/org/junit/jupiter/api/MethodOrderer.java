@@ -88,8 +88,7 @@ public interface MethodOrderer {
 	 * <pre class="code">
 	 * public void orderMethods(MethodOrdererContext context) {
 	 *     Collections.shuffle(context.getMethodDescriptors());
-	 * }
-	 * </pre>
+	 * }</pre>
 	 *
 	 * @param context the {@code MethodOrdererContext} containing the
 	 * {@linkplain MethodDescriptor method descriptors} to order; never {@code null}

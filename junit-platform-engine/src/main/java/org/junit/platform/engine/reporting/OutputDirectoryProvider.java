@@ -38,7 +38,7 @@ public interface OutputDirectoryProvider {
 	 * Create an output directory for the supplied test descriptor.
 	 *
 	 * @param testDescriptor the test descriptor for which to create an output
-	 *                       directory; never {@code null}
+	 * directory; never {@code null}
 	 * @return the output directory
 	 * @throws IOException if the output directory could not be created
 	 */

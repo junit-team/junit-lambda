@@ -1,0 +1,24 @@
+[[release-notes-5.12.0]]
+== 5.12.0
+
+*Date of Release:* February 21, 2025
+
+*Scope:*
+
+* Output file attachments for tests and containers
+* Improvements to the Open Test Reporting XML output
+* Resource lock definition improvements
+* Thread dumps on test timeouts
+* Parameterized test validation improvements
+* Filtering support for auto-registered extensions
+* Kotlin contracts for assertions
+* Configurable Jupiter extension context scope
+* Enhancements to the `ConsoleLauncher`
+* Better support for GraalVM native image usage
+* Improved discovery support for file-based test engines
+* Customizable classpath scanning
+* Parallel execution support in JUnit Vintage engine
+* Numerous bug fixes and other enhancements
+
+For complete details consult the
+https://junit.org/junit5/docs/5.12.0/release-notes/index.html[5.12.0 Release Notes] online.

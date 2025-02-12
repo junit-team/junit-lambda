@@ -34,3 +34,7 @@ coverage.db*
 /.tool-versions
 
 checksums*
+
+# snapshot-tests
+*.snapshot_actual
+*.snapshot_raw

@@ -77,7 +77,7 @@ class MultiReleaseJarTests {
 				.addArguments("-Dsnapshot.repo.url=" + mavenRepoProxy.getBaseUri()) //
 				.addArguments("--update-snapshots", "--show-version", "--errors", "--batch-mode") //
 				.addArguments("test") //
-				.putEnvironment(MavenEnvVars.forJre(JRE.currentVersion())) //
+				.putEnvironment(MavenEnvVars.forJre(JRE.currentJre())) //
 				.redirectOutput(outputFiles) //
 				.startAndWait();
 

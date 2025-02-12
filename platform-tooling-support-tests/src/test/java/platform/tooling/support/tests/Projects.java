@@ -17,14 +17,12 @@ import org.apache.commons.io.file.PathUtils;
 
 public class Projects {
 
-	public static final String ANT_STARTER = "ant-starter";
 	public static final String GRAALVM_STARTER = "graalvm-starter";
 	public static final String GRADLE_KOTLIN_EXTENSIONS = "gradle-kotlin-extensions";
 	public static final String GRADLE_MISSING_ENGINE = "gradle-missing-engine";
-	public static final String GRADLE_STARTER = "gradle-starter";
 	public static final String JAR_DESCRIBE_MODULE = "jar-describe-module";
 	public static final String JAVA_VERSIONS = "java-versions";
-	public static final String MAVEN_STARTER = "maven-starter";
+	public static final String JUPITER_STARTER = "jupiter-starter";
 	public static final String MAVEN_SUREFIRE_COMPATIBILITY = "maven-surefire-compatibility";
 	public static final String MULTI_RELEASE_JAR = "multi-release-jar";
 	public static final String REFLECTION_TESTS = "reflection-tests";

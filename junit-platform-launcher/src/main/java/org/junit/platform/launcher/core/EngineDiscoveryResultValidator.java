@@ -33,7 +33,7 @@ import org.junit.platform.engine.UniqueId;
 class EngineDiscoveryResultValidator {
 
 	/**
-	 *  Perform common validation checks.
+	 * Perform common validation checks.
 	 *
 	 * @throws org.junit.platform.commons.PreconditionViolationException if any check fails
 	 */

@@ -10,147 +10,73 @@
 
 package platform.tooling.support.tests;
 
+import static de.skuzzle.test.snapshots.data.xml.XmlSnapshot.xml;
 import static org.junit.platform.reporting.testutil.FileUtils.findPath;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
+import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
-import org.xmlunit.assertj3.XmlAssert;
-import org.xmlunit.placeholder.PlaceholderDifferenceEvaluator;
+import de.skuzzle.test.snapshots.Snapshot;
+import de.skuzzle.test.snapshots.SnapshotSerializer;
+import de.skuzzle.test.snapshots.StructuredData;
+import de.skuzzle.test.snapshots.StructuredDataProvider;
 
 class XmlAssertions {
 
-	static void verifyContainsExpectedStartedOpenTestReport(Path testResultsDir) {
+	static void verifyContainsExpectedStartedOpenTestReport(Path testResultsDir, Snapshot snapshot) throws IOException {
 		var xmlFile = findPath(testResultsDir, "glob:**/open-test-report.xml");
-		verifyContent(xmlFile);
+		verifyContent(xmlFile, snapshot);
 	}
 
-	private static void verifyContent(Path xmlFile) {
-		var expected = """
-				        <e:events xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0"
-				                  xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0"
-				                  xmlns:git="https://schemas.opentest4j.org/reporting/git/0.2.0"
-				                  xmlns:java="https://schemas.opentest4j.org/reporting/java/0.2.0"
-				                  xmlns:junit="https://schemas.junit.org/open-test-reporting"
-				                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-				                  xsi:schemaLocation="https://schemas.junit.org/open-test-reporting https://junit.org/junit5/schemas/open-test-reporting/junit-1.9.xsd">
-				          <infrastructure>
-				            <hostName>${xmlunit.ignore}</hostName>
-				            <userName>${xmlunit.ignore}</userName>
-				            <operatingSystem>${xmlunit.ignore}</operatingSystem>
-				            <cpuCores>${xmlunit.ignore}</cpuCores>
-				            <java:javaVersion>${xmlunit.ignore}</java:javaVersion>
-				            <java:fileEncoding>${xmlunit.ignore}</java:fileEncoding>
-				            <java:heapSize max="${xmlunit.isNumber}"/>
-				          </infrastructure>
-				          <e:started id="1" name="JUnit Jupiter" time="${xmlunit.isDateTime}">
-				            <metadata>
-				              <junit:uniqueId>[engine:junit-jupiter]</junit:uniqueId>
-				              <junit:legacyReportingName>JUnit Jupiter</junit:legacyReportingName>
-				              <junit:type>CONTAINER</junit:type>
-				            </metadata>
-				          </e:started>
-				          <e:started id="2" name="CalculatorTests" parentId="1" time="${xmlunit.isDateTime}">
-				            <metadata>
-				              <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]</junit:uniqueId>
-				              <junit:legacyReportingName>com.example.project.CalculatorTests</junit:legacyReportingName>
-				              <junit:type>CONTAINER</junit:type>
-				            </metadata>
-				            <sources>
-				              <java:classSource className="com.example.project.CalculatorTests"/>
-				            </sources>
-				          </e:started>
-				          <e:started id="3" name="1 + 1 = 2" parentId="2" time="${xmlunit.isDateTime}">
-				            <metadata>
-				              <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]/[method:addsTwoNumbers()]</junit:uniqueId>
-				              <junit:legacyReportingName>addsTwoNumbers()</junit:legacyReportingName>
-				              <junit:type>TEST</junit:type>
-				            </metadata>
-				            <sources>
-				              <java:methodSource className="com.example.project.CalculatorTests" methodName="addsTwoNumbers" methodParameterTypes=""/>
-				            </sources>
-				          </e:started>
-				          <e:finished id="3" time="${xmlunit.isDateTime}">
-				            <result status="SUCCESSFUL"/>
-				          </e:finished>
-				          <e:started id="4" name="add(int, int, int)" parentId="2" time="${xmlunit.isDateTime}">
-				            <metadata>
-				              <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]/[test-template:add(int, int, int)]</junit:uniqueId>
-				              <junit:legacyReportingName>add(int, int, int)</junit:legacyReportingName>
-				              <junit:type>CONTAINER</junit:type>
-				            </metadata>
-				            <sources>
-				              <java:methodSource className="com.example.project.CalculatorTests" methodName="add" methodParameterTypes="int, int, int"/>
-				            </sources>
-				          </e:started>
-				          <e:started id="5" name="0 + 1 = 1" parentId="4" time="${xmlunit.isDateTime}">
-				            <metadata>
-				              <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]/[test-template:add(int, int, int)]/[test-template-invocation:#1]</junit:uniqueId>
-				              <junit:legacyReportingName>add(int, int, int)[1]</junit:legacyReportingName>
-				              <junit:type>TEST</junit:type>
-				            </metadata>
-				            <sources>
-				              <java:methodSource className="com.example.project.CalculatorTests" methodName="add" methodParameterTypes="int, int, int"/>
-				            </sources>
-				          </e:started>
-				          <e:finished id="5" time="${xmlunit.isDateTime}">
-				            <result status="SUCCESSFUL"/>
-				          </e:finished>
-				          <e:started id="6" name="1 + 2 = 3" parentId="4" time="${xmlunit.isDateTime}">
-				            <metadata>
-				              <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]/[test-template:add(int, int, int)]/[test-template-invocation:#2]</junit:uniqueId>
-				              <junit:legacyReportingName>add(int, int, int)[2]</junit:legacyReportingName>
-				              <junit:type>TEST</junit:type>
-				            </metadata>
-				            <sources>
-				              <java:methodSource className="com.example.project.CalculatorTests" methodName="add" methodParameterTypes="int, int, int"/>
-				            </sources>
-				          </e:started>
-				          <e:finished id="6" time="${xmlunit.isDateTime}">
-				            <result status="SUCCESSFUL"/>
-				          </e:finished>
-				          <e:started id="7" name="49 + 51 = 100" parentId="4" time="${xmlunit.isDateTime}">
-				            <metadata>
-				              <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]/[test-template:add(int, int, int)]/[test-template-invocation:#3]</junit:uniqueId>
-				              <junit:legacyReportingName>add(int, int, int)[3]</junit:legacyReportingName>
-				              <junit:type>TEST</junit:type>
-				            </metadata>
-				            <sources>
-				              <java:methodSource className="com.example.project.CalculatorTests" methodName="add" methodParameterTypes="int, int, int"/>
-				            </sources>
-				          </e:started>
-				          <e:finished id="7" time="${xmlunit.isDateTime}">
-				            <result status="SUCCESSFUL"/>
-				          </e:finished>
-				          <e:started id="8" name="1 + 100 = 101" parentId="4" time="${xmlunit.isDateTime}">
-				            <metadata>
-				              <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]/[test-template:add(int, int, int)]/[test-template-invocation:#4]</junit:uniqueId>
-				              <junit:legacyReportingName>add(int, int, int)[4]</junit:legacyReportingName>
-				              <junit:type>TEST</junit:type>
-				            </metadata>
-				            <sources>
-				              <java:methodSource className="com.example.project.CalculatorTests" methodName="add" methodParameterTypes="int, int, int"/>
-				            </sources>
-				          </e:started>
-				          <e:finished id="8" time="${xmlunit.isDateTime}">
-				            <result status="SUCCESSFUL"/>
-				          </e:finished>
-				          <e:finished id="4" time="${xmlunit.isDateTime}">
-				            <result status="SUCCESSFUL"/>
-				          </e:finished>
-				          <e:finished id="2" time="${xmlunit.isDateTime}">
-				            <result status="SUCCESSFUL"/>
-				          </e:finished>
-				          <e:finished id="1" time="${xmlunit.isDateTime}">
-				            <result status="SUCCESSFUL"/>
-				          </e:finished>
-				        </e:events>
-				""";
+	private static void verifyContent(Path xmlFile, Snapshot snapshot) throws IOException {
+		snapshot.named("open-test-report.xml") //
+				.assertThat(Files.readString(xmlFile)) //
+				.as(obfuscated( //
+					xml() //
+							.withXPathNamespaceContext(Map.of( //
+								"c", "https://schemas.opentest4j.org/reporting/core/0.2.0", //
+								"e", "https://schemas.opentest4j.org/reporting/events/0.2.0", //
+								"java", "https://schemas.opentest4j.org/reporting/java/0.2.0" //
+							)) //
+							.withComparisonRules(rules -> rules //
+									.pathAt("//@time").mustMatch(
+										Pattern.compile("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?Z")) //
+									.pathAt("//c:infrastructure/c:hostName/text()").ignore() //
+									.pathAt("//c:infrastructure/c:userName/text()").ignore() //
+									.pathAt("//c:infrastructure/c:operatingSystem/text()").ignore() //
+									.pathAt("//c:infrastructure/c:cpuCores/text()").ignore() //
+									.pathAt("//c:infrastructure/java:javaVersion/text()").ignore() //
+									.pathAt("//c:infrastructure/java:fileEncoding/text()").ignore() //
+									.pathAt("//c:infrastructure/java:heapSize/@max").ignore() //
+							), //
+					text -> text //
+							.replaceAll("<hostName>.+?</hostName>", "<hostName>obfuscated</hostName>") //
+							.replaceAll("<userName>.+?</userName>", "<userName>obfuscated</userName>") //
+				)) //
+				.matchesSnapshotStructure();
+	}
 
-		XmlAssert.assertThat(xmlFile).and(expected) //
-				.withDifferenceEvaluator(new PlaceholderDifferenceEvaluator(Pattern.quote("${"), Pattern.quote("}"),
-					Pattern.quote("#"), Pattern.quote("#"), ",")) //
-				.ignoreWhitespace() //
-				.areIdentical();
+	private static StructuredDataProvider obfuscated(StructuredDataProvider provider,
+			UnaryOperator<String> obfuscator) {
+		return () -> {
+			var structuredData = provider.build();
+			var snapshotSerializer = obfuscatingSnapshotSerializer(structuredData.snapshotSerializer(), obfuscator);
+			return StructuredData.with(snapshotSerializer, structuredData.structuralAssertions());
+		};
+	}
+
+	private static SnapshotSerializer obfuscatingSnapshotSerializer(SnapshotSerializer delegate,
+			UnaryOperator<String> obfuscator) {
+		return testResult -> {
+			Object obfuscatedTestResult = testResult;
+			if (testResult instanceof String) {
+				obfuscatedTestResult = obfuscator.apply((String) testResult);
+			}
+			return delegate.serialize(obfuscatedTestResult);
+		};
 	}
 }

@@ -90,8 +90,7 @@ public interface ClassOrderer {
 	 * <pre class="code">
 	 * public void orderClasses(ClassOrdererContext context) {
 	 *     Collections.shuffle(context.getClassDescriptors());
-	 * }
-	 * </pre>
+	 * }</pre>
 	 *
 	 * @param context the {@code ClassOrdererContext} containing the
 	 * {@linkplain ClassDescriptor class descriptors} to order; never {@code null}

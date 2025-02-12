@@ -10,6 +10,7 @@
 
 package org.junit.jupiter.api.condition;
 
+import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 import static org.apiguardian.api.API.Status.STABLE;
 
 import java.lang.annotation.Documented;
@@ -24,7 +25,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 /**
  * {@code @DisabledOnJre} is used to signal that the annotated test class or
  * test method is <em>disabled</em> on one or more specified Java Runtime
- * Environment (JRE) {@linkplain #value versions}.
+ * Environment (JRE) versions.
+ *
+ * <p>Versions can be specified as {@link JRE} enum constants via
+ * {@link #value() value} or as integers via {@link #versions() versions}.
  *
  * <p>When applied at the class level, all test methods within that class
  * will be disabled on the same specified JRE versions.
@@ -82,12 +86,32 @@ import org.junit.jupiter.api.extension.ExtendWith;
 public @interface DisabledOnJre {
 
 	/**
-	 * Java Runtime Environment versions on which the annotated class or
-	 * method should be disabled.
+	 * Java Runtime Environment versions on which the annotated class or method
+	 * should be disabled, specified as {@link JRE} enum constants.
+	 *
+	 * <p>If a {@code JRE} enum constant does not exist for a particular JRE
+	 * version, you can specify the version via {@link #versions() versions}
+	 * instead.
 	 *
 	 * @see JRE
+	 * @see #versions()
 	 */
-	JRE[] value();
+	JRE[] value() default {};
+
+	/**
+	 * Java Runtime Environment versions on which the annotated class or method
+	 * should be disabled, specified as integers.
+	 *
+	 * <p>If a {@code JRE} enum constant exists for a particular JRE version, you
+	 * can specify the version via {@link #value() value} instead.
+	 *
+	 * @since 5.12
+	 * @see #value()
+	 * @see JRE#version()
+	 * @see Runtime.Version#feature()
+	 */
+	@API(status = EXPERIMENTAL, since = "5.12")
+	int[] versions() default {};
 
 	/**
 	 * Custom reason to provide if the test or container is disabled.

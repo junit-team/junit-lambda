@@ -21,7 +21,7 @@ jobs:
 
   verify_reproducibility:
     name: Verify reproducibility
-    runs-on: ubuntu-24.04 # required to get a recent version of `jc`
+    runs-on: ubuntu-latest
     permissions:
       attestations: write # required for build provenance attestation
       id-token: write # required for build provenance attestation
@@ -71,7 +71,7 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
           fetch-depth: 1
       - name: Set up JDK
-        uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4
+        uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4
         with:
           java-version: 21
           distribution: temurin
@@ -212,7 +212,7 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
           fetch-depth: 1
       - name: Set up JDK
-        uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4
+        uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4
         with:
           java-version: 21
           distribution: temurin

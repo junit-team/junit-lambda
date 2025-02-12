@@ -176,6 +176,8 @@ internal class KotlinAssertTimeoutAssertionsTests {
     @Test
     fun `assertTimeout with message supplier and value initialization in lambda`() {
         val value: Int
+
+        @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
         val valueInMessageSupplier: Int
 
         assertTimeout(
@@ -324,6 +326,7 @@ internal class KotlinAssertTimeoutAssertionsTests {
 
     @Test
     fun `assertTimeoutPreemptively with message supplier and value initialization in lambda`() {
+        @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
         val valueInMessageSupplier: Int
 
         assertTimeoutPreemptively(

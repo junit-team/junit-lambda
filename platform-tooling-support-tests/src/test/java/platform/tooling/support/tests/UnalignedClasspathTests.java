@@ -49,7 +49,7 @@ class UnalignedClasspathTests {
 	void verifyErrorMessageForUnalignedClasspath(JRE jre, Path javaHome, @TempDir Path workspace,
 			@FilePrefix("maven") OutputFiles outputFiles) throws Exception {
 		var starter = ProcessStarters.maven(javaHome) //
-				.workingDir(copyToWorkspace(Projects.MAVEN_STARTER, workspace)) //
+				.workingDir(copyToWorkspace(Projects.JUPITER_STARTER, workspace)) //
 				.addArguments(localMavenRepo.toCliArgument(), "-Dmaven.repo=" + MavenRepo.dir()) //
 				.addArguments("-Dsnapshot.repo.url=" + mavenRepoProxy.getBaseUri()) //
 				.addArguments("-Djunit.platform.commons.version=1.11.4").addArguments("--update-snapshots",
@@ -69,7 +69,7 @@ class UnalignedClasspathTests {
 	static Stream<Arguments> javaVersions() {
 		return Stream.concat( //
 			Helper.getJavaHome("8").map(path -> Arguments.of(JRE.JAVA_8, path)).stream(), //
-			Stream.of(Arguments.of(JRE.currentVersion(), currentJdkHome())) //
+			Stream.of(Arguments.of(JRE.currentJre(), currentJdkHome())) //
 		);
 	}
 }

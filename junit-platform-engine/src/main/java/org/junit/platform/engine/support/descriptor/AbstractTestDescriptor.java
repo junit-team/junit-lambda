@@ -13,10 +13,13 @@ package org.junit.platform.engine.support.descriptor;
 import static java.util.Collections.emptySet;
 import static org.apiguardian.api.API.Status.STABLE;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.UnaryOperator;
 
 import org.apiguardian.api.API;
 import org.junit.platform.commons.util.Preconditions;
@@ -145,6 +148,24 @@ public abstract class AbstractTestDescriptor implements TestDescriptor {
 		this.parent.removeChild(this);
 		this.children.forEach(child -> child.setParent(null));
 		this.children.clear();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void orderChildren(UnaryOperator<List<TestDescriptor>> orderer) {
+		Preconditions.notNull(orderer, "orderer must not be null");
+		List<TestDescriptor> suggestedOrder = orderer.apply(new ArrayList<>(this.children));
+		Preconditions.notNull(suggestedOrder, "orderer may not return null");
+
+		Set<? extends TestDescriptor> orderedChildren = new LinkedHashSet<>(suggestedOrder);
+		boolean unmodified = this.children.equals(orderedChildren);
+		Preconditions.condition(unmodified && this.children.size() == suggestedOrder.size(),
+			"orderer may not add or remove test descriptors");
+
+		this.children.clear();
+		this.children.addAll(orderedChildren);
 	}
 
 	@Override

@@ -10,6 +10,8 @@
 
 package org.junit.jupiter.engine.descriptor;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.unmodifiableList;
 import static org.junit.jupiter.api.parallel.ResourceLockTarget.CHILDREN;
 
 import java.util.ArrayDeque;
@@ -76,9 +78,13 @@ interface ResourceLockAware extends TestDescriptor {
 			@Override
 			public Set<ResourceLocksProvider.Lock> apply(ResourceLocksProvider provider) {
 				if (this.enclosingInstanceTypes == null) {
-					this.enclosingInstanceTypes = enclosingInstanceTypesSupplier.get();
+					this.enclosingInstanceTypes = makeUnmodifiable(enclosingInstanceTypesSupplier.get());
 				}
 				return evaluator.apply(provider, this.enclosingInstanceTypes);
+			}
+
+			private <T> List<T> makeUnmodifiable(List<T> list) {
+				return list.isEmpty() ? emptyList() : unmodifiableList(list);
 			}
 		};
 	}

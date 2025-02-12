@@ -254,24 +254,23 @@ additional dependency to the runtime classpath.
 [[running-tests-build-maven]]
 ==== Maven
 
-Starting with https://issues.apache.org/jira/browse/SUREFIRE-1330[version 2.22.0], Maven
-Surefire and Maven Failsafe provide
+Maven Surefire and Maven Failsafe provide
 https://maven.apache.org/surefire/maven-surefire-plugin/examples/junit-platform.html[native support]
 for executing tests on the JUnit Platform. The `pom.xml` file in the
 `{junit5-jupiter-starter-maven}` project demonstrates how to use the Maven Surefire plugin
 and can serve as a starting point for configuring your Maven build.
 
 [WARNING]
-.Use Maven Surefire/Failsafe 3.0.0-M4 or later to avoid interoperability issues
+.Use recent version of Maven Surefire/Failsafe to avoid interoperability issues
 ====
-Maven Surefire/Failsafe 3.0.0-M4
-https://issues.apache.org/jira/browse/SUREFIRE-1585[introduced support] for aligning the
-version of the JUnit Platform Launcher it uses with the JUnit Platform version found on
-the test runtime classpath. Therefore, it is recommended to use version 3.0.0-M4 or later
-to avoid interoperability issues.
+To avoid interoperability issues, it is recommended to use a recent version of Maven
+Surefire/Failsafe (3.0.0 or later) because it automatically aligns the version of the
+JUnit Platform Launcher that is used with the JUnit Platform version found on the test
+runtime classpath.
 
-Alternatively, you can add a test dependency on the matching version of the JUnit Platform
-Launcher to your Maven build as follows.
+If you are using a version older than 3.0.0-M4, you can work around the missing alignment
+by adding a test dependency on the matching version of the JUnit Platform Launcher to your
+Maven build as follows.
 
 [source,xml]
 [subs=attributes+]

@@ -18,6 +18,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 import org.apiguardian.api.API;
@@ -26,12 +31,16 @@ import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
 import org.junit.platform.engine.UniqueId;
 import org.junit.platform.engine.support.descriptor.ClassSource;
+import org.junit.platform.engine.support.hierarchical.OpenTest4JAwareThrowableCollector;
+import org.junit.platform.engine.support.hierarchical.ThrowableCollector;
 import org.junit.runner.Description;
 import org.junit.runner.Request;
 import org.junit.runner.Runner;
 import org.junit.runner.manipulation.Filter;
 import org.junit.runner.manipulation.Filterable;
 import org.junit.runner.manipulation.NoTestsRemainException;
+import org.junit.runners.ParentRunner;
+import org.junit.runners.model.RunnerScheduler;
 
 /**
  * @since 4.12
@@ -159,6 +168,47 @@ public class RunnerTestDescriptor extends VintageTestDescriptor {
 
 	public boolean isIgnored() {
 		return ignored;
+	}
+
+	public void setExecutorService(ExecutorService executorService) {
+		Runner runner = getRunnerToReport();
+		if (runner instanceof ParentRunner) {
+			((ParentRunner<?>) runner).setScheduler(new RunnerScheduler() {
+
+				private final List<Future<?>> futures = new CopyOnWriteArrayList<>();
+
+				@Override
+				public void schedule(Runnable childStatement) {
+					futures.add(executorService.submit(childStatement));
+				}
+
+				@Override
+				public void finished() {
+					ThrowableCollector collector = new OpenTest4JAwareThrowableCollector();
+					AtomicBoolean wasInterrupted = new AtomicBoolean(false);
+					for (Future<?> future : futures) {
+						collector.execute(() -> {
+							// We're calling `Future.get()` individually to allow for work stealing
+							// in case `ExecutorService` is a `ForkJoinPool`
+							try {
+								future.get();
+							}
+							catch (ExecutionException e) {
+								throw e.getCause();
+							}
+							catch (InterruptedException e) {
+								wasInterrupted.set(true);
+							}
+						});
+					}
+					collector.assertEmpty();
+					if (wasInterrupted.get()) {
+						logger.warn(() -> "Interrupted while waiting for runner to finish");
+						Thread.currentThread().interrupt();
+					}
+				}
+			});
+		}
 	}
 
 	private static class ExcludeDescriptionFilter extends Filter {

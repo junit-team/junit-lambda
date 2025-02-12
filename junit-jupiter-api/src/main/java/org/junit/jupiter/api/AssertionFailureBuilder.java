@@ -115,7 +115,7 @@ public class AssertionFailureBuilder {
 	 * failure message.
 	 *
 	 * @param includeValuesInMessage whether to include the actual and expected
-	 *                               values
+	 * values
 	 * @return this builder for method chaining
 	 */
 	public AssertionFailureBuilder includeValuesInMessage(boolean includeValuesInMessage) {

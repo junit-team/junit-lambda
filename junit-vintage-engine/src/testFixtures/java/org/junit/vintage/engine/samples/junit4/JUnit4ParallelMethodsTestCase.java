@@ -24,7 +24,7 @@ import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 
 @RunWith(Enclosed.class)
-public class JUnit4ParallelTestCase {
+public class JUnit4ParallelMethodsTestCase {
 
 	public static class AbstractBlockingTestCase {
 
@@ -40,7 +40,17 @@ public class JUnit4ParallelTestCase {
 		};
 
 		@Test
-		public void test() throws Exception {
+		public void fistTest() throws Exception {
+			countDownAndBlock(countDownLatch);
+		}
+
+		@Test
+		public void secondTest() throws Exception {
+			countDownAndBlock(countDownLatch);
+		}
+
+		@Test
+		public void thirdTest() throws Exception {
 			countDownAndBlock(countDownLatch);
 		}
 
@@ -56,12 +66,12 @@ public class JUnit4ParallelTestCase {
 		}
 	}
 
-	public static class FirstTestCase extends AbstractBlockingTestCase {
+	public static class FirstMethodTestCase extends JUnit4ParallelMethodsTestCase.AbstractBlockingTestCase {
 	}
 
-	public static class SecondTestCase extends AbstractBlockingTestCase {
+	public static class SecondMethodTestCase extends JUnit4ParallelMethodsTestCase.AbstractBlockingTestCase {
 	}
 
-	public static class ThirdTestCase extends AbstractBlockingTestCase {
+	public static class ThirdMethodTestCase extends JUnit4ParallelMethodsTestCase.AbstractBlockingTestCase {
 	}
 }

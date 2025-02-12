@@ -46,6 +46,28 @@ public final class Constants {
 	@API(status = EXPERIMENTAL, since = "5.12")
 	public static final String PARALLEL_POOL_SIZE = "junit.vintage.execution.parallel.pool-size";
 
+	/**
+	 * Indicates whether parallel execution is enabled for test classes in the JUnit Vintage engine.
+	 *
+	 * <p>Set this property to {@code true} to enable parallel execution of test classes.
+	 * Defaults to {@code false}.
+	 *
+	 * @since 5.12
+	 */
+	@API(status = EXPERIMENTAL, since = "5.12")
+	public static final String PARALLEL_CLASS_EXECUTION = "junit.vintage.execution.parallel.classes";
+
+	/**
+	 * Indicates whether parallel execution is enabled for test methods in the JUnit Vintage engine.
+	 *
+	 * <p>Set this property to {@code true} to enable parallel execution of test methods.
+	 * Defaults to {@code false}.
+	 *
+	 * @since 5.12
+	 */
+	@API(status = EXPERIMENTAL, since = "5.12")
+	public static final String PARALLEL_METHOD_EXECUTION = "junit.vintage.execution.parallel.methods";
+
 	private Constants() {
 		/* no-op */
 	}

@@ -21,8 +21,8 @@ import org.junit.platform.launcher.TestPlan;
  * Utility methods for dealing with legacy reporting infrastructure, such as
  * reporting systems built on the Ant-based XML reporting format for JUnit 4.
  *
- * This class was formerly from {@code junit-platform-launcher}
- * in {@link org.junit.platform.launcher.listeners} package.
+ * <p>This class was formerly from {@code junit-platform-launcher} in the
+ * {@link org.junit.platform.launcher.listeners} package.
  *
  * @since 1.0.3
  */
@@ -44,13 +44,14 @@ public final class LegacyReportingUtils {
 	 * {@linkplain TestIdentifier#getLegacyReportingName legacy reporting name}.
 	 *
 	 * @param testPlan the test plan that contains the {@code TestIdentifier};
-	 *                 never {@code null}
+	 * never {@code null}
 	 * @param testIdentifier the identifier to determine the class name for;
-	 *                 never {@code null}
+	 * never {@code null}
 	 * @see TestIdentifier#getLegacyReportingName
 	 */
 	@SuppressWarnings("deprecation")
 	public static String getClassName(TestPlan testPlan, TestIdentifier testIdentifier) {
 		return org.junit.platform.launcher.listeners.LegacyReportingUtils.getClassName(testPlan, testIdentifier);
 	}
+
 }

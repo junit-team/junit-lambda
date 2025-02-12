@@ -47,7 +47,7 @@ in the `junit-jupiter-api` module.
 | `@Disabled`              | Used to <<writing-tests-disabling,disable>> a test class or test method; analogous to JUnit 4's `@Ignore`. Such annotations are not inherited.
 | `@AutoClose`             | Denotes that the annotated field represents a resource that will be <<writing-tests-built-in-extensions-AutoClose,automatically closed>> after test execution.
 | `@Timeout`               | Used to fail a test, test factory, test template, or lifecycle method if its execution exceeds a given duration. Such annotations are inherited.
-| `@TempDir`               | Used to supply a <<writing-tests-built-in-extensions-TempDirectory,temporary directory>> via field injection or parameter injection in a lifecycle method or test method; located in the `org.junit.jupiter.api.io` package.  Such fields are inherited.
+| `@TempDir`               | Used to supply a <<writing-tests-built-in-extensions-TempDirectory,temporary directory>> via field injection or parameter injection in a test class constructor, lifecycle method, or test method; located in the `org.junit.jupiter.api.io` package. Such fields are inherited.
 | `@ExtendWith`            | Used to <<extensions-registration-declarative,register extensions declaratively>>. Such annotations are inherited.
 | `@RegisterExtension`     | Used to <<extensions-registration-programmatic,register extensions programmatically>> via fields. Such fields are inherited.
 |===
@@ -646,16 +646,34 @@ include::{testDir}/example/ConditionalTestExecutionDemo.java[tags=user_guide_arc
 [[writing-tests-conditional-execution-jre]]
 ==== Java Runtime Environment Conditions
 
-A container or test may be enabled or disabled on particular versions of the Java
-Runtime Environment (JRE) via the `{EnabledOnJre}` and `{DisabledOnJre}` annotations
-or on a particular range of versions of the JRE via the `{EnabledForJreRange}` and
-`{DisabledForJreRange}` annotations. The range defaults to `{JRE}.JAVA_8` as the lower
-border (`min`) and `{JRE}.OTHER` as the higher border (`max`), which allows usage of
-half open ranges.
+A container or test may be enabled or disabled on particular versions of the Java Runtime
+Environment (JRE) via the `{EnabledOnJre}` and `{DisabledOnJre}` annotations or on a
+particular range of versions of the JRE via the `{EnabledForJreRange}` and
+`{DisabledForJreRange}` annotations. The range effectively defaults to `JRE.JAVA_8` as the
+lower bound and `JRE.OTHER` as the upper bound, which allows usage of half open ranges.
+
+The following listing demonstrates the use of these annotations with predefined {JRE} enum
+constants.
 
 [source,java,indent=0]
 ----
 include::{testDir}/example/ConditionalTestExecutionDemo.java[tags=user_guide_jre]
+----
+
+Since the enum constants defined in {JRE} are static for any given JUnit release, you
+might find that you need to configure a Java version that is not supported by the `JRE`
+enum. For example, as of JUnit Jupiter 5.12 the `JRE` enum defines `JAVA_25` as the
+highest supported Java version. However, you may wish to run your tests against later
+versions of Java. To support such use cases, you can specify arbitrary Java versions via
+the `versions` attributes in `@EnabledOnJre` and `@DisabledOnJre` and via the `minVersion`
+and `maxVersion` attributes in `@EnabledForJreRange` and `@DisabledForJreRange`.
+
+The following listing demonstrates the use of these annotations with arbitrary Java
+versions.
+
+[source,java,indent=0]
+----
+include::{testDir}/example/ConditionalTestExecutionDemo.java[tags=user_guide_jre_arbitrary_versions]
 ----
 
 [[writing-tests-conditional-execution-native]]
@@ -3128,9 +3146,9 @@ include::{testDir}/example/TempDirectoryDemo.java[tags=user_guide_field_injectio
 ----
 
 The `@TempDir` annotation has an optional `cleanup` attribute that can be set to either
-`NEVER`, `ON_SUCCESS`, or `ALWAYS`. If the cleanup mode is set to `NEVER`, temporary
-directories are not deleted after a test completes. If it is set to `ON_SUCCESS`,
-temporary directories are deleted only after a test completed successfully.
+`NEVER`, `ON_SUCCESS`, or `ALWAYS`. If the cleanup mode is set to `NEVER`, the temporary
+directory will not be deleted after the test completes. If it is set to `ON_SUCCESS`, the
+temporary directory will only be deleted after the test if the test completed successfully.
 
 The default cleanup mode is `ALWAYS`. You can use the
 `junit.jupiter.tempdir.cleanup.mode.default`
@@ -3166,7 +3184,7 @@ prefix instead of the `junit` constant value.
 include::{testDir}/example/TempDirectoryDemo.java[tags=user_guide_factory_name_prefix]
 ----
 
-It's also possible to use an in-memory file system like `{Jimfs}` for the creation of the
+It is also possible to use an in-memory file system like `{Jimfs}` for the creation of the
 temporary directory. The following example demonstrates how to achieve that.
 
 [source,java,indent=0]
@@ -3197,18 +3215,17 @@ include::{testDir}/example/TempDirectoryDemo.java[tags=user_guide_composed_annot
 Meta-annotations or additional annotations on the field or parameter the `TempDir`
 annotation is declared on might expose additional attributes to configure the factory.
 Such annotations and related attributes can be accessed via the `AnnotatedElementContext`
-parameter of `createTempDirectory`.
+parameter of the `createTempDirectory(...)` method.
 
-You can use the `junit.jupiter.tempdir.factory.default`
-<<running-tests-config-params, configuration parameter>> to specify the fully qualified
-class name of the `TempDirFactory` you would like to use by default. Just like for
-factories configured via the `factory` attribute of the `@TempDir` annotation,
-the supplied class has to implement the `TempDirFactory` interface. The default factory
-will be used for all `@TempDir` annotations unless the `factory` attribute of the
-annotation specifies a different factory.
+You can use the `junit.jupiter.tempdir.factory.default` <<running-tests-config-params,
+configuration parameter>> to specify the fully qualified class name of the
+`TempDirFactory` you would like to use by default. Just like for factories configured via
+the `factory` attribute of the `@TempDir` annotation, the supplied class has to implement
+the `TempDirFactory` interface. The default factory will be used for all `@TempDir`
+annotations unless the `factory` attribute of the annotation specifies a different factory.
 
-In summary, the factory for a temporary directory is determined according to the
-following precedence rules:
+In summary, the factory for a temporary directory is determined according to the following
+precedence rules:
 
 1. The `factory` attribute of the `@TempDir` annotation, if present
 2. The default `TempDirFactory` configured via the configuration

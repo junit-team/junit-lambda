@@ -11,6 +11,7 @@
 		<Logger name="org.junit.jupiter.engine" level="off" />
 		<Logger name="org.junit.platform.launcher.listeners.discovery.LoggingLauncherDiscoveryListener" level="off" />
 		<Logger name="org.junit.jupiter.engine.extension.MutableExtensionRegistry" level="off" />
+		<Logger name="org.junit.jupiter.engine.extension.TempDirectory$CloseablePath" level="off" />
 		<Root level="error">
 			<AppenderRef ref="Console" />
 		</Root>

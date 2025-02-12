@@ -32,7 +32,7 @@ import org.junit.platform.engine.UniqueId;
  *
  * @since 1.0
  */
-class AbstractTestDescriptorTests {
+class AbstractTestDescriptorTests implements TestDescriptorOrderChildrenTests {
 
 	private EngineDescriptor engineDescriptor;
 	private GroupDescriptor group1;
@@ -56,6 +56,11 @@ class AbstractTestDescriptorTests {
 
 		leaf111 = new LeafDescriptor(UniqueId.root("leaf", "leaf11-1"));
 		group11.addChild(leaf111);
+	}
+
+	@Override
+	public TestDescriptor createEmptyTestDescriptor() {
+		return new GroupDescriptor(UniqueId.root("group", "1"));
 	}
 
 	@Test

@@ -51,7 +51,7 @@ class JavaVersionsTests {
 
 	@Test
 	void java_default(@FilePrefix("maven") OutputFiles outputFiles) throws Exception {
-		var actualLines = execute(currentJdkHome(), outputFiles, MavenEnvVars.forJre(JRE.currentVersion()));
+		var actualLines = execute(currentJdkHome(), outputFiles, MavenEnvVars.forJre(JRE.currentJre()));
 
 		assertTrue(actualLines.contains("[WARNING] Tests run: 2, Failures: 0, Errors: 0, Skipped: 1"));
 	}

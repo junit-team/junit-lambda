@@ -374,11 +374,11 @@ public interface ExtensionContext {
 	 * The file will be resolved in the report output directory prior to
 	 * invoking the supplied action.
 	 *
-	 * @param name      the name of the file to be attached; never {@code null}
-	 *                  or blank and must not contain any path separators
+	 * @param name the name of the file to be attached; never {@code null} or
+	 * blank and must not contain any path separators
 	 * @param mediaType the media type of the file; never {@code null}; use
-	 *                  {@link MediaType#APPLICATION_OCTET_STREAM} if unknown
-	 * @param action    the action to be executed to write the file; never {@code null}
+	 * {@link MediaType#APPLICATION_OCTET_STREAM} if unknown
+	 * @param action the action to be executed to write the file; never {@code null}
 	 * @since 5.12
 	 * @see org.junit.platform.engine.EngineExecutionListener#fileEntryPublished
 	 */
@@ -392,8 +392,8 @@ public interface ExtensionContext {
 	 * The directory will be resolved and created in the report output directory
 	 * prior to invoking the supplied action.
 	 *
-	 * @param name   the name of the directory to be attached; never {@code null}
-	 *               or blank and must not contain any path separators
+	 * @param name the name of the directory to be attached; never {@code null}
+	 * or blank and must not contain any path separators
 	 * @param action the action to be executed to write the file; never {@code null}
 	 * @since 5.12
 	 * @see org.junit.platform.engine.EngineExecutionListener#fileEntryPublished

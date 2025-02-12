@@ -62,8 +62,7 @@ import org.junit.jupiter.api.parallel.Execution;
  *     {@literal @}Test
  *     {@literal @}Order(3)
  *     void validValues() {}
- * }
- * </pre>
+ * }</pre>
  *
  * <h2>Parallel Execution</h2>
  * <p>Using a {@link MethodOrderer} disables parallel execution unless the test

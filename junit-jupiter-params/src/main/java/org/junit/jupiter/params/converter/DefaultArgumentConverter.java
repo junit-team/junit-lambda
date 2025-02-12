@@ -78,7 +78,7 @@ public class DefaultArgumentConverter implements ArgumentConverter {
 			Class<?> declaringClass = context.getDeclaringExecutable().getDeclaringClass();
 			ClassLoader classLoader = ClassLoaderUtils.getClassLoader(declaringClass);
 			try {
-				return ConversionSupport.convert((String) source, targetType, classLoader);
+				return convert((String) source, targetType, classLoader);
 			}
 			catch (ConversionException ex) {
 				throw new ArgumentConversionException(ex.getMessage(), ex);
@@ -88,6 +88,10 @@ public class DefaultArgumentConverter implements ArgumentConverter {
 		throw new ArgumentConversionException(
 			String.format("No built-in converter for source type %s and target type %s",
 				source.getClass().getTypeName(), targetType.getTypeName()));
+	}
+
+	Object convert(String source, Class<?> targetType, ClassLoader classLoader) {
+		return ConversionSupport.convert(source, targetType, classLoader);
 	}
 
 }

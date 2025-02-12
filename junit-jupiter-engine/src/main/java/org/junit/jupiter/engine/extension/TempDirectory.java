@@ -11,6 +11,7 @@
 package org.junit.jupiter.engine.extension;
 
 import static java.nio.file.FileVisitResult.CONTINUE;
+import static java.nio.file.FileVisitResult.SKIP_SUBTREE;
 import static java.util.stream.Collectors.joining;
 import static org.junit.jupiter.api.extension.TestInstantiationAwareExtension.ExtensionContextScope.TEST_METHOD;
 import static org.junit.jupiter.api.io.CleanupMode.DEFAULT;
@@ -24,12 +25,15 @@ import static org.junit.platform.commons.util.ReflectionUtils.isRecordObject;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;
 import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -63,30 +67,32 @@ import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
 import org.junit.platform.commons.support.ModifierSupport;
 import org.junit.platform.commons.support.ReflectionSupport;
+import org.junit.platform.commons.util.ClassUtils;
 import org.junit.platform.commons.util.ExceptionUtils;
 import org.junit.platform.commons.util.Preconditions;
 import org.junit.platform.commons.util.ToStringBuilder;
 
 /**
  * {@code TempDirectory} is a JUnit Jupiter extension that creates and cleans
- * up temporary directories if field in a test class or a parameter in a
- * lifecycle method or test method is annotated with {@code @TempDir}.
+ * up temporary directories if a field in a test class or a parameter in a
+ * test class constructor, lifecycle method, or test method is annotated with
+ * {@code @TempDir}.
  *
  * <p>Consult the Javadoc for {@link TempDir} for details on the contract.
  *
  * @since 5.4
- * @see TempDir
+ * @see TempDir @TempDir
  * @see Files#createTempDirectory
  */
 class TempDirectory implements BeforeAllCallback, BeforeEachCallback, ParameterResolver {
 
+	// package-private for testing purposes
 	static final Namespace NAMESPACE = Namespace.create(TempDirectory.class);
+	static final String FILE_OPERATIONS_KEY = "file.operations";
+
 	private static final String KEY = "temp.dir";
 	private static final String FAILURE_TRACKER = "failure.tracker";
 	private static final String CHILD_FAILED = "child.failed";
-
-	// for testing purposes
-	static final String FILE_OPERATIONS_KEY = "file.operations";
 
 	private final JupiterConfiguration configuration;
 
@@ -124,9 +130,9 @@ class TempDirectory implements BeforeAllCallback, BeforeEachCallback, ParameterR
 
 	private static void installFailureTracker(ExtensionContext context) {
 		context.getStore(NAMESPACE).put(FAILURE_TRACKER, (CloseableResource) () -> context.getParent() //
-				.ifPresent(it -> {
+				.ifPresent(parentContext -> {
 					if (selfOrChildFailed(context)) {
-						it.getStore(NAMESPACE).put(CHILD_FAILED, true);
+						parentContext.getStore(NAMESPACE).put(CHILD_FAILED, true);
 					}
 				}));
 	}
@@ -239,21 +245,22 @@ class TempDirectory implements BeforeAllCallback, BeforeEachCallback, ParameterR
 				: ReflectionSupport.newInstance(factory);
 	}
 
-	private void assertNonFinalField(Field field) {
+	private static void assertNonFinalField(Field field) {
 		if (ModifierSupport.isFinal(field)) {
 			throw new ExtensionConfigurationException("@TempDir field [" + field + "] must not be declared as final.");
 		}
 	}
 
-	private void assertSupportedType(String target, Class<?> type) {
+	private static void assertSupportedType(String target, Class<?> type) {
 		if (type != Path.class && type != File.class) {
 			throw new ExtensionConfigurationException("Can only resolve @TempDir " + target + " of type "
 					+ Path.class.getName() + " or " + File.class.getName() + " but was: " + type.getName());
 		}
 	}
 
-	private Object getPathOrFile(Class<?> elementType, AnnotatedElementContext elementContext, TempDirFactory factory,
-			CleanupMode cleanupMode, Scope scope, ExtensionContext extensionContext) {
+	private static Object getPathOrFile(Class<?> elementType, AnnotatedElementContext elementContext,
+			TempDirFactory factory, CleanupMode cleanupMode, Scope scope, ExtensionContext extensionContext) {
+
 		Namespace namespace = scope == Scope.PER_DECLARATION //
 				? NAMESPACE.append(elementContext) //
 				: NAMESPACE;
@@ -268,6 +275,7 @@ class TempDirectory implements BeforeAllCallback, BeforeEachCallback, ParameterR
 
 	static CloseablePath createTempDir(TempDirFactory factory, CleanupMode cleanupMode, Class<?> elementType,
 			AnnotatedElementContext elementContext, ExtensionContext extensionContext) {
+
 		try {
 			return new CloseablePath(factory, cleanupMode, elementType, elementContext, extensionContext);
 		}
@@ -283,11 +291,12 @@ class TempDirectory implements BeforeAllCallback, BeforeEachCallback, ParameterR
 
 	static class CloseablePath implements CloseableResource {
 
-		private static final Logger logger = LoggerFactory.getLogger(CloseablePath.class);
+		private static final Logger LOGGER = LoggerFactory.getLogger(CloseablePath.class);
 
 		private final Path dir;
 		private final TempDirFactory factory;
 		private final CleanupMode cleanupMode;
+		private final AnnotatedElement annotatedElement;
 		private final ExtensionContext extensionContext;
 
 		private CloseablePath(TempDirFactory factory, CleanupMode cleanupMode, Class<?> elementType,
@@ -295,14 +304,15 @@ class TempDirectory implements BeforeAllCallback, BeforeEachCallback, ParameterR
 			this.dir = factory.createTempDirectory(elementContext, extensionContext);
 			this.factory = factory;
 			this.cleanupMode = cleanupMode;
+			this.annotatedElement = elementContext.getAnnotatedElement();
 			this.extensionContext = extensionContext;
 
-			if (dir == null || !Files.isDirectory(dir)) {
+			if (this.dir == null || !Files.isDirectory(this.dir)) {
 				close();
 				throw new PreconditionViolationException("temp directory must be a directory");
 			}
 
-			if (elementType == File.class && !dir.getFileSystem().equals(FileSystems.getDefault())) {
+			if (elementType == File.class && !this.dir.getFileSystem().equals(FileSystems.getDefault())) {
 				close();
 				throw new PreconditionViolationException(
 					"temp directory with non-default file system cannot be injected into " + File.class.getName()
@@ -311,44 +321,95 @@ class TempDirectory implements BeforeAllCallback, BeforeEachCallback, ParameterR
 		}
 
 		Path get() {
-			return dir;
+			return this.dir;
 		}
 
 		@Override
 		public void close() throws IOException {
 			try {
-				if (cleanupMode == NEVER || (cleanupMode == ON_SUCCESS && selfOrChildFailed(extensionContext))) {
-					logger.info(() -> "Skipping cleanup of temp dir " + dir + " due to cleanup mode configuration.");
+				if (this.cleanupMode == NEVER
+						|| (this.cleanupMode == ON_SUCCESS && selfOrChildFailed(this.extensionContext))) {
+					LOGGER.info(() -> String.format("Skipping cleanup of temp dir %s for %s due to CleanupMode.%s.",
+						this.dir, descriptionFor(this.annotatedElement), this.cleanupMode.name()));
 					return;
 				}
 
-				FileOperations fileOperations = extensionContext.getStore(NAMESPACE) //
+				FileOperations fileOperations = this.extensionContext.getStore(NAMESPACE) //
 						.getOrDefault(FILE_OPERATIONS_KEY, FileOperations.class, FileOperations.DEFAULT);
+				FileOperations loggingFileOperations = file -> {
+					LOGGER.trace(() -> "Attempting to delete " + file);
+					try {
+						fileOperations.delete(file);
+						LOGGER.trace(() -> "Successfully deleted " + file);
+					}
+					catch (IOException e) {
+						LOGGER.trace(e, () -> "Failed to delete " + file);
+						throw e;
+					}
+				};
 
-				SortedMap<Path, IOException> failures = deleteAllFilesAndDirectories(fileOperations);
+				LOGGER.trace(() -> "Cleaning up temp dir " + this.dir);
+				SortedMap<Path, IOException> failures = deleteAllFilesAndDirectories(loggingFileOperations);
 				if (!failures.isEmpty()) {
 					throw createIOExceptionWithAttachedFailures(failures);
 				}
 			}
 			finally {
-				factory.close();
+				this.factory.close();
 			}
+		}
+
+		/**
+		 * @since 5.12
+		 */
+		private static String descriptionFor(AnnotatedElement annotatedElement) {
+			if (annotatedElement instanceof Field) {
+				Field field = (Field) annotatedElement;
+				return "field " + field.getDeclaringClass().getSimpleName() + "." + field.getName();
+			}
+			if (annotatedElement instanceof Parameter) {
+				Parameter parameter = (Parameter) annotatedElement;
+				Executable executable = parameter.getDeclaringExecutable();
+				return "parameter '" + parameter.getName() + "' in " + descriptionFor(executable);
+			}
+			throw new IllegalStateException("Unsupported AnnotatedElement type for @TempDir: " + annotatedElement);
+		}
+
+		/**
+		 * @since 5.12
+		 */
+		private static String descriptionFor(Executable executable) {
+			boolean isConstructor = executable instanceof Constructor<?>;
+			String type = isConstructor ? "constructor" : "method";
+			String name = isConstructor ? executable.getDeclaringClass().getSimpleName() : executable.getName();
+			return String.format("%s %s(%s)", type, name,
+				ClassUtils.nullSafeToString(Class::getSimpleName, executable.getParameterTypes()));
 		}
 
 		private SortedMap<Path, IOException> deleteAllFilesAndDirectories(FileOperations fileOperations)
 				throws IOException {
-			if (dir == null || Files.notExists(dir)) {
+
+			Path rootDir = this.dir;
+			if (rootDir == null || Files.notExists(rootDir)) {
 				return Collections.emptySortedMap();
 			}
 
 			SortedMap<Path, IOException> failures = new TreeMap<>();
 			Set<Path> retriedPaths = new HashSet<>();
-			tryToResetPermissions(dir);
-			Files.walkFileTree(dir, new SimpleFileVisitor<Path>() {
+			Path rootRealPath = rootDir.toRealPath();
+
+			tryToResetPermissions(rootDir);
+			Files.walkFileTree(rootDir, new SimpleFileVisitor<Path>() {
 
 				@Override
-				public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
-					if (!dir.equals(CloseablePath.this.dir)) {
+				public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+					LOGGER.trace(() -> "preVisitDirectory: " + dir);
+					if (isLinkWithTargetOutsideTempDir(dir)) {
+						warnAboutLinkWithTargetOutsideTempDir("link", dir);
+						delete(dir);
+						return SKIP_SUBTREE;
+					}
+					if (!dir.equals(rootDir)) {
 						tryToResetPermissions(dir);
 					}
 					return CONTINUE;
@@ -356,7 +417,8 @@ class TempDirectory implements BeforeAllCallback, BeforeEachCallback, ParameterR
 
 				@Override
 				public FileVisitResult visitFileFailed(Path file, IOException exc) {
-					if (exc instanceof NoSuchFileException) {
+					LOGGER.trace(exc, () -> "visitFileFailed: " + file);
+					if (exc instanceof NoSuchFileException && !Files.exists(file, LinkOption.NOFOLLOW_LINKS)) {
 						return CONTINUE;
 					}
 					// IOException includes `AccessDeniedException` thrown by non-readable or non-executable flags
@@ -365,16 +427,44 @@ class TempDirectory implements BeforeAllCallback, BeforeEachCallback, ParameterR
 				}
 
 				@Override
-				public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) {
-					return deleteAndContinue(file);
+				public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
+					LOGGER.trace(() -> "visitFile: " + file);
+					if (Files.isSymbolicLink(file) && isLinkWithTargetOutsideTempDir(file)) {
+						warnAboutLinkWithTargetOutsideTempDir("symbolic link", file);
+					}
+					delete(file);
+					return CONTINUE;
 				}
 
 				@Override
 				public FileVisitResult postVisitDirectory(Path dir, IOException exc) {
-					return deleteAndContinue(dir);
+					LOGGER.trace(exc, () -> "postVisitDirectory: " + dir);
+					delete(dir);
+					return CONTINUE;
 				}
 
-				private FileVisitResult deleteAndContinue(Path path) {
+				private boolean isLinkWithTargetOutsideTempDir(Path path) {
+					// While `Files.walkFileTree` does not follow symbolic links, it may follow other links
+					// such as "junctions" on Windows
+					try {
+						return !path.toRealPath().startsWith(rootRealPath);
+					}
+					catch (IOException e) {
+						LOGGER.trace(e,
+							() -> "Failed to determine real path for " + path + "; assuming it is not a link");
+						return false;
+					}
+				}
+
+				private void warnAboutLinkWithTargetOutsideTempDir(String linkType, Path file) throws IOException {
+					Path realPath = file.toRealPath();
+					LOGGER.warn(() -> String.format(
+						"Deleting %s from location inside of temp dir (%s) "
+								+ "to location outside of temp dir (%s) but not the target file/directory",
+						linkType, file, realPath));
+				}
+
+				private void delete(Path path) {
 					try {
 						fileOperations.delete(path);
 					}
@@ -388,7 +478,6 @@ class TempDirectory implements BeforeAllCallback, BeforeEachCallback, ParameterR
 						// IOException includes `AccessDeniedException` thrown by non-readable or non-executable flags
 						resetPermissionsAndTryToDeleteAgain(path, exception);
 					}
-					return CONTINUE;
 				}
 
 				private void resetPermissionsAndTryToDeleteAgain(Path path, IOException exception) {
@@ -449,7 +538,7 @@ class TempDirectory implements BeforeAllCallback, BeforeEachCallback, ParameterR
 					.map(this::relativizeSafely) //
 					.map(path -> emptyPath.equals(path) ? "<root>" : path.toString()) //
 					.collect(joining(", "));
-			IOException exception = new IOException("Failed to delete temp directory " + dir.toAbsolutePath()
+			IOException exception = new IOException("Failed to delete temp directory " + this.dir.toAbsolutePath()
 					+ ". The following paths could not be deleted (see suppressed exceptions for details): "
 					+ joinedPaths);
 			failures.values().forEach(exception::addSuppressed);
@@ -467,7 +556,7 @@ class TempDirectory implements BeforeAllCallback, BeforeEachCallback, ParameterR
 
 		private Path relativizeSafely(Path path) {
 			try {
-				return dir.relativize(path);
+				return this.dir.relativize(path);
 			}
 			catch (IllegalArgumentException e) {
 				return path;
