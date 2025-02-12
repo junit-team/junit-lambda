@@ -427,6 +427,7 @@ public interface ExtensionContext {
 	 * @return the store for session-level data
 	 * @since 5.13
 	 */
+	@API(status = EXPERIMENTAL, since = "5.13")
 	Store getSessionLevelStore();
 
 	/**
