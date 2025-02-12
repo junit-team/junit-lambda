@@ -20,7 +20,7 @@ import java.util.List;
 import org.apiguardian.api.API;
 import org.junit.platform.commons.util.Preconditions;
 
-@API(status = STABLE, since = "5.13")
+@API(status = EXPERIMENTAL, since = "5.13")
 public class Namespace {
 
 	/**
