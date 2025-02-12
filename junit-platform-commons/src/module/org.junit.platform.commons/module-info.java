@@ -53,5 +53,6 @@ module org.junit.platform.commons {
 			org.junit.platform.suite.engine,
 			org.junit.platform.testkit,
 			org.junit.vintage.engine;
+	uses org.junit.platform.commons.support.conversion.ConversionService;
 	uses org.junit.platform.commons.support.scanning.ClasspathScanner;
 }

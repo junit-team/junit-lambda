@@ -46,6 +46,9 @@ public abstract class TypedArgumentConverter<S, T> implements ArgumentConverter 
 		this.targetType = Preconditions.notNull(targetType, "targetType must not be null");
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final Object convert(Object source, ParameterContext context) throws ArgumentConversionException {
 		if (source == null) {
