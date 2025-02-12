@@ -51,11 +51,19 @@ class TestConsoleOutputOptionsMixin {
 		@Option(names = "-details-theme", hidden = true)
 		private final Theme theme2 = DEFAULT_THEME;
 
+		@Option(names = "--redirect-stdout", paramLabel = "FILE", description = "Redirect tests stdout to a file.")
+		private Path stdout;
+
+		@Option(names = "--redirect-stderr", paramLabel = "FILE", description = "Redirect tests stderr to a file.")
+		private Path stderr;
+
 		private void applyTo(TestConsoleOutputOptions result) {
 			result.setColorPalettePath(choose(colorPalette, colorPalette2, null));
 			result.setSingleColorPalette(singleColorPalette || singleColorPalette2);
 			result.setDetails(choose(details, details2, DEFAULT_DETAILS));
 			result.setTheme(choose(theme, theme2, DEFAULT_THEME));
+			result.setStdoutPath(stdout);
+			result.setStderrPath(stderr);
 		}
 	}
 

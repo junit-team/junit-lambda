@@ -1,0 +1,71 @@
+[[release-notes-5.12.0-RC2]]
+== 5.12.0-RC2
+
+*Date of Release:* February 14, 2025
+
+*Scope:* Minor enhancements since JUnit 5.12.0-RC1.
+
+For a complete list of all _closed_ issues and pull requests for this release, consult the
+link:{junit5-repo}+/milestone/90?closed=1+[5.12.0-RC2] milestone page in the JUnit
+repository on GitHub.
+
+
+[[release-notes-5.12.0-RC2-junit-platform]]
+=== JUnit Platform
+
+[[release-notes-5.12.0-RC2-junit-platform-bug-fixes]]
+==== Bug Fixes
+
+* ❓
+
+[[release-notes-5.12.0-RC2-junit-platform-deprecations-and-breaking-changes]]
+==== Deprecations and Breaking Changes
+
+* ❓
+
+[[release-notes-5.12.0-RC2-junit-platform-new-features-and-improvements]]
+==== New Features and Improvements
+
+* ❓
+
+
+[[release-notes-5.12.0-RC2-junit-jupiter]]
+=== JUnit Jupiter
+
+[[release-notes-5.12.0-RC2-junit-jupiter-bug-fixes]]
+==== Bug Fixes
+
+* ❓
+
+[[release-notes-5.12.0-RC2-junit-jupiter-deprecations-and-breaking-changes]]
+==== Deprecations and Breaking Changes
+
+* ❓
+
+[[release-notes-5.12.0-RC2-junit-jupiter-new-features-and-improvements]]
+==== New Features and Improvements
+
+* The `@TempDir` now warns when deleting symlinks that target locations outside the
+  temporary directory to signal that the target file or directory is _not_ deleted, only
+  the link to it.
+* New optional CLI options `--redirect-stdout` and `--redirect-stderr` to redirect stdout and stderr outputs to a file.
+
+[[release-notes-5.12.0-RC2-junit-vintage]]
+=== JUnit Vintage
+
+[[release-notes-5.12.0-RC2-junit-vintage-bug-fixes]]
+==== Bug Fixes
+
+* ❓
+
+[[release-notes-5.12.0-RC2-junit-vintage-deprecations-and-breaking-changes]]
+==== Deprecations and Breaking Changes
+
+* ❓
+
+[[release-notes-5.12.0-RC2-junit-vintage-new-features-and-improvements]]
+==== New Features and Improvements
+
+* Support for executing test methods in parallel. Please refer to the
+  <<../user-guide/index.adoc#migrating-from-junit4-parallel-execution, User Guide>> for
+  more information.

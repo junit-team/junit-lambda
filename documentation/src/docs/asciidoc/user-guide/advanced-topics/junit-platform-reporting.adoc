@@ -154,6 +154,15 @@ $ java -jar junit-platform-console-standalone-{platform-version}.jar <OPTIONS> \
   --config-resource=configuration.properties
 ----
 
+You can redirect standard output and standard error using the --redirect-stdout and --redirect-stderr options:
+
+[source,console,subs=attributes+]
+----
+$ java -jar junit-platform-console-standalone-{platform-version}.jar <OPTIONS> \
+  --redirect-stdout=foo.txt
+  --redirect-stderr=bar.txt
+----
+
 [[junit-platform-reporting-legacy-xml]]
 ==== Legacy XML format
 
