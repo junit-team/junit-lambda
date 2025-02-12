@@ -11,10 +11,11 @@
 package org.junit.platform.launcher.core;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.junit.platform.commons.PreconditionViolationException;
-import org.junit.platform.engine.Namespace;
+import org.junit.platform.engine.support.store.Namespace;
 import org.junit.platform.engine.support.store.NamespacedHierarchicalStore;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryListener;
@@ -53,7 +54,7 @@ class DefaultLauncherSession implements LauncherSession {
 		Launcher launcher;
 		if (interceptor == NOOP_INTERCEPTOR) {
 			this.listener = listenerSupplier.get();
-			launcher = launcherSupplier.get();
+			launcher = launcherFactory.apply(store);
 		}
 		else {
 			this.listener = interceptor.intercept(listenerSupplier::get);

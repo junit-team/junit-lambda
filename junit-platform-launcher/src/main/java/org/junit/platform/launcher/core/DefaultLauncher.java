@@ -17,8 +17,8 @@ import static org.junit.platform.launcher.core.EngineDiscoveryOrchestrator.Phase
 import java.util.Collection;
 
 import org.junit.platform.commons.util.Preconditions;
-import org.junit.platform.engine.Namespace;
 import org.junit.platform.engine.TestEngine;
+import org.junit.platform.engine.support.store.Namespace;
 import org.junit.platform.engine.support.store.NamespacedHierarchicalStore;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryListener;

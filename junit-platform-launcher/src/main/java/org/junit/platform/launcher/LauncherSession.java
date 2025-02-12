@@ -13,7 +13,7 @@ package org.junit.platform.launcher;
 import static org.apiguardian.api.API.Status.STABLE;
 
 import org.apiguardian.api.API;
-import org.junit.platform.engine.Namespace;
+import org.junit.platform.engine.support.store.Namespace;
 import org.junit.platform.engine.support.store.NamespacedHierarchicalStore;
 import org.junit.platform.launcher.core.LauncherFactory;
 
