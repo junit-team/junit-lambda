@@ -1,0 +1,30 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="https://schemas.junit.org/open-test-reporting"
+           elementFormDefault="qualified">
+
+    <!-- metadata -->
+    <xs:element name="uniqueId">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string"/>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="legacyReportingName">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string"/>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="type">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="TEST"/>
+                <xs:enumeration value="CONTAINER"/>
+                <xs:enumeration value="CONTAINER_AND_TEST"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+</xs:schema>
