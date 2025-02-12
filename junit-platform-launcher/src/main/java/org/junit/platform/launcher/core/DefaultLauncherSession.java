@@ -48,7 +48,7 @@ class DefaultLauncherSession implements LauncherSession {
 	private final NamespacedHierarchicalStore<Namespace> store;
 
 	DefaultLauncherSession(List<LauncherInterceptor> interceptors, Supplier<LauncherSessionListener> listenerSupplier,
-			Supplier<Launcher> launcherSupplier) {
+			Function<NamespacedHierarchicalStore<Namespace>, Launcher> launcherFactory) {
 		interceptor = composite(interceptors);
 		Launcher launcher;
 		if (interceptor == NOOP_INTERCEPTOR) {
