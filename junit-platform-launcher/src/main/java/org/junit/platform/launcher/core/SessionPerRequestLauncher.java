@@ -73,7 +73,7 @@ class SessionPerRequestLauncher implements Launcher {
 
 	private LauncherSession createSession() {
 		LauncherSession session = new DefaultLauncherSession(interceptorFactory.get(), sessionListenerSupplier,
-			launcherSupplier);
+			launcherFactory -> launcherSupplier.get());
 		Launcher launcher = session.getLauncher();
 		listenerRegistry.launcherDiscoveryListeners.getListeners().forEach(
 			launcher::registerLauncherDiscoveryListeners);

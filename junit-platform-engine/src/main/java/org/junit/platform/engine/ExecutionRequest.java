@@ -42,7 +42,6 @@ public class ExecutionRequest {
 	private final EngineExecutionListener engineExecutionListener;
 	private final ConfigurationParameters configurationParameters;
 	private final OutputDirectoryProvider outputDirectoryProvider;
-	// TODO[#4252] get store from constructor
 	private final NamespacedHierarchicalStore<Namespace> store = new NamespacedHierarchicalStore<>(null);
 
 	@Deprecated
