@@ -104,12 +104,16 @@ public class ConsoleTestExecutor {
 		Launcher launcher = launcherSupplier.get();
 		SummaryGeneratingListener summaryListener = registerListeners(out, reportsDir, launcher);
 
-		redirectStdStreams(outputOptions.getStdoutPath(), outputOptions.getStderrPath());
-
-		LauncherDiscoveryRequestBuilder discoveryRequestBuilder = toDiscoveryRequestBuilder(discoveryOptions);
-		reportsDir.ifPresent(dir -> discoveryRequestBuilder.configurationParameter(OUTPUT_DIR_PROPERTY_NAME,
-			dir.toAbsolutePath().toString()));
-		launcher.execute(discoveryRequestBuilder.build());
+		PrintStream originalOut = System.out;
+		PrintStream originalErr = System.err;
+		try {
+			redirectStdStreams(outputOptions.getStdoutPath(), outputOptions.getStderrPath());
+			launchTests(launcher, reportsDir);
+		}
+		finally {
+			System.setOut(originalOut);
+			System.setErr(originalErr);
+		}
 
 		TestExecutionSummary summary = summaryListener.getSummary();
 		if (summary.getTotalFailureCount() > 0 || outputOptions.getDetails() != Details.NONE) {
@@ -117,6 +121,13 @@ public class ConsoleTestExecutor {
 		}
 
 		return summary;
+	}
+
+	private void launchTests(Launcher launcher, Optional<Path> reportsDir) {
+		LauncherDiscoveryRequestBuilder discoveryRequestBuilder = toDiscoveryRequestBuilder(discoveryOptions);
+		reportsDir.ifPresent(dir -> discoveryRequestBuilder.configurationParameter(OUTPUT_DIR_PROPERTY_NAME,
+			dir.toAbsolutePath().toString()));
+		launcher.execute(discoveryRequestBuilder.build());
 	}
 
 	private Optional<ClassLoader> createCustomClassLoader() {
