@@ -193,13 +193,13 @@ abstract class AbstractExtensionContext<T extends TestDescriptor> implements Ext
 	}
 
 	@Override
-	public Store getSessionLevelStore() {
-		return getStore(Namespace.create("session"));
+	public Store getSessionLevelStore(Namespace namespace) {
+		return getStore(namespace);
 	}
 
 	@Override
-	public Store getRequestLevelStore() {
-		return getStore(Namespace.create("request"));
+	public Store getRequestLevelStore(Namespace namespace) {
+		return getStore(namespace);
 	}
 
 	@Override

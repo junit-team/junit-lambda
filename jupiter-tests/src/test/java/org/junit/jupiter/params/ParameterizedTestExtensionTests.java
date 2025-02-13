@@ -303,6 +303,16 @@ class ParameterizedTestExtensionTests {
 			}
 
 			@Override
+			public Store getSessionLevelStore(Namespace namespace) {
+				return getStore(namespace);
+			}
+
+			@Override
+			public Store getRequestLevelStore(Namespace namespace) {
+				return getStore(namespace);
+			}
+
+			@Override
 			public ExecutionMode getExecutionMode() {
 				return ExecutionMode.SAME_THREAD;
 			}

@@ -26,6 +26,7 @@ import org.junit.platform.commons.util.ClassNamePatternFilterUtils;
 import org.junit.platform.commons.util.Preconditions;
 import org.junit.platform.engine.ConfigurationParameters;
 import org.junit.platform.engine.TestEngine;
+import org.junit.platform.engine.support.store.Namespace;
 import org.junit.platform.engine.support.store.NamespacedHierarchicalStore;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryListener;
@@ -63,6 +64,8 @@ import org.junit.platform.launcher.TestExecutionListener;
  */
 @API(status = STABLE, since = "1.0")
 public class LauncherFactory {
+
+	private static final NamespacedHierarchicalStore<Namespace> SESSION_STORE = new NamespacedHierarchicalStore<>(null);
 
 	private LauncherFactory() {
 		/* no-op */
@@ -135,9 +138,7 @@ public class LauncherFactory {
 			LauncherConfigurationParameters configurationParameters) {
 		Set<TestEngine> engines = collectTestEngines(config);
 		List<PostDiscoveryFilter> filters = collectPostDiscoveryFilters(config);
-
-		DefaultLauncher launcher = new DefaultLauncher(engines, filters, new NamespacedHierarchicalStore<>(null));
-
+		DefaultLauncher launcher = new DefaultLauncher(engines, filters, SESSION_STORE);
 		registerLauncherDiscoveryListeners(config, launcher);
 		registerTestExecutionListeners(config, launcher, configurationParameters);
 

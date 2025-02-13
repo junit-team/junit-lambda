@@ -428,7 +428,7 @@ public interface ExtensionContext {
 	 * @since 5.13
 	 */
 	@API(status = EXPERIMENTAL, since = "5.13")
-	Store getSessionLevelStore();
+	Store getSessionLevelStore(Namespace namespace);
 
 	/**
 	 * Returns the store for request-level data.
@@ -439,7 +439,7 @@ public interface ExtensionContext {
 	 * @return the store for request-level data
 	 * @since 5.13
 	 */
-	Store getRequestLevelStore();
+	Store getRequestLevelStore(Namespace namespace);
 
 	/**
 	 * Get the {@link ExecutionMode} associated with the current test or container.

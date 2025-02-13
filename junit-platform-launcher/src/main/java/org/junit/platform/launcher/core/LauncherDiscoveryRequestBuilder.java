@@ -111,7 +111,6 @@ public final class LauncherDiscoveryRequestBuilder {
 	private final Map<String, String> configurationParameters = new HashMap<>();
 	private final List<String> configurationParametersResources = new ArrayList<>();
 	private final List<LauncherDiscoveryListener> discoveryListeners = new ArrayList<>();
-	// TODO[#4252] Use the session-level store as its parent.
 	private final NamespacedHierarchicalStore<Namespace> store = new NamespacedHierarchicalStore<>(null);
 	private boolean implicitConfigurationParametersEnabled = true;
 	private ConfigurationParameters parentConfigurationParameters;
