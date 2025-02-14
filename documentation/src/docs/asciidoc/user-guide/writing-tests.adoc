@@ -2480,7 +2480,7 @@ generated at runtime by a factory method that is annotated with `@TestFactory`.
 In contrast to `@Test` methods, a `@TestFactory` method is not itself a test case but
 rather a factory for test cases. Thus, a dynamic test is the product of a factory.
 Technically speaking, a `@TestFactory` method must return a single `DynamicNode` or a
-`Stream`, `Collection`, `Iterable`, `Iterator`, or array of `DynamicNode` instances.
+`Stream`, `Collection`, `Iterable`, `Iterator`, an `Iterator` providing class or array of `DynamicNode` instances.
 Instantiable subclasses of `DynamicNode` are `DynamicContainer` and `DynamicTest`.
 `DynamicContainer` instances are composed of a _display name_ and a list of dynamic child
 nodes, enabling the creation of arbitrarily nested hierarchies of dynamic nodes.

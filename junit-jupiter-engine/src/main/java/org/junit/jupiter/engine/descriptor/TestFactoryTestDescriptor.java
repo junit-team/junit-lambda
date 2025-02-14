@@ -132,7 +132,7 @@ public class TestFactoryTestDescriptor extends TestMethodTestDescriptor implemen
 
 	private JUnitException invalidReturnTypeException(Throwable cause) {
 		String message = String.format(
-			"@TestFactory method [%s] must return a single %2$s or a Stream, Collection, Iterable, Iterator, or array of %2$s.",
+			"@TestFactory method [%s] must return a single %2$s or a Stream, Collection, Iterable, Iterator, Iterator-source or array of %2$s.",
 			getTestMethod().toGenericString(), DynamicNode.class.getName());
 		return new JUnitException(message, cause);
 	}
