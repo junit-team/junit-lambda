@@ -10,10 +10,16 @@
 
 package org.junit.platform.console;
 
+import static java.nio.file.Files.deleteIfExists;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -92,4 +98,35 @@ class ConsoleLauncherIntegrationTests {
 		assertEquals(0, new ConsoleLauncherWrapper().execute(args1).getTestsFoundCount());
 	}
 
+	@ParameterizedTest
+	@ValueSource(strings = { "--redirect-stdout", "--redirect-stderr" })
+	void executeWithRedirectedStdStream(String redirectedStream) throws IOException {
+
+		Path outputFile = Path.of("foo.txt");
+		var line = String.format(
+			"execute -e junit-jupiter --select-method org.junit.platform.console.options.StdStreamTest#printTest "
+					+ "%s %s",
+			redirectedStream, outputFile);
+		var args = line.split(" ");
+		new ConsoleLauncherWrapper().execute(args);
+
+		assertTrue(Files.exists(outputFile), "File does not exist.");
+		assertEquals(Files.size(outputFile), 20, "Invalid file size.");
+		deleteIfExists(outputFile);
+	}
+
+	@Test
+	void executeWithRedirectedStdStreamsToSameFile() throws IOException {
+		Path outputFile = Path.of("foo.txt");
+		var line = String.format(
+			"execute -e junit-jupiter --select-method org.junit.platform.console.options.StdStreamTest#printTest "
+					+ "--redirect-stdout %s --redirect-stderr %s",
+			outputFile, outputFile);
+		var args = line.split(" ");
+		new ConsoleLauncherWrapper().execute(args);
+
+		assertTrue(Files.exists(outputFile), "File does not exist.");
+		assertEquals(Files.size(outputFile), 40, "Invalid file size.");
+		deleteIfExists(outputFile);
+	}
 }

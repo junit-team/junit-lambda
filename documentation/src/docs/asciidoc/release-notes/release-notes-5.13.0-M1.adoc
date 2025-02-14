@@ -26,7 +26,8 @@ repository on GitHub.
 [[release-notes-5.13.0-M1-junit-platform-new-features-and-improvements]]
 ==== New Features and Improvements
 
-* ❓
+* New optional CLI options `--redirect-stdout` and `--redirect-stderr` to redirect stdout
+and stderr outputs to a file.
 
 
 [[release-notes-5.13.0-M1-junit-jupiter]]

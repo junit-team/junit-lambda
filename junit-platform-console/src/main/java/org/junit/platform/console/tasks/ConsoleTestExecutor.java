@@ -14,9 +14,12 @@ import static org.apiguardian.api.API.Status.INTERNAL;
 import static org.junit.platform.console.tasks.DiscoveryRequestCreator.toDiscoveryRequestBuilder;
 import static org.junit.platform.launcher.LauncherConstants.OUTPUT_DIR_PROPERTY_NAME;
 
+import java.io.IOException;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.List;
@@ -101,10 +104,16 @@ public class ConsoleTestExecutor {
 		Launcher launcher = launcherSupplier.get();
 		SummaryGeneratingListener summaryListener = registerListeners(out, reportsDir, launcher);
 
-		LauncherDiscoveryRequestBuilder discoveryRequestBuilder = toDiscoveryRequestBuilder(discoveryOptions);
-		reportsDir.ifPresent(dir -> discoveryRequestBuilder.configurationParameter(OUTPUT_DIR_PROPERTY_NAME,
-			dir.toAbsolutePath().toString()));
-		launcher.execute(discoveryRequestBuilder.build());
+		PrintStream originalOut = System.out;
+		PrintStream originalErr = System.err;
+		try {
+			redirectStdStreams(outputOptions.getStdoutPath(), outputOptions.getStderrPath());
+			launchTests(launcher, reportsDir);
+		}
+		finally {
+			System.setOut(originalOut);
+			System.setErr(originalErr);
+		}
 
 		TestExecutionSummary summary = summaryListener.getSummary();
 		if (summary.getTotalFailureCount() > 0 || outputOptions.getDetails() != Details.NONE) {
@@ -112,6 +121,13 @@ public class ConsoleTestExecutor {
 		}
 
 		return summary;
+	}
+
+	private void launchTests(Launcher launcher, Optional<Path> reportsDir) {
+		LauncherDiscoveryRequestBuilder discoveryRequestBuilder = toDiscoveryRequestBuilder(discoveryOptions);
+		reportsDir.ifPresent(dir -> discoveryRequestBuilder.configurationParameter(OUTPUT_DIR_PROPERTY_NAME,
+			dir.toAbsolutePath().toString()));
+		launcher.execute(discoveryRequestBuilder.build());
 	}
 
 	private Optional<ClassLoader> createCustomClassLoader() {
@@ -188,6 +204,47 @@ public class ConsoleTestExecutor {
 			summary.printFailuresTo(out);
 		}
 		summary.printTo(out);
+	}
+
+	@API(status = INTERNAL, since = "5.12")
+	private boolean isSameFile(Path path1, Path path2) {
+		if (path1 == null || path2 == null)
+			return false;
+		return (path1.normalize().toAbsolutePath().equals(path2.normalize().toAbsolutePath()));
+	}
+
+	private void redirectStdStreams(Path stdoutPath, Path stderrPath) {
+		if (isSameFile(stdoutPath, stderrPath)) {
+			try {
+				PrintStream commonStream = new PrintStream(Files.newOutputStream(stdoutPath), true);
+				System.setOut(commonStream);
+				System.setErr(commonStream);
+			}
+			catch (IOException e) {
+				throw new JUnitException("Error setting up stream for Stdout and Stderr at path: " + stdoutPath, e);
+			}
+		}
+		else {
+			if (stdoutPath != null) {
+				try {
+					PrintStream outStream = new PrintStream(Files.newOutputStream(stdoutPath), true);
+					System.setOut(outStream);
+				}
+				catch (IOException e) {
+					throw new JUnitException("Error setting up stream for Stdout at path: " + stdoutPath, e);
+				}
+			}
+
+			if (stderrPath != null) {
+				try {
+					PrintStream errStream = new PrintStream(Files.newOutputStream(stderrPath), true);
+					System.setErr(errStream);
+				}
+				catch (IOException e) {
+					throw new JUnitException("Error setting up stream for Stderr at path: " + stderrPath, e);
+				}
+			}
+		}
 	}
 
 	@FunctionalInterface

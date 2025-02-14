@@ -32,6 +32,8 @@ public class TestConsoleOutputOptions {
 	private boolean isSingleColorPalette;
 	private Details details = DEFAULT_DETAILS;
 	private Theme theme = DEFAULT_THEME;
+	private Path stdoutPath;
+	private Path stderrPath;
 
 	public boolean isAnsiColorOutputDisabled() {
 		return this.ansiColorOutputDisabled;
@@ -71,6 +73,26 @@ public class TestConsoleOutputOptions {
 
 	public void setTheme(Theme theme) {
 		this.theme = theme;
+	}
+
+	@API(status = INTERNAL, since = "5.12")
+	public Path getStdoutPath() {
+		return this.stdoutPath;
+	}
+
+	@API(status = INTERNAL, since = "5.12")
+	public void setStdoutPath(Path stdoutPath) {
+		this.stdoutPath = stdoutPath;
+	}
+
+	@API(status = INTERNAL, since = "5.12")
+	public Path getStderrPath() {
+		return this.stderrPath;
+	}
+
+	@API(status = INTERNAL, since = "5.12")
+	public void setStderrPath(Path stderrPath) {
+		this.stderrPath = stderrPath;
 	}
 
 }

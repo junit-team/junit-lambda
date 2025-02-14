@@ -115,6 +115,7 @@ class ArchUnitTests {
 		// ConsoleLauncher, StreamInterceptor, Picocli et al...
 		var subset = classes //
 				.that(are(not(name("org.junit.platform.console.ConsoleLauncher")))) //
+				.that(are(not(name("org.junit.platform.console.tasks.ConsoleTestExecutor")))) //
 				.that(are(not(name("org.junit.platform.launcher.core.StreamInterceptor")))) //
 				.that(are(not(name("org.junit.platform.runner.JUnitPlatformRunnerListener")))) //
 				.that(are(not(name("org.junit.platform.testkit.engine.Events")))) //
