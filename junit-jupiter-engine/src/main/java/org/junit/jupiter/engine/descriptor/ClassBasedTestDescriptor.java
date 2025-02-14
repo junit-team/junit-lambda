@@ -82,7 +82,8 @@ import org.junit.platform.engine.support.hierarchical.ThrowableCollector;
  * @since 5.5
  */
 @API(status = INTERNAL, since = "5.5")
-public abstract class ClassBasedTestDescriptor extends JupiterTestDescriptor implements ResourceLockAware {
+public abstract class ClassBasedTestDescriptor extends JupiterTestDescriptor
+		implements ResourceLockAware, TestClassAware {
 
 	private static final InterceptingExecutableInvoker executableInvoker = new InterceptingExecutableInvoker();
 
@@ -107,37 +108,49 @@ public abstract class ClassBasedTestDescriptor extends JupiterTestDescriptor imp
 		this.exclusiveResourceCollector = ExclusiveResourceCollector.from(testClass);
 	}
 
-	// --- TestDescriptor ------------------------------------------------------
+	ClassBasedTestDescriptor(UniqueId uniqueId, Class<?> testClass, String displayName,
+			JupiterConfiguration configuration) {
+		super(uniqueId, displayName, ClassSource.from(testClass), configuration);
 
+		this.testClass = testClass;
+		this.tags = getTags(testClass);
+		this.lifecycle = getTestInstanceLifecycle(testClass, configuration);
+		this.defaultChildExecutionMode = (this.lifecycle == Lifecycle.PER_CLASS ? ExecutionMode.SAME_THREAD : null);
+		this.exclusiveResourceCollector = ExclusiveResourceCollector.from(testClass);
+	}
+
+	// --- TestClassAware ------------------------------------------------------
+
+	@Override
 	public final Class<?> getTestClass() {
 		return this.testClass;
 	}
 
-	public abstract List<Class<?>> getEnclosingTestClasses();
+	// --- TestDescriptor ------------------------------------------------------
 
 	@Override
-	public Type getType() {
+	public final Type getType() {
 		return Type.CONTAINER;
 	}
 
 	@Override
-	public String getLegacyReportingName() {
+	public final String getLegacyReportingName() {
 		return this.testClass.getName();
 	}
 
 	// --- Node ----------------------------------------------------------------
 
 	@Override
-	protected Optional<ExecutionMode> getExplicitExecutionMode() {
+	protected final Optional<ExecutionMode> getExplicitExecutionMode() {
 		return getExecutionModeFromAnnotation(getTestClass());
 	}
 
 	@Override
-	protected Optional<ExecutionMode> getDefaultChildExecutionMode() {
+	protected final Optional<ExecutionMode> getDefaultChildExecutionMode() {
 		return Optional.ofNullable(this.defaultChildExecutionMode);
 	}
 
-	public void setDefaultChildExecutionMode(ExecutionMode defaultChildExecutionMode) {
+	public final void setDefaultChildExecutionMode(ExecutionMode defaultChildExecutionMode) {
 		this.defaultChildExecutionMode = defaultChildExecutionMode;
 	}
 
@@ -147,7 +160,7 @@ public abstract class ClassBasedTestDescriptor extends JupiterTestDescriptor imp
 	}
 
 	@Override
-	public JupiterEngineExecutionContext prepare(JupiterEngineExecutionContext context) {
+	public final JupiterEngineExecutionContext prepare(JupiterEngineExecutionContext context) {
 		MutableExtensionRegistry registry = populateNewExtensionRegistryFromExtendWithAnnotation(
 			context.getExtensionRegistry(), this.testClass);
 
@@ -194,7 +207,7 @@ public abstract class ClassBasedTestDescriptor extends JupiterTestDescriptor imp
 	}
 
 	@Override
-	public JupiterEngineExecutionContext before(JupiterEngineExecutionContext context) {
+	public final JupiterEngineExecutionContext before(JupiterEngineExecutionContext context) {
 		ThrowableCollector throwableCollector = context.getThrowableCollector();
 
 		if (isPerClassLifecycle(context)) {
@@ -223,7 +236,7 @@ public abstract class ClassBasedTestDescriptor extends JupiterTestDescriptor imp
 	}
 
 	@Override
-	public void after(JupiterEngineExecutionContext context) {
+	public final void after(JupiterEngineExecutionContext context) {
 
 		ThrowableCollector throwableCollector = context.getThrowableCollector();
 		Throwable previousThrowable = throwableCollector.getThrowable();
@@ -303,8 +316,8 @@ public abstract class ClassBasedTestDescriptor extends JupiterTestDescriptor imp
 			ExtensionContextSupplier extensionContext, ExtensionRegistry registry,
 			JupiterEngineExecutionContext context);
 
-	protected TestInstances instantiateTestClass(Optional<TestInstances> outerInstances, ExtensionRegistry registry,
-			ExtensionContextSupplier extensionContext) {
+	protected final TestInstances instantiateTestClass(Optional<TestInstances> outerInstances,
+			ExtensionRegistry registry, ExtensionContextSupplier extensionContext) {
 
 		Optional<Object> outerInstance = outerInstances.map(TestInstances::getInnermostInstance);
 		invokeTestInstancePreConstructCallbacks(new DefaultTestInstanceFactoryContext(this.testClass, outerInstance),

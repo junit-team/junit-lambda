@@ -13,10 +13,12 @@ package org.junit.jupiter.engine;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectMethod;
+import static org.junit.platform.launcher.LauncherConstants.STACKTRACE_PRUNING_ENABLED_PROPERTY_NAME;
 import static org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder.request;
 import static org.junit.platform.launcher.core.OutputDirectoryProviders.dummyOutputDirectoryProvider;
 
 import java.util.Set;
+import java.util.function.Consumer;
 
 import org.junit.platform.engine.DiscoverySelector;
 import org.junit.platform.engine.TestDescriptor;
@@ -40,7 +42,13 @@ public abstract class AbstractJupiterTestEngineTests {
 	}
 
 	protected EngineExecutionResults executeTests(DiscoverySelector... selectors) {
-		return executeTests(request().selectors(selectors).outputDirectoryProvider(dummyOutputDirectoryProvider()));
+		return executeTests(request -> request.selectors(selectors));
+	}
+
+	protected EngineExecutionResults executeTests(Consumer<LauncherDiscoveryRequestBuilder> configurer) {
+		var builder = defaultRequest();
+		configurer.accept(builder);
+		return executeTests(builder);
 	}
 
 	protected EngineExecutionResults executeTests(LauncherDiscoveryRequestBuilder builder) {
@@ -52,8 +60,13 @@ public abstract class AbstractJupiterTestEngineTests {
 	}
 
 	protected TestDescriptor discoverTests(DiscoverySelector... selectors) {
-		return discoverTests(
-			request().selectors(selectors).outputDirectoryProvider(dummyOutputDirectoryProvider()).build());
+		return discoverTests(defaultRequest().selectors(selectors).build());
+	}
+
+	private static LauncherDiscoveryRequestBuilder defaultRequest() {
+		return request() //
+				.outputDirectoryProvider(dummyOutputDirectoryProvider()) //
+				.configurationParameter(STACKTRACE_PRUNING_ENABLED_PROPERTY_NAME, String.valueOf(false));
 	}
 
 	protected TestDescriptor discoverTests(LauncherDiscoveryRequest request) {

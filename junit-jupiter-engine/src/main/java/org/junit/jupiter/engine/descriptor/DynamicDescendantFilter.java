@@ -15,6 +15,7 @@ import static org.apiguardian.api.API.Status.INTERNAL;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiPredicate;
+import java.util.function.UnaryOperator;
 
 import org.apiguardian.api.API;
 import org.junit.platform.engine.TestDescriptor;
@@ -37,6 +38,12 @@ public class DynamicDescendantFilter implements BiPredicate<UniqueId, Integer> {
 	public void allowUniqueIdPrefix(UniqueId uniqueId) {
 		if (this.mode == Mode.EXPLICIT) {
 			this.allowedUniqueIds.add(uniqueId);
+		}
+	}
+
+	public void allowIndex(int index) {
+		if (this.mode == Mode.EXPLICIT) {
+			this.allowedIndices.add(index);
 		}
 	}
 
@@ -79,6 +86,18 @@ public class DynamicDescendantFilter implements BiPredicate<UniqueId, Integer> {
 		EXPLICIT, ALLOW_ALL
 	}
 
+	public DynamicDescendantFilter copy(UnaryOperator<UniqueId> uniqueIdTransformer) {
+		return configure(uniqueIdTransformer, new DynamicDescendantFilter());
+	}
+
+	protected DynamicDescendantFilter configure(UnaryOperator<UniqueId> uniqueIdTransformer,
+			DynamicDescendantFilter copy) {
+		this.allowedUniqueIds.stream().map(uniqueIdTransformer).forEach(copy.allowedUniqueIds::add);
+		copy.allowedIndices.addAll(this.allowedIndices);
+		copy.mode = this.mode;
+		return copy;
+	}
+
 	private class WithoutIndexFiltering extends DynamicDescendantFilter {
 
 		@Override
@@ -89,6 +108,11 @@ public class DynamicDescendantFilter implements BiPredicate<UniqueId, Integer> {
 		@Override
 		public DynamicDescendantFilter withoutIndexFiltering() {
 			return this;
+		}
+
+		@Override
+		public DynamicDescendantFilter copy(UnaryOperator<UniqueId> uniqueIdTransformer) {
+			return configure(uniqueIdTransformer, new WithoutIndexFiltering());
 		}
 	}
 }

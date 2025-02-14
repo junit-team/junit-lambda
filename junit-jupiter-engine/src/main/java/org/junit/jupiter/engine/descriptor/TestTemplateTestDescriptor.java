@@ -10,27 +10,24 @@
 
 package org.junit.jupiter.engine.descriptor;
 
-import static java.util.stream.Collectors.toList;
 import static org.apiguardian.api.API.Status.INTERNAL;
 import static org.junit.jupiter.engine.descriptor.ExtensionUtils.populateNewExtensionRegistryFromExtendWithAnnotation;
 
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 import org.apiguardian.api.API;
+import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestInstances;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import org.junit.jupiter.engine.config.JupiterConfiguration;
 import org.junit.jupiter.engine.execution.JupiterEngineExecutionContext;
-import org.junit.jupiter.engine.extension.ExtensionRegistry;
 import org.junit.jupiter.engine.extension.MutableExtensionRegistry;
-import org.junit.platform.commons.util.Preconditions;
 import org.junit.platform.engine.TestDescriptor;
 import org.junit.platform.engine.UniqueId;
 
@@ -44,11 +41,27 @@ import org.junit.platform.engine.UniqueId;
 public class TestTemplateTestDescriptor extends MethodBasedTestDescriptor implements Filterable {
 
 	public static final String SEGMENT_TYPE = "test-template";
-	private final DynamicDescendantFilter dynamicDescendantFilter = new DynamicDescendantFilter();
+	private final DynamicDescendantFilter dynamicDescendantFilter;
 
 	public TestTemplateTestDescriptor(UniqueId uniqueId, Class<?> testClass, Method templateMethod,
 			Supplier<List<Class<?>>> enclosingInstanceTypes, JupiterConfiguration configuration) {
 		super(uniqueId, testClass, templateMethod, enclosingInstanceTypes, configuration);
+		this.dynamicDescendantFilter = new DynamicDescendantFilter();
+	}
+
+	private TestTemplateTestDescriptor(UniqueId uniqueId, String displayName, Class<?> testClass, Method templateMethod,
+			JupiterConfiguration configuration, DynamicDescendantFilter dynamicDescendantFilter) {
+		super(uniqueId, displayName, testClass, templateMethod, configuration);
+		this.dynamicDescendantFilter = dynamicDescendantFilter;
+	}
+
+	// --- JupiterTestDescriptor -----------------------------------------------
+
+	@Override
+	protected TestTemplateTestDescriptor withUniqueId(UnaryOperator<UniqueId> uniqueIdTransformer) {
+		return new TestTemplateTestDescriptor(uniqueIdTransformer.apply(getUniqueId()), getDisplayName(),
+			getTestClass(), getTestMethod(), this.configuration,
+			this.dynamicDescendantFilter.copy(uniqueIdTransformer));
 	}
 
 	// --- Filterable ----------------------------------------------------------
@@ -95,65 +108,59 @@ public class TestTemplateTestDescriptor extends MethodBasedTestDescriptor implem
 	public JupiterEngineExecutionContext execute(JupiterEngineExecutionContext context,
 			DynamicTestExecutor dynamicTestExecutor) throws Exception {
 
-		ExtensionContext extensionContext = context.getExtensionContext();
-		List<TestTemplateInvocationContextProvider> providers = validateProviders(extensionContext,
-			context.getExtensionRegistry());
-		AtomicInteger invocationIndex = new AtomicInteger();
-		for (TestTemplateInvocationContextProvider provider : providers) {
-			executeForProvider(provider, invocationIndex, dynamicTestExecutor, extensionContext);
-		}
+		new TestTemplateExecutor().execute(context, dynamicTestExecutor);
 		return context;
 	}
 
-	private void executeForProvider(TestTemplateInvocationContextProvider provider, AtomicInteger invocationIndex,
-			DynamicTestExecutor dynamicTestExecutor, ExtensionContext extensionContext) {
+	private class TestTemplateExecutor
+			extends TemplateExecutor<TestTemplateInvocationContextProvider, TestTemplateInvocationContext> {
 
-		int initialValue = invocationIndex.get();
-
-		try (Stream<TestTemplateInvocationContext> stream = invocationContexts(provider, extensionContext)) {
-			stream.forEach(invocationContext -> toTestDescriptor(invocationContext, invocationIndex.incrementAndGet()) //
-					.ifPresent(testDescriptor -> execute(dynamicTestExecutor, testDescriptor)));
+		TestTemplateExecutor() {
+			super(TestTemplateTestDescriptor.this, TestTemplateInvocationContextProvider.class);
 		}
 
-		Preconditions.condition(
-			invocationIndex.get() != initialValue
-					|| provider.mayReturnZeroTestTemplateInvocationContexts(extensionContext),
-			String.format(
+		@Override
+		boolean supports(TestTemplateInvocationContextProvider provider, ExtensionContext extensionContext) {
+			return provider.supportsTestTemplate(extensionContext);
+		}
+
+		@Override
+		protected String getNoRegisteredProviderErrorMessage() {
+			return String.format("You must register at least one %s that supports @%s method [%s]",
+				TestTemplateInvocationContextProvider.class.getSimpleName(), TestTemplate.class.getSimpleName(),
+				getTestMethod());
+		}
+
+		@Override
+		Stream<? extends TestTemplateInvocationContext> provideContexts(TestTemplateInvocationContextProvider provider,
+				ExtensionContext extensionContext) {
+			return provider.provideTestTemplateInvocationContexts(extensionContext);
+		}
+
+		@Override
+		boolean mayReturnZeroContexts(TestTemplateInvocationContextProvider provider,
+				ExtensionContext extensionContext) {
+			return provider.mayReturnZeroTestTemplateInvocationContexts(extensionContext);
+		}
+
+		@Override
+		protected String getZeroContextsProvidedErrorMessage(TestTemplateInvocationContextProvider provider) {
+			return String.format(
 				"Provider [%s] did not provide any invocation contexts, but was expected to do so. "
 						+ "You may override mayReturnZeroTestTemplateInvocationContexts() to allow this.",
-				provider.getClass().getSimpleName()));
-	}
-
-	private static Stream<TestTemplateInvocationContext> invocationContexts(
-			TestTemplateInvocationContextProvider provider, ExtensionContext extensionContext) {
-		return provider.provideTestTemplateInvocationContexts(extensionContext);
-	}
-
-	private List<TestTemplateInvocationContextProvider> validateProviders(ExtensionContext extensionContext,
-			ExtensionRegistry extensionRegistry) {
-
-		// @formatter:off
-		List<TestTemplateInvocationContextProvider> providers = extensionRegistry.stream(TestTemplateInvocationContextProvider.class)
-				.filter(provider -> provider.supportsTestTemplate(extensionContext))
-				.collect(toList());
-		// @formatter:on
-
-		return Preconditions.notEmpty(providers,
-			() -> String.format("You must register at least one %s that supports @TestTemplate method [%s]",
-				TestTemplateInvocationContextProvider.class.getSimpleName(), getTestMethod()));
-	}
-
-	private Optional<TestDescriptor> toTestDescriptor(TestTemplateInvocationContext invocationContext, int index) {
-		UniqueId uniqueId = getUniqueId().append(TestTemplateInvocationTestDescriptor.SEGMENT_TYPE, "#" + index);
-		if (getDynamicDescendantFilter().test(uniqueId, index - 1)) {
-			return Optional.of(new TestTemplateInvocationTestDescriptor(uniqueId, getTestClass(), getTestMethod(),
-				invocationContext, index, configuration));
+				provider.getClass().getSimpleName());
 		}
-		return Optional.empty();
-	}
 
-	private void execute(DynamicTestExecutor dynamicTestExecutor, TestDescriptor testDescriptor) {
-		testDescriptor.setParent(this);
-		dynamicTestExecutor.execute(testDescriptor);
+		@Override
+		UniqueId createInvocationUniqueId(UniqueId parentUniqueId, int index) {
+			return parentUniqueId.append(TestTemplateInvocationTestDescriptor.SEGMENT_TYPE, "#" + index);
+		}
+
+		@Override
+		TestDescriptor createInvocationTestDescriptor(UniqueId uniqueId,
+				TestTemplateInvocationContext invocationContext, int index) {
+			return new TestTemplateInvocationTestDescriptor(uniqueId, getTestClass(), getTestMethod(),
+				invocationContext, index, TestTemplateTestDescriptor.this.configuration);
+		}
 	}
 }

@@ -48,6 +48,31 @@ import org.junit.platform.engine.support.hierarchical.OpenTest4JAwareThrowableCo
  */
 class TestFactoryTestDescriptorTests {
 
+	@Test
+	void copyIncludesTransformedDynamicDescendantFilter() throws Exception {
+		var rootUniqueId = UniqueId.forEngine("engine");
+		var parentUniqueId = rootUniqueId.append("class", "myClass");
+		var originalUniqueId = parentUniqueId.append("old", "testFactory()");
+
+		var configuration = mock(JupiterConfiguration.class);
+		when(configuration.getDefaultDisplayNameGenerator()).thenReturn(new CustomDisplayNameGenerator());
+		Method testMethod = CustomStreamTestCase.class.getDeclaredMethod("customStream");
+		var original = new TestFactoryTestDescriptor(originalUniqueId, CustomStreamTestCase.class, testMethod, List::of,
+			configuration);
+
+		original.getDynamicDescendantFilter().allowUniqueIdPrefix(originalUniqueId.append("foo", "bar"));
+		original.getDynamicDescendantFilter().allowIndex(42);
+
+		var newUniqueId = parentUniqueId.append("new", "testFactory()");
+
+		var copy = original.withUniqueId(new UniqueIdPrefixTransformer(originalUniqueId, newUniqueId));
+
+		assertThat(copy.getUniqueId()).isEqualTo(newUniqueId);
+		assertThat(copy.getDynamicDescendantFilter().test(newUniqueId, 0)).isTrue();
+		assertThat(copy.getDynamicDescendantFilter().test(newUniqueId, 42)).isTrue();
+		assertThat(copy.getDynamicDescendantFilter().test(originalUniqueId, 1)).isFalse();
+	}
+
 	/**
 	 * @since 5.3
 	 */

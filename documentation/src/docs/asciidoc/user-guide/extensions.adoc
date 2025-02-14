@@ -765,6 +765,46 @@ You may override the `getTestInstantiationExtensionContextScope(...)` method to 
 on the test method level.
 ====
 
+[[extensions-container-templates]]
+=== Providing Invocation Contexts for Container Templates
+
+A `{ContainerTemplate}` class can only be executed when at least one
+`{ContainerTemplateInvocationContextProvider}` is registered. Each such provider is
+responsible for providing a `Stream` of `{ContainerTemplateInvocationContext}` instances.
+Each context may specify a custom display name and a list of additional extensions that
+will only be used for the next invocation of the `{ContainerTemplate}` class.
+
+The following example shows how to write a container template as well as how to register
+and implement a `{ContainerTemplateInvocationContextProvider}`.
+
+[source,java,indent=0]
+.A container template with accompanying extension
+----
+include::{testDir}/example/ContainerTemplateDemo.java[tags=user_guide]
+----
+
+In this example, the container template will be invoked twice, meaning all test methods in
+the container template class will be executed twice. The display names of the container
+invocations will be `apple` and `banana` as specified by the invocation context. Each
+invocation registers a custom `{TestInstancePostProcessor}` which is used to inject a
+value into a field. The output when using the `ConsoleLauncher` is as follows.
+
+....
+└─ ContainerTemplateDemo ✔
+   ├─ apple ✔
+   │  ├─ notNull() ✔
+   │  └─ wellKnown() ✔
+   └─ banana ✔
+      ├─ notNull() ✔
+      └─ wellKnown() ✔
+....
+
+The `{ContainerTemplateInvocationContextProvider}` extension API is primarily intended for
+implementing different kinds of tests that rely on repetitive invocation of _all_ test
+methods in a test class albeit in different contexts — for example, with different
+parameters, by preparing the test class instance differently, or multiple times without
+modifying the context.
+
 [[extensions-test-templates]]
 === Providing Invocation Contexts for Test Templates
 

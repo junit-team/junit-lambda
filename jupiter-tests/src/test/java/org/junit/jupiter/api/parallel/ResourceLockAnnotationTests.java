@@ -12,6 +12,10 @@ package org.junit.jupiter.api.parallel;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Throwables.getRootCause;
+import static org.junit.platform.commons.util.CollectionUtils.getOnlyElement;
+import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
+import static org.junit.platform.engine.discovery.DiscoverySelectors.selectIteration;
+import static org.junit.platform.engine.discovery.DiscoverySelectors.selectMethod;
 import static org.junit.platform.engine.support.hierarchical.ExclusiveResource.LockMode;
 import static org.junit.platform.testkit.engine.EventConditions.finishedWithFailure;
 import static org.junit.platform.testkit.engine.TestExecutionResultConditions.instanceOf;
@@ -25,6 +29,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.ContainerTemplate;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Nested;
@@ -34,12 +39,14 @@ import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.engine.AbstractJupiterTestEngineTests;
 import org.junit.jupiter.engine.config.JupiterConfiguration;
 import org.junit.jupiter.engine.descriptor.ClassTestDescriptor;
+import org.junit.jupiter.engine.descriptor.JupiterTestDescriptor;
 import org.junit.jupiter.engine.descriptor.NestedClassTestDescriptor;
 import org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.platform.commons.JUnitException;
+import org.junit.platform.engine.TestDescriptor;
 import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.engine.UniqueId;
 import org.junit.platform.engine.support.hierarchical.ExclusiveResource;
@@ -178,6 +185,76 @@ class ResourceLockAnnotationTests extends AbstractJupiterTestEngineTests {
 				new ExclusiveResource("c3", LockMode.READ_WRITE)
 		);
 		// @formatter:on
+	}
+
+	@Test
+	void addSharedResourcesViaAnnotationValueAndProvidersForContainerTemplate() {
+		var engineDescriptor = discoverTests(
+			selectClass(SharedResourcesViaAnnotationValueAndProvidersContainerTemplateTestCase.class));
+		engineDescriptor.accept(TestDescriptor::prune);
+
+		var containerTemplateTestDescriptor = (JupiterTestDescriptor) getOnlyElement(engineDescriptor.getChildren());
+
+		var expectedResources = List.of( //
+			new ExclusiveResource("a1", LockMode.READ_WRITE), //
+			new ExclusiveResource("a2", LockMode.READ_WRITE), //
+			new ExclusiveResource("a3", LockMode.READ), //
+			new ExclusiveResource("b1", LockMode.READ), //
+			new ExclusiveResource("b2", LockMode.READ), //
+			new ExclusiveResource("c1", LockMode.READ_WRITE), //
+			new ExclusiveResource("c2", LockMode.READ_WRITE), //
+			new ExclusiveResource("c3", LockMode.READ_WRITE), //
+			new ExclusiveResource("d1", LockMode.READ_WRITE), //
+			new ExclusiveResource("d2", LockMode.READ) //
+		);
+
+		assertThat(containerTemplateTestDescriptor.getExclusiveResources()) //
+				.containsExactlyInAnyOrderElementsOf(expectedResources);
+	}
+
+	@Test
+	void addSharedResourcesViaAnnotationValueAndProvidersForContainerTemplateInvocation() {
+		var engineDescriptor = discoverTests(selectIteration(
+			selectClass(SharedResourcesViaAnnotationValueAndProvidersContainerTemplateTestCase.class), 0));
+		engineDescriptor.accept(TestDescriptor::prune);
+
+		var containerTemplateTestDescriptor = (JupiterTestDescriptor) getOnlyElement(engineDescriptor.getChildren());
+
+		var expectedResources = List.of( //
+			new ExclusiveResource("a1", LockMode.READ_WRITE), //
+			new ExclusiveResource("a2", LockMode.READ_WRITE), //
+			new ExclusiveResource("a3", LockMode.READ), //
+			new ExclusiveResource("b1", LockMode.READ), //
+			new ExclusiveResource("b2", LockMode.READ), //
+			new ExclusiveResource("c1", LockMode.READ_WRITE), //
+			new ExclusiveResource("c2", LockMode.READ_WRITE), //
+			new ExclusiveResource("c3", LockMode.READ_WRITE), //
+			new ExclusiveResource("d1", LockMode.READ_WRITE), //
+			new ExclusiveResource("d2", LockMode.READ) //
+		);
+
+		assertThat(containerTemplateTestDescriptor.getExclusiveResources()) //
+				.containsExactlyInAnyOrderElementsOf(expectedResources);
+	}
+
+	@Test
+	void addSharedResourcesViaAnnotationValueAndProvidersForMethodInContainerTemplate() {
+		var engineDescriptor = discoverTests(
+			selectMethod(SharedResourcesViaAnnotationValueAndProvidersContainerTemplateTestCase.class, "test"));
+		engineDescriptor.accept(TestDescriptor::prune);
+
+		var containerTemplateTestDescriptor = (JupiterTestDescriptor) getOnlyElement(engineDescriptor.getChildren());
+
+		var expectedResources = List.of( //
+			new ExclusiveResource("a1", LockMode.READ_WRITE), //
+			new ExclusiveResource("a2", LockMode.READ_WRITE), //
+			new ExclusiveResource("a3", LockMode.READ), //
+			new ExclusiveResource("b1", LockMode.READ), //
+			new ExclusiveResource("b2", LockMode.READ) //
+		);
+
+		assertThat(containerTemplateTestDescriptor.getExclusiveResources()) //
+				.containsExactlyInAnyOrderElementsOf(expectedResources);
 	}
 
 	@Test
@@ -523,4 +600,71 @@ class ResourceLockAnnotationTests extends AbstractJupiterTestEngineTests {
 		}
 	}
 
+	@SuppressWarnings("JUnitMalformedDeclaration")
+	@ContainerTemplate
+	@ResourceLock( //
+			value = "a1", //
+			providers = SharedResourcesViaAnnotationValueAndProvidersContainerTemplateTestCase.FirstClassLevelProvider.class //
+	)
+	@ResourceLock( //
+			value = "a2", //
+			target = ResourceLockTarget.CHILDREN, //
+			providers = SharedResourcesViaAnnotationValueAndProvidersContainerTemplateTestCase.SecondClassLevelProvider.class //
+	)
+	static class SharedResourcesViaAnnotationValueAndProvidersContainerTemplateTestCase {
+
+		@Test
+		@ResourceLock(value = "b1", mode = ResourceAccessMode.READ)
+		void test() {
+		}
+
+		@Nested
+		@ResourceLock(providers = NestedClassLevelProvider.class)
+		class NestedClass {
+			@Test
+			@ResourceLock("c1")
+			void test() {
+			}
+		}
+
+		@Nested
+		@ContainerTemplate
+		@ResourceLock(value = "d1", target = ResourceLockTarget.CHILDREN)
+		class NestedContainerTemplate {
+			@Test
+			@ResourceLock(value = "d2", mode = ResourceAccessMode.READ)
+			void test() {
+			}
+		}
+
+		static class FirstClassLevelProvider implements ResourceLocksProvider {
+
+			@Override
+			public Set<Lock> provideForClass(Class<?> testClass) {
+				return Set.of(new Lock("a3", ResourceAccessMode.READ));
+			}
+		}
+
+		static class SecondClassLevelProvider implements ResourceLocksProvider {
+
+			@Override
+			public Set<Lock> provideForMethod(List<Class<?>> enclosingInstanceTypes, Class<?> testClass,
+					Method testMethod) {
+				return Set.of(new Lock("b2", ResourceAccessMode.READ));
+			}
+
+			@Override
+			public Set<Lock> provideForNestedClass(List<Class<?>> enclosingInstanceTypes, Class<?> testClass) {
+				return Set.of(new Lock("c2"));
+			}
+		}
+
+		static class NestedClassLevelProvider implements ResourceLocksProvider {
+
+			@Override
+			public Set<Lock> provideForNestedClass(List<Class<?>> enclosingInstanceTypes, Class<?> testClass) {
+				return Set.of(new Lock("c3"));
+			}
+		}
+	}
 }

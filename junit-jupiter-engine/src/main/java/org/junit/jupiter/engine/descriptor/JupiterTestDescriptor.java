@@ -26,11 +26,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 import org.apiguardian.api.API;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ConditionEvaluationResult;
 import org.junit.jupiter.api.extension.Extension;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.engine.config.JupiterConfiguration;
 import org.junit.jupiter.engine.execution.ConditionEvaluator;
@@ -202,7 +204,8 @@ public abstract class JupiterTestDescriptor extends AbstractTestDescriptor
 	}
 
 	/**
-	 * Must be overridden and return a new context so cleanUp() does not accidentally close the parent context.
+	 * Must be overridden and return a new context with a new {@link ExtensionContext}
+	 * so cleanUp() does not accidentally close the parent context.
 	 */
 	@Override
 	public abstract JupiterEngineExecutionContext prepare(JupiterEngineExecutionContext context) throws Exception;
@@ -211,6 +214,27 @@ public abstract class JupiterTestDescriptor extends AbstractTestDescriptor
 	public void cleanUp(JupiterEngineExecutionContext context) throws Exception {
 		context.close();
 	}
+
+	public void prunePriorToFiltering() {
+		prune();
+	}
+
+	/**
+	 * {@return a deep copy (with copies of children) of this descriptor with the supplied unique ID}
+	 */
+	protected JupiterTestDescriptor copyIncludingDescendants(UnaryOperator<UniqueId> uniqueIdTransformer) {
+		JupiterTestDescriptor result = withUniqueId(uniqueIdTransformer);
+		getChildren().forEach(oldChild -> {
+			TestDescriptor newChild = ((JupiterTestDescriptor) oldChild).copyIncludingDescendants(uniqueIdTransformer);
+			result.addChild(newChild);
+		});
+		return result;
+	}
+
+	/**
+	 * {@return shallow copy (without children) of this descriptor with the supplied unique ID}
+	 */
+	protected abstract JupiterTestDescriptor withUniqueId(UnaryOperator<UniqueId> uniqueIdTransformer);
 
 	/**
 	 * @since 5.5

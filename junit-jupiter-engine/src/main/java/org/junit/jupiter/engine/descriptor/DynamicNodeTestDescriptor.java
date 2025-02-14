@@ -11,6 +11,7 @@
 package org.junit.jupiter.engine.descriptor;
 
 import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.engine.config.JupiterConfiguration;
 import org.junit.jupiter.engine.execution.JupiterEngineExecutionContext;
 import org.junit.platform.engine.TestDescriptor;
@@ -24,7 +25,7 @@ import org.junit.platform.engine.UniqueId;
  */
 abstract class DynamicNodeTestDescriptor extends JupiterTestDescriptor {
 
-	private final int index;
+	protected final int index;
 
 	DynamicNodeTestDescriptor(UniqueId uniqueId, int index, DynamicNode dynamicNode, TestSource testSource,
 			JupiterConfiguration configuration) {
@@ -44,7 +45,7 @@ abstract class DynamicNodeTestDescriptor extends JupiterTestDescriptor {
 
 	@Override
 	public JupiterEngineExecutionContext prepare(JupiterEngineExecutionContext context) {
-		DynamicExtensionContext extensionContext = new DynamicExtensionContext(context.getExtensionContext(),
+		ExtensionContext extensionContext = new DynamicExtensionContext(context.getExtensionContext(),
 			context.getExecutionListener(), this, context.getConfiguration(), context.getExtensionRegistry());
 		// @formatter:off
 		return context.extend()

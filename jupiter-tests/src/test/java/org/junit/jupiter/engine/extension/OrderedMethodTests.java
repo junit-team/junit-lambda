@@ -52,6 +52,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.TestReporter;
 import org.junit.jupiter.api.fixtures.TrackLogRecords;
 import org.junit.jupiter.engine.JupiterTestEngine;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.platform.commons.logging.LogRecordListener;
 import org.junit.platform.commons.util.ClassUtils;
 import org.junit.platform.testkit.engine.EngineTestKit;
@@ -173,9 +175,10 @@ class OrderedMethodTests {
 		assertThat(threadNames).hasSize(1);
 	}
 
-	@Test
-	void defaultOrderer() {
-		var tests = executeTestsInParallel(WithoutTestMethodOrderTestCase.class, OrderAnnotation.class);
+	@ParameterizedTest
+	@ValueSource(classes = { WithoutTestMethodOrderTestCase.class, ContainerTemplateTestCase.class })
+	void defaultOrderer(Class<?> testClass) {
+		var tests = executeTestsInParallel(testClass, OrderAnnotation.class);
 
 		tests.assertStatistics(stats -> stats.succeeded(callSequence.size()));
 
@@ -843,6 +846,9 @@ class OrderedMethodTests {
 		void test1() {
 		}
 
+	}
+
+	static class ContainerTemplateTestCase extends WithoutTestMethodOrderTestCase {
 	}
 
 }

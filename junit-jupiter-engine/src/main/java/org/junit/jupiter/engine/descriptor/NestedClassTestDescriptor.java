@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 import org.apiguardian.api.API;
 import org.junit.jupiter.api.extension.TestInstances;
@@ -55,6 +56,19 @@ public class NestedClassTestDescriptor extends ClassBasedTestDescriptor {
 			createDisplayNameSupplierForNestedClass(enclosingInstanceTypes, testClass, configuration), configuration);
 	}
 
+	private NestedClassTestDescriptor(UniqueId uniqueId, Class<?> testClass, String displayName,
+			JupiterConfiguration configuration) {
+		super(uniqueId, testClass, displayName, configuration);
+	}
+
+	// --- JupiterTestDescriptor -----------------------------------------------
+
+	@Override
+	protected NestedClassTestDescriptor withUniqueId(UnaryOperator<UniqueId> uniqueIdTransformer) {
+		return new NestedClassTestDescriptor(uniqueIdTransformer.apply(getUniqueId()), getTestClass(), getDisplayName(),
+			configuration);
+	}
+
 	// --- TestDescriptor ------------------------------------------------------
 
 	@Override
@@ -65,6 +79,8 @@ public class NestedClassTestDescriptor extends ClassBasedTestDescriptor {
 		return allTags;
 	}
 
+	// --- TestClassAware ------------------------------------------------------
+
 	@Override
 	public List<Class<?>> getEnclosingTestClasses() {
 		return getEnclosingTestClasses(getParent().orElse(null));
@@ -72,8 +88,8 @@ public class NestedClassTestDescriptor extends ClassBasedTestDescriptor {
 
 	@API(status = INTERNAL, since = "5.12")
 	public static List<Class<?>> getEnclosingTestClasses(TestDescriptor parent) {
-		if (parent instanceof ClassBasedTestDescriptor) {
-			ClassBasedTestDescriptor parentClassDescriptor = (ClassBasedTestDescriptor) parent;
+		if (parent instanceof TestClassAware) {
+			TestClassAware parentClassDescriptor = (TestClassAware) parent;
 			List<Class<?>> result = new ArrayList<>(parentClassDescriptor.getEnclosingTestClasses());
 			result.add(parentClassDescriptor.getTestClass());
 			return result;
@@ -81,7 +97,7 @@ public class NestedClassTestDescriptor extends ClassBasedTestDescriptor {
 		return emptyList();
 	}
 
-	// --- Node ----------------------------------------------------------------
+	// --- ClassBasedTestDescriptor --------------------------------------------
 
 	@Override
 	protected TestInstances instantiateTestClass(JupiterEngineExecutionContext parentExecutionContext,
@@ -94,6 +110,8 @@ public class NestedClassTestDescriptor extends ClassBasedTestDescriptor {
 			extensionRegistryForOuterInstanceCreation, context);
 		return instantiateTestClass(Optional.of(outerInstances), registry, extensionContext);
 	}
+
+	// --- ResourceLockAware ---------------------------------------------------
 
 	@Override
 	public Function<ResourceLocksProvider, Set<ResourceLocksProvider.Lock>> getResourceLocksProviderEvaluator() {

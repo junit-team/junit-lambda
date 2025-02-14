@@ -2,7 +2,7 @@ dynamic-directory: false
 snapshot-name: open-test-report.xml
 snapshot-number: 0
 test-class: platform.tooling.support.tests.GradleStarterTests
-test-method: gradle_wrapper
+test-method: buildJupiterStarterProject
 
 <?xml version="1.0" encoding="UTF-8"?>
 <e:events xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0" xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0"
@@ -21,7 +21,7 @@ test-method: gradle_wrapper
     <java:heapSize max="514850816"/>
   </infrastructure>
   
-  <e:started id="1" name="JUnit Jupiter" time="2025-02-11T13:40:40.710Z">
+  <e:started id="1" name="JUnit Jupiter" time="2025-02-11T15:17:59.959Z">
     <metadata>
       <junit:uniqueId>[engine:junit-jupiter]</junit:uniqueId>
       <junit:legacyReportingName>JUnit Jupiter</junit:legacyReportingName>
@@ -29,7 +29,172 @@ test-method: gradle_wrapper
     </metadata>
   </e:started>
   
-  <e:started id="2" name="CalculatorTests" parentId="1" time="2025-02-11T13:40:40.729Z">
+  <e:started id="2" name="CalculatorContainerTemplateTests" parentId="1" time="2025-02-11T15:17:59.978Z">
+    <metadata>
+      <junit:uniqueId>[engine:junit-jupiter]/[container-template:com.example.project.CalculatorContainerTemplateTests]</junit:uniqueId>
+      <junit:legacyReportingName>com.example.project.CalculatorContainerTemplateTests</junit:legacyReportingName>
+      <junit:type>CONTAINER</junit:type>
+    </metadata>
+    <sources>
+      <java:classSource className="com.example.project.CalculatorContainerTemplateTests"/>
+    </sources>
+  </e:started>
+  
+  <e:started id="3" name="[1]" parentId="2" time="2025-02-11T15:17:59.989Z">
+    <metadata>
+      <junit:uniqueId>[engine:junit-jupiter]/[container-template:com.example.project.CalculatorContainerTemplateTests]/[container-template-invocation:#1]</junit:uniqueId>
+      <junit:legacyReportingName>com.example.project.CalculatorContainerTemplateTests[1]</junit:legacyReportingName>
+      <junit:type>CONTAINER</junit:type>
+    </metadata>
+    <sources>
+      <java:classSource className="com.example.project.CalculatorContainerTemplateTests"/>
+    </sources>
+  </e:started>
+  
+  <e:started id="4" name="regularTest()" parentId="3" time="2025-02-11T15:17:59.996Z">
+    <metadata>
+      <junit:uniqueId>[engine:junit-jupiter]/[container-template:com.example.project.CalculatorContainerTemplateTests]/[container-template-invocation:#1]/[method:regularTest()]</junit:uniqueId>
+      <junit:legacyReportingName>regularTest()</junit:legacyReportingName>
+      <junit:type>TEST</junit:type>
+    </metadata>
+    <sources>
+      <java:methodSource className="com.example.project.CalculatorContainerTemplateTests" methodName="regularTest" methodParameterTypes=""/>
+    </sources>
+  </e:started>
+  
+  <e:finished id="4" time="2025-02-11T15:18:00.011Z">
+    <result status="SUCCESSFUL"/>
+  </e:finished>
+  
+  <e:started id="5" name="parameterizedTest(int)" parentId="3" time="2025-02-11T15:18:00.015Z">
+    <metadata>
+      <junit:uniqueId>[engine:junit-jupiter]/[container-template:com.example.project.CalculatorContainerTemplateTests]/[container-template-invocation:#1]/[test-template:parameterizedTest(int)]</junit:uniqueId>
+      <junit:legacyReportingName>parameterizedTest(int)</junit:legacyReportingName>
+      <junit:type>CONTAINER</junit:type>
+    </metadata>
+    <sources>
+      <java:methodSource className="com.example.project.CalculatorContainerTemplateTests" methodName="parameterizedTest" methodParameterTypes="int"/>
+    </sources>
+  </e:started>
+  
+  <e:started id="6" name="[1] 1" parentId="5" time="2025-02-11T15:18:00.032Z">
+    <metadata>
+      <junit:uniqueId>[engine:junit-jupiter]/[container-template:com.example.project.CalculatorContainerTemplateTests]/[container-template-invocation:#1]/[test-template:parameterizedTest(int)]/[test-template-invocation:#1]</junit:uniqueId>
+      <junit:legacyReportingName>parameterizedTest(int)[1]</junit:legacyReportingName>
+      <junit:type>TEST</junit:type>
+    </metadata>
+    <sources>
+      <java:methodSource className="com.example.project.CalculatorContainerTemplateTests" methodName="parameterizedTest" methodParameterTypes="int"/>
+    </sources>
+  </e:started>
+  
+  <e:finished id="6" time="2025-02-11T15:18:00.038Z">
+    <result status="SUCCESSFUL"/>
+  </e:finished>
+  
+  <e:started id="7" name="[2] 2" parentId="5" time="2025-02-11T15:18:00.040Z">
+    <metadata>
+      <junit:uniqueId>[engine:junit-jupiter]/[container-template:com.example.project.CalculatorContainerTemplateTests]/[container-template-invocation:#1]/[test-template:parameterizedTest(int)]/[test-template-invocation:#2]</junit:uniqueId>
+      <junit:legacyReportingName>parameterizedTest(int)[2]</junit:legacyReportingName>
+      <junit:type>TEST</junit:type>
+    </metadata>
+    <sources>
+      <java:methodSource className="com.example.project.CalculatorContainerTemplateTests" methodName="parameterizedTest" methodParameterTypes="int"/>
+    </sources>
+  </e:started>
+  
+  <e:finished id="7" time="2025-02-11T15:18:00.042Z">
+    <result status="SUCCESSFUL"/>
+  </e:finished>
+  
+  <e:finished id="5" time="2025-02-11T15:18:00.043Z">
+    <result status="SUCCESSFUL"/>
+  </e:finished>
+  
+  <e:finished id="3" time="2025-02-11T15:18:00.043Z">
+    <result status="SUCCESSFUL"/>
+  </e:finished>
+  
+  <e:started id="8" name="[2]" parentId="2" time="2025-02-11T15:18:00.044Z">
+    <metadata>
+      <junit:uniqueId>[engine:junit-jupiter]/[container-template:com.example.project.CalculatorContainerTemplateTests]/[container-template-invocation:#2]</junit:uniqueId>
+      <junit:legacyReportingName>com.example.project.CalculatorContainerTemplateTests[2]</junit:legacyReportingName>
+      <junit:type>CONTAINER</junit:type>
+    </metadata>
+    <sources>
+      <java:classSource className="com.example.project.CalculatorContainerTemplateTests"/>
+    </sources>
+  </e:started>
+  
+  <e:started id="9" name="regularTest()" parentId="8" time="2025-02-11T15:18:00.045Z">
+    <metadata>
+      <junit:uniqueId>[engine:junit-jupiter]/[container-template:com.example.project.CalculatorContainerTemplateTests]/[container-template-invocation:#2]/[method:regularTest()]</junit:uniqueId>
+      <junit:legacyReportingName>regularTest()</junit:legacyReportingName>
+      <junit:type>TEST</junit:type>
+    </metadata>
+    <sources>
+      <java:methodSource className="com.example.project.CalculatorContainerTemplateTests" methodName="regularTest" methodParameterTypes=""/>
+    </sources>
+  </e:started>
+  
+  <e:finished id="9" time="2025-02-11T15:18:00.046Z">
+    <result status="SUCCESSFUL"/>
+  </e:finished>
+  
+  <e:started id="10" name="parameterizedTest(int)" parentId="8" time="2025-02-11T15:18:00.047Z">
+    <metadata>
+      <junit:uniqueId>[engine:junit-jupiter]/[container-template:com.example.project.CalculatorContainerTemplateTests]/[container-template-invocation:#2]/[test-template:parameterizedTest(int)]</junit:uniqueId>
+      <junit:legacyReportingName>parameterizedTest(int)</junit:legacyReportingName>
+      <junit:type>CONTAINER</junit:type>
+    </metadata>
+    <sources>
+      <java:methodSource className="com.example.project.CalculatorContainerTemplateTests" methodName="parameterizedTest" methodParameterTypes="int"/>
+    </sources>
+  </e:started>
+  
+  <e:started id="11" name="[1] 1" parentId="10" time="2025-02-11T15:18:00.049Z">
+    <metadata>
+      <junit:uniqueId>[engine:junit-jupiter]/[container-template:com.example.project.CalculatorContainerTemplateTests]/[container-template-invocation:#2]/[test-template:parameterizedTest(int)]/[test-template-invocation:#1]</junit:uniqueId>
+      <junit:legacyReportingName>parameterizedTest(int)[1]</junit:legacyReportingName>
+      <junit:type>TEST</junit:type>
+    </metadata>
+    <sources>
+      <java:methodSource className="com.example.project.CalculatorContainerTemplateTests" methodName="parameterizedTest" methodParameterTypes="int"/>
+    </sources>
+  </e:started>
+  
+  <e:finished id="11" time="2025-02-11T15:18:00.050Z">
+    <result status="SUCCESSFUL"/>
+  </e:finished>
+  
+  <e:started id="12" name="[2] 2" parentId="10" time="2025-02-11T15:18:00.051Z">
+    <metadata>
+      <junit:uniqueId>[engine:junit-jupiter]/[container-template:com.example.project.CalculatorContainerTemplateTests]/[container-template-invocation:#2]/[test-template:parameterizedTest(int)]/[test-template-invocation:#2]</junit:uniqueId>
+      <junit:legacyReportingName>parameterizedTest(int)[2]</junit:legacyReportingName>
+      <junit:type>TEST</junit:type>
+    </metadata>
+    <sources>
+      <java:methodSource className="com.example.project.CalculatorContainerTemplateTests" methodName="parameterizedTest" methodParameterTypes="int"/>
+    </sources>
+  </e:started>
+  
+  <e:finished id="12" time="2025-02-11T15:18:00.052Z">
+    <result status="SUCCESSFUL"/>
+  </e:finished>
+  
+  <e:finished id="10" time="2025-02-11T15:18:00.053Z">
+    <result status="SUCCESSFUL"/>
+  </e:finished>
+  
+  <e:finished id="8" time="2025-02-11T15:18:00.053Z">
+    <result status="SUCCESSFUL"/>
+  </e:finished>
+  
+  <e:finished id="2" time="2025-02-11T15:18:00.054Z">
+    <result status="SUCCESSFUL"/>
+  </e:finished>
+  
+  <e:started id="13" name="CalculatorTests" parentId="1" time="2025-02-11T15:18:00.055Z">
     <metadata>
       <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]</junit:uniqueId>
       <junit:legacyReportingName>com.example.project.CalculatorTests</junit:legacyReportingName>
@@ -40,7 +205,7 @@ test-method: gradle_wrapper
     </sources>
   </e:started>
   
-  <e:started id="3" name="1 + 1 = 2" parentId="2" time="2025-02-11T13:40:40.745Z">
+  <e:started id="14" name="1 + 1 = 2" parentId="13" time="2025-02-11T15:18:00.058Z">
     <metadata>
       <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]/[method:addsTwoNumbers()]</junit:uniqueId>
       <junit:legacyReportingName>addsTwoNumbers()</junit:legacyReportingName>
@@ -51,11 +216,11 @@ test-method: gradle_wrapper
     </sources>
   </e:started>
   
-  <e:finished id="3" time="2025-02-11T13:40:40.755Z">
+  <e:finished id="14" time="2025-02-11T15:18:00.060Z">
     <result status="SUCCESSFUL"/>
   </e:finished>
   
-  <e:started id="4" name="add(int, int, int)" parentId="2" time="2025-02-11T13:40:40.758Z">
+  <e:started id="15" name="add(int, int, int)" parentId="13" time="2025-02-11T15:18:00.060Z">
     <metadata>
       <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]/[test-template:add(int, int, int)]</junit:uniqueId>
       <junit:legacyReportingName>add(int, int, int)</junit:legacyReportingName>
@@ -66,7 +231,7 @@ test-method: gradle_wrapper
     </sources>
   </e:started>
   
-  <e:started id="5" name="0 + 1 = 1" parentId="4" time="2025-02-11T13:40:40.784Z">
+  <e:started id="16" name="0 + 1 = 1" parentId="15" time="2025-02-11T15:18:00.073Z">
     <metadata>
       <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]/[test-template:add(int, int, int)]/[test-template-invocation:#1]</junit:uniqueId>
       <junit:legacyReportingName>add(int, int, int)[1]</junit:legacyReportingName>
@@ -77,11 +242,11 @@ test-method: gradle_wrapper
     </sources>
   </e:started>
   
-  <e:finished id="5" time="2025-02-11T13:40:40.794Z">
+  <e:finished id="16" time="2025-02-11T15:18:00.082Z">
     <result status="SUCCESSFUL"/>
   </e:finished>
   
-  <e:started id="6" name="1 + 2 = 3" parentId="4" time="2025-02-11T13:40:40.797Z">
+  <e:started id="17" name="1 + 2 = 3" parentId="15" time="2025-02-11T15:18:00.083Z">
     <metadata>
       <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]/[test-template:add(int, int, int)]/[test-template-invocation:#2]</junit:uniqueId>
       <junit:legacyReportingName>add(int, int, int)[2]</junit:legacyReportingName>
@@ -92,11 +257,11 @@ test-method: gradle_wrapper
     </sources>
   </e:started>
   
-  <e:finished id="6" time="2025-02-11T13:40:40.798Z">
+  <e:finished id="17" time="2025-02-11T15:18:00.085Z">
     <result status="SUCCESSFUL"/>
   </e:finished>
   
-  <e:started id="7" name="49 + 51 = 100" parentId="4" time="2025-02-11T13:40:40.799Z">
+  <e:started id="18" name="49 + 51 = 100" parentId="15" time="2025-02-11T15:18:00.086Z">
     <metadata>
       <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]/[test-template:add(int, int, int)]/[test-template-invocation:#3]</junit:uniqueId>
       <junit:legacyReportingName>add(int, int, int)[3]</junit:legacyReportingName>
@@ -107,11 +272,11 @@ test-method: gradle_wrapper
     </sources>
   </e:started>
   
-  <e:finished id="7" time="2025-02-11T13:40:40.800Z">
+  <e:finished id="18" time="2025-02-11T15:18:00.088Z">
     <result status="SUCCESSFUL"/>
   </e:finished>
   
-  <e:started id="8" name="1 + 100 = 101" parentId="4" time="2025-02-11T13:40:40.801Z">
+  <e:started id="19" name="1 + 100 = 101" parentId="15" time="2025-02-11T15:18:00.089Z">
     <metadata>
       <junit:uniqueId>[engine:junit-jupiter]/[class:com.example.project.CalculatorTests]/[test-template:add(int, int, int)]/[test-template-invocation:#4]</junit:uniqueId>
       <junit:legacyReportingName>add(int, int, int)[4]</junit:legacyReportingName>
@@ -122,19 +287,19 @@ test-method: gradle_wrapper
     </sources>
   </e:started>
   
-  <e:finished id="8" time="2025-02-11T13:40:40.802Z">
+  <e:finished id="19" time="2025-02-11T15:18:00.090Z">
     <result status="SUCCESSFUL"/>
   </e:finished>
   
-  <e:finished id="4" time="2025-02-11T13:40:40.803Z">
+  <e:finished id="15" time="2025-02-11T15:18:00.090Z">
     <result status="SUCCESSFUL"/>
   </e:finished>
   
-  <e:finished id="2" time="2025-02-11T13:40:40.804Z">
+  <e:finished id="13" time="2025-02-11T15:18:00.091Z">
     <result status="SUCCESSFUL"/>
   </e:finished>
   
-  <e:finished id="1" time="2025-02-11T13:40:40.804Z">
+  <e:finished id="1" time="2025-02-11T15:18:00.091Z">
     <result status="SUCCESSFUL"/>
   </e:finished>
   

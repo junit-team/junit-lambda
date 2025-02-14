@@ -251,6 +251,32 @@ public final class EventConditions {
 
 	/**
 	 * Create a new {@link Condition} that matches if and only if the
+	 * {@linkplain TestDescriptor#getUniqueId() unique id} of an {@link Event}'s
+	 * {@linkplain Event#getTestDescriptor() test descriptor} is equal to the
+	 * {@link UniqueId} parsed from the supplied {@link String}.
+	 *
+	 * @since 1.13
+	 */
+	@API(status = EXPERIMENTAL, since = "1.13")
+	public static Condition<Event> uniqueId(String uniqueId) {
+		return uniqueId(UniqueId.parse(uniqueId));
+	}
+
+	/**
+	 * Create a new {@link Condition} that matches if and only if the
+	 * {@linkplain TestDescriptor#getUniqueId() unique id} of an {@link Event}'s
+	 * {@linkplain Event#getTestDescriptor() test descriptor} is equal to the
+	 * supplied {@link UniqueId}.
+	 *
+	 * @since 1.13
+	 */
+	@API(status = EXPERIMENTAL, since = "1.13")
+	public static Condition<Event> uniqueId(UniqueId uniqueId) {
+		return uniqueId(new Condition<>(isEqual(uniqueId), "equal to '%s'", uniqueId));
+	}
+
+	/**
+	 * Create a new {@link Condition} that matches if and only if the
 	 * {@linkplain TestDescriptor#getUniqueId() unique id} of an
 	 * {@link Event}'s {@linkplain Event#getTestDescriptor() test descriptor}
 	 * contains the supplied {@link String}.
@@ -260,11 +286,22 @@ public final class EventConditions {
 			String text = segment.getType() + ":" + segment.getValue();
 			return text.contains(uniqueIdSubstring);
 		};
+		return uniqueId(new Condition<>(uniqueId -> uniqueId.getSegments().stream().anyMatch(predicate),
+			"substring '%s'", uniqueIdSubstring));
+	}
 
-		return new Condition<>(
-			byTestDescriptor(
-				where(TestDescriptor::getUniqueId, uniqueId -> uniqueId.getSegments().stream().anyMatch(predicate))),
-			"descriptor with uniqueId substring '%s'", uniqueIdSubstring);
+	/**
+	 * Create a new {@link Condition} that matches if and only if the
+	 * {@linkplain TestDescriptor#getUniqueId() unique id} of an {@link Event}'s
+	 * {@linkplain Event#getTestDescriptor() test descriptor} matches the
+	 * supplied {@link Condition}.
+	 *
+	 * @since 1.13
+	 */
+	@API(status = EXPERIMENTAL, since = "1.13")
+	public static Condition<Event> uniqueId(Condition<? super UniqueId> condition) {
+		return new Condition<>(byTestDescriptor(where(TestDescriptor::getUniqueId, condition::matches)),
+			"descriptor with uniqueId %s", condition.description().value());
 	}
 
 	/**
@@ -313,6 +350,21 @@ public final class EventConditions {
 	public static Condition<Event> displayName(String displayName) {
 		return new Condition<>(byTestDescriptor(where(TestDescriptor::getDisplayName, isEqual(displayName))),
 			"descriptor with display name '%s'", displayName);
+	}
+
+	/**
+	 * Create a new {@link Condition} that matches if and only if the
+	 * {@linkplain TestDescriptor#getLegacyReportingName()} () legacy reporting name}
+	 * of an {@link Event}'s {@linkplain Event#getTestDescriptor() test descriptor}
+	 * is equal to the supplied {@link String}.
+	 *
+	 * @since 1.13
+	 */
+	@API(status = EXPERIMENTAL, since = "1.13")
+	public static Condition<Event> legacyReportingName(String legacyReportingName) {
+		return new Condition<>(
+			byTestDescriptor(where(TestDescriptor::getLegacyReportingName, isEqual(legacyReportingName))),
+			"descriptor with legacy reporting name '%s'", legacyReportingName);
 	}
 
 	/**

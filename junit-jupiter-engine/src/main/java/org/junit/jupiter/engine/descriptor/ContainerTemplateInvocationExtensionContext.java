@@ -21,27 +21,17 @@ import org.junit.jupiter.engine.config.JupiterConfiguration;
 import org.junit.jupiter.engine.extension.ExtensionRegistry;
 import org.junit.platform.engine.EngineExecutionListener;
 import org.junit.platform.engine.support.hierarchical.Node;
-import org.junit.platform.engine.support.hierarchical.ThrowableCollector;
 
 /**
- * @since 5.0
+ * @since 5.13
  */
-final class ClassExtensionContext extends AbstractExtensionContext<ClassBasedTestDescriptor> {
+final class ContainerTemplateInvocationExtensionContext
+		extends AbstractExtensionContext<ContainerTemplateInvocationTestDescriptor> {
 
-	private final Lifecycle lifecycle;
-
-	private final ThrowableCollector throwableCollector;
-
-	private TestInstances testInstances;
-
-	ClassExtensionContext(ExtensionContext parent, EngineExecutionListener engineExecutionListener,
-			ClassBasedTestDescriptor testDescriptor, Lifecycle lifecycle, JupiterConfiguration configuration,
-			ExtensionRegistry extensionRegistry, ThrowableCollector throwableCollector) {
-
+	ContainerTemplateInvocationExtensionContext(ExtensionContext parent,
+			EngineExecutionListener engineExecutionListener, ContainerTemplateInvocationTestDescriptor testDescriptor,
+			JupiterConfiguration configuration, ExtensionRegistry extensionRegistry) {
 		super(parent, engineExecutionListener, testDescriptor, configuration, extensionRegistry);
-
-		this.lifecycle = lifecycle;
-		this.throwableCollector = throwableCollector;
 	}
 
 	@Override
@@ -56,21 +46,17 @@ final class ClassExtensionContext extends AbstractExtensionContext<ClassBasedTes
 
 	@Override
 	public Optional<Lifecycle> getTestInstanceLifecycle() {
-		return Optional.of(this.lifecycle);
+		return getParent().flatMap(ExtensionContext::getTestInstanceLifecycle);
 	}
 
 	@Override
 	public Optional<Object> getTestInstance() {
-		return getTestInstances().map(TestInstances::getInnermostInstance);
+		return getParent().flatMap(ExtensionContext::getTestInstance);
 	}
 
 	@Override
 	public Optional<TestInstances> getTestInstances() {
-		return Optional.ofNullable(testInstances);
-	}
-
-	void setTestInstances(TestInstances testInstances) {
-		this.testInstances = testInstances;
+		return getParent().flatMap(ExtensionContext::getTestInstances);
 	}
 
 	@Override
@@ -80,7 +66,7 @@ final class ClassExtensionContext extends AbstractExtensionContext<ClassBasedTes
 
 	@Override
 	public Optional<Throwable> getExecutionException() {
-		return Optional.ofNullable(this.throwableCollector.getThrowable());
+		return Optional.empty();
 	}
 
 	@Override

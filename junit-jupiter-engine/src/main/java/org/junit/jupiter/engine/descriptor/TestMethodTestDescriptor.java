@@ -19,6 +19,7 @@ import static org.junit.platform.commons.util.CollectionUtils.forEachInReverseOr
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 import org.apiguardian.api.API;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -83,10 +84,25 @@ public class TestMethodTestDescriptor extends MethodBasedTestDescriptor {
 	}
 
 	TestMethodTestDescriptor(UniqueId uniqueId, String displayName, Class<?> testClass, Method testMethod,
+			JupiterConfiguration configuration) {
+		this(uniqueId, displayName, testClass, testMethod, configuration, defaultInterceptorCall);
+	}
+
+	TestMethodTestDescriptor(UniqueId uniqueId, String displayName, Class<?> testClass, Method testMethod,
 			JupiterConfiguration configuration, ReflectiveInterceptorCall<Method, Void> interceptorCall) {
 		super(uniqueId, displayName, testClass, testMethod, configuration);
 		this.interceptorCall = interceptorCall;
 	}
+
+	// --- JupiterTestDescriptor -----------------------------------------------
+
+	@Override
+	protected TestMethodTestDescriptor withUniqueId(UnaryOperator<UniqueId> uniqueIdTransformer) {
+		return new TestMethodTestDescriptor(uniqueIdTransformer.apply(getUniqueId()), getDisplayName(), getTestClass(),
+			getTestMethod(), this.configuration, interceptorCall);
+	}
+
+	// --- TestDescriptor ------------------------------------------------------
 
 	@Override
 	public Type getType() {

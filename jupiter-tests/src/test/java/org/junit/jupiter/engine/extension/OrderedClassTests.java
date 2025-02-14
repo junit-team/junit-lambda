@@ -20,16 +20,22 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.ClassOrderer;
+import org.junit.jupiter.api.ContainerTemplate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.extension.ContainerTemplateInvocationContext;
+import org.junit.jupiter.api.extension.ContainerTemplateInvocationContextProvider;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.fixtures.TrackLogRecords;
 import org.junit.platform.commons.logging.LogRecordListener;
 import org.junit.platform.engine.DiscoverySelector;
@@ -126,6 +132,42 @@ class OrderedClassTests {
 	void random() {
 		executeTests(ClassOrderer.Random.class)//
 				.assertStatistics(stats -> stats.succeeded(callSequence.size()));
+	}
+
+	@Test
+	void containerTemplateWithLocalConfig() {
+		var containerTemplate = ContainerTemplateWithLocalConfigTestCase.class;
+		var inner0 = ContainerTemplateWithLocalConfigTestCase.Inner0.class;
+		var inner1 = ContainerTemplateWithLocalConfigTestCase.Inner1.class;
+		var inner1Inner1 = ContainerTemplateWithLocalConfigTestCase.Inner1.Inner1Inner1.class;
+		var inner1Inner0 = ContainerTemplateWithLocalConfigTestCase.Inner1.Inner1Inner0.class;
+
+		executeTests(ClassOrderer.Random.class, selectClass(containerTemplate))//
+				.assertStatistics(stats -> stats.succeeded(callSequence.size()));
+
+		var inner1InvocationCallSequence = Stream.of(inner1, inner1Inner1, inner1Inner0, inner1Inner0).toList();
+		var inner1CallSequence = twice(inner1InvocationCallSequence).toList();
+		var outerCallSequence = Stream.concat(Stream.of(containerTemplate),
+			Stream.concat(inner1CallSequence.stream(), Stream.of(inner0))).toList();
+		var expectedCallSequence = twice(outerCallSequence).map(Class::getSimpleName).toList();
+
+		assertThat(callSequence).containsExactlyElementsOf(expectedCallSequence);
+	}
+
+	private static <T> Stream<T> twice(List<T> values) {
+		return Stream.concat(values.stream(), values.stream());
+	}
+
+	@Test
+	void containerTemplateWithGlobalConfig() {
+		var containerTemplate = ContainerTemplateWithLocalConfigTestCase.class;
+		var otherClass = A_TestCase.class;
+
+		executeTests(ClassOrderer.OrderAnnotation.class, selectClass(otherClass), selectClass(containerTemplate))//
+				.assertStatistics(stats -> stats.succeeded(callSequence.size()));
+
+		assertThat(callSequence)//
+				.containsSubsequence(containerTemplate.getSimpleName(), otherClass.getSimpleName());
 	}
 
 	private Events executeTests(Class<? extends ClassOrderer> classOrderer) {
@@ -262,6 +304,75 @@ class OrderedClassTests {
 			@Test
 			void test() {
 				callSequence.add(getClass().getSimpleName());
+			}
+		}
+	}
+
+	@SuppressWarnings("JUnitMalformedDeclaration")
+	@Order(1)
+	@TestClassOrder(ClassOrderer.OrderAnnotation.class)
+	@ContainerTemplate
+	@ExtendWith(ContainerTemplateWithLocalConfigTestCase.Twice.class)
+	static class ContainerTemplateWithLocalConfigTestCase {
+
+		@Test
+		void test() {
+			callSequence.add(ContainerTemplateWithLocalConfigTestCase.class.getSimpleName());
+		}
+
+		@Nested
+		@Order(1)
+		class Inner0 {
+			@Test
+			void test() {
+				callSequence.add(getClass().getSimpleName());
+			}
+		}
+
+		@Nested
+		@ContainerTemplate
+		@Order(0)
+		class Inner1 {
+
+			@Test
+			void test() {
+				callSequence.add(getClass().getSimpleName());
+			}
+
+			@Nested
+			@ContainerTemplate
+			@Order(2)
+			class Inner1Inner0 {
+				@Test
+				void test() {
+					callSequence.add(getClass().getSimpleName());
+				}
+			}
+
+			@Nested
+			@Order(1)
+			class Inner1Inner1 {
+				@Test
+				void test() {
+					callSequence.add(getClass().getSimpleName());
+				}
+			}
+		}
+
+		private static class Twice implements ContainerTemplateInvocationContextProvider {
+
+			@Override
+			public boolean supportsContainerTemplate(ExtensionContext context) {
+				return true;
+			}
+
+			@Override
+			public Stream<ContainerTemplateInvocationContext> provideContainerTemplateInvocationContexts(
+					ExtensionContext context) {
+				return Stream.of(new Ctx(), new Ctx());
+			}
+
+			private record Ctx() implements ContainerTemplateInvocationContext {
 			}
 		}
 	}

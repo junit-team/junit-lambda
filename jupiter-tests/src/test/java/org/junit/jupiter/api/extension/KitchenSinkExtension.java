@@ -55,8 +55,9 @@ public class KitchenSinkExtension implements
 	// Conditional Test Execution
 	ExecutionCondition,
 
-	// @TestTemplate
+	// @TestTemplate and @ContainerTemplate
 	TestTemplateInvocationContextProvider,
+	ContainerTemplateInvocationContextProvider,
 
 	// Miscellaneous
 	TestWatcher,
@@ -171,6 +172,24 @@ public class KitchenSinkExtension implements
 
 	@Override
 	public boolean mayReturnZeroTestTemplateInvocationContexts(ExtensionContext context) {
+		return false;
+	}
+
+	// --- @ContainerTemplate -------------------------------------------------------
+
+	@Override
+	public boolean supportsContainerTemplate(ExtensionContext context) {
+		return false;
+	}
+
+	@Override
+	public Stream<ContainerTemplateInvocationContext> provideContainerTemplateInvocationContexts(
+			ExtensionContext context) {
+		return null;
+	}
+
+	@Override
+	public boolean mayReturnZeroContainerTemplateInvocationContexts(ExtensionContext context) {
 		return false;
 	}
 

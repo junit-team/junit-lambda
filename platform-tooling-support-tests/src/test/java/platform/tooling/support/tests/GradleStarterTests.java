@@ -21,9 +21,11 @@ import java.nio.file.Path;
 import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.platform.tests.process.OutputFiles;
+import org.junit.platform.tests.process.ProcessResult;
 import org.opentest4j.TestAbortedException;
 
 import platform.tooling.support.Helper;
@@ -36,23 +38,71 @@ import platform.tooling.support.ProcessStarters;
 @EnableSnapshotTests
 class GradleStarterTests {
 
-	@Test
-	void gradle_wrapper(@TempDir Path workspace, @FilePrefix("gradle") OutputFiles outputFiles, Snapshot snapshot)
-			throws Exception {
+	@TempDir
+	Path workspace;
 
+	@BeforeEach
+	void prepareWorkspace() throws Exception {
+		copyToWorkspace(Projects.JUPITER_STARTER, workspace);
+	}
+
+	@Test
+	void buildJupiterStarterProject(@FilePrefix("gradle") OutputFiles outputFiles, Snapshot snapshot) throws Exception {
+
+		var result = runGradle(outputFiles, "build");
+
+		assertThat(result.stdOut()) //
+				.contains( //
+					"CalculatorContainerTemplateTests > [1] > regularTest() PASSED", //
+					"CalculatorContainerTemplateTests > [2] > regularTest() PASSED", //
+					"CalculatorContainerTemplateTests > [1] > parameterizedTest(int)", //
+					"CalculatorContainerTemplateTests > [2] > parameterizedTest(int)", //
+					"Using Java version: 1.8", //
+					"CalculatorTests > 1 + 1 = 2 PASSED", //
+					"CalculatorTests > add(int, int, int) > 0 + 1 = 1 PASSED", //
+					"CalculatorTests > add(int, int, int) > 1 + 2 = 3 PASSED", //
+					"CalculatorTests > add(int, int, int) > 49 + 51 = 100 PASSED", //
+					"CalculatorTests > add(int, int, int) > 1 + 100 = 101 PASSED" //
+				);
+
+		var testResultsDir = workspace.resolve("build/test-results/test");
+		verifyContainsExpectedStartedOpenTestReport(testResultsDir, snapshot);
+	}
+
+	@Test
+	void runOnlyOneMethodInContainerTemplate(@FilePrefix("gradle") OutputFiles outputFiles) throws Exception {
+
+		var result = runGradle(outputFiles, "test", "--tests", "CalculatorContainer*.regular*");
+
+		assertThat(result.stdOut()) //
+				.contains( //
+					"CalculatorContainerTemplateTests > [1] > regularTest() PASSED", //
+					"CalculatorContainerTemplateTests > [2] > regularTest() PASSED" //
+				) //
+				.doesNotContain("parameterizedTest(int)", "CalculatorTests");
+
+		result = runGradle(outputFiles, "test", "--tests", "*ContainerTemplateTests.parameterized*");
+
+		assertThat(result.stdOut()) //
+				.contains( //
+					"CalculatorContainerTemplateTests > [1] > parameterizedTest(int)", //
+					"CalculatorContainerTemplateTests > [2] > parameterizedTest(int)" //
+				) //
+				.doesNotContain("regularTest()", "CalculatorTests");
+	}
+
+	private ProcessResult runGradle(OutputFiles outputFiles, String... extraArgs) throws InterruptedException {
 		var result = ProcessStarters.gradlew() //
-				.workingDir(copyToWorkspace(Projects.JUPITER_STARTER, workspace)) //
+				.workingDir(workspace) //
 				.addArguments("-Dmaven.repo=" + MavenRepo.dir()) //
-				.addArguments("build", "--no-daemon", "--stacktrace", "--no-build-cache", "--warning-mode=fail") //
-				.putEnvironment("JDK8", Helper.getJavaHome("8").orElseThrow(TestAbortedException::new).toString()) //
+				.addArguments("--stacktrace", "--no-build-cache", "--warning-mode=fail") //
+				.addArguments(extraArgs).putEnvironment("JDK8",
+					Helper.getJavaHome("8").orElseThrow(TestAbortedException::new).toString()) //
 				.redirectOutput(outputFiles) //
 				.startAndWait();
 
 		assertEquals(0, result.exitCode());
 		assertTrue(result.stdOut().lines().anyMatch(line -> line.contains("BUILD SUCCESSFUL")));
-		assertThat(result.stdOut()).contains("Using Java version: 1.8");
-
-		var testResultsDir = workspace.resolve("build/test-results/test");
-		verifyContainsExpectedStartedOpenTestReport(testResultsDir, snapshot);
+		return result;
 	}
 }

@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 import org.apiguardian.api.API;
@@ -61,11 +62,27 @@ public class TestFactoryTestDescriptor extends TestMethodTestDescriptor implemen
 	private static final ReflectiveInterceptorCall<Method, Object> interceptorCall = InvocationInterceptor::interceptTestFactoryMethod;
 	private static final InterceptingExecutableInvoker executableInvoker = new InterceptingExecutableInvoker();
 
-	private final DynamicDescendantFilter dynamicDescendantFilter = new DynamicDescendantFilter();
+	private final DynamicDescendantFilter dynamicDescendantFilter;
 
 	public TestFactoryTestDescriptor(UniqueId uniqueId, Class<?> testClass, Method testMethod,
 			Supplier<List<Class<?>>> enclosingInstanceTypes, JupiterConfiguration configuration) {
 		super(uniqueId, testClass, testMethod, enclosingInstanceTypes, configuration);
+		this.dynamicDescendantFilter = new DynamicDescendantFilter();
+	}
+
+	private TestFactoryTestDescriptor(UniqueId uniqueId, String displayName, Class<?> testClass, Method testMethod,
+			JupiterConfiguration configuration, DynamicDescendantFilter dynamicDescendantFilter) {
+		super(uniqueId, displayName, testClass, testMethod, configuration);
+		this.dynamicDescendantFilter = dynamicDescendantFilter;
+	}
+
+	// --- JupiterTestDescriptor -----------------------------------------------
+
+	@Override
+	protected TestFactoryTestDescriptor withUniqueId(UnaryOperator<UniqueId> uniqueIdTransformer) {
+		// TODO #871 Check that dynamic descendant filter is copied correctly
+		return new TestFactoryTestDescriptor(uniqueIdTransformer.apply(getUniqueId()), getDisplayName(), getTestClass(),
+			getTestMethod(), this.configuration, this.dynamicDescendantFilter.copy(uniqueIdTransformer));
 	}
 
 	// --- Filterable ----------------------------------------------------------

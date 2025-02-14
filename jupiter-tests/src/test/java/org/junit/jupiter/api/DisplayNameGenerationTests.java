@@ -22,7 +22,12 @@ import java.lang.reflect.Method;
 import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
+import java.util.stream.Stream;
 
+import org.junit.jupiter.api.extension.ContainerTemplateInvocationContext;
+import org.junit.jupiter.api.extension.ContainerTemplateInvocationContextProvider;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.engine.AbstractJupiterTestEngineTests;
 import org.junit.platform.engine.TestDescriptor;
 
@@ -223,6 +228,32 @@ class DisplayNameGenerationTests extends AbstractJupiterTestEngineTests {
 			"CONTAINER: IndicativeSentencesOnSubClassScenarioOneTestCase -> Level 1 -> Level 2", //
 			"TEST: IndicativeSentencesOnSubClassScenarioOneTestCase -> Level 1 -> Level 2 -> this is a test"//
 		);
+	}
+
+	@Test
+	void indicativeSentencesOnContainerTemplate() {
+		check(ContainerTemplateTestCase.class, //
+			"CONTAINER: Container template", //
+			"TEST: Container template, some test", //
+			"CONTAINER: Container template, Regular Nested Test Case", //
+			"TEST: Container template, Regular Nested Test Case, some nested test", //
+			"CONTAINER: Container template, Nested Container Template", //
+			"TEST: Container template, Nested Container Template, some nested test" //
+		);
+
+		assertThat(executeTestsForClass(ContainerTemplateTestCase.class).allEvents().started().stream()) //
+				.map(event -> event.getTestDescriptor().getDisplayName()) //
+				.containsExactly( //
+					"JUnit Jupiter", //
+					"Container template", //
+					"[1] Container template", //
+					"Container template, some test", //
+					"Container template, Regular Nested Test Case", //
+					"Container template, Regular Nested Test Case, some nested test", //
+					"Container template, Nested Container Template", //
+					"[1] Container template, Nested Container Template", //
+					"Container template, Nested Container Template, some nested test" //
+				);
 	}
 
 	private void check(Class<?> testClass, String... expectedDisplayNames) {
@@ -467,6 +498,57 @@ class DisplayNameGenerationTests extends AbstractJupiterTestEngineTests {
 				void is_no_longer_empty() {
 					assertFalse(stack.isEmpty());
 				}
+			}
+		}
+	}
+
+	@SuppressWarnings("JUnitMalformedDeclaration")
+	@ContainerTemplate
+	@ExtendWith(ContainerTemplateTestCase.Once.class)
+	@DisplayName("Container template")
+	@IndicativeSentencesGeneration(generator = DisplayNameGenerator.ReplaceUnderscores.class)
+	@TestClassOrder(ClassOrderer.OrderAnnotation.class)
+	static class ContainerTemplateTestCase {
+
+		@Test
+		void some_test() {
+		}
+
+		@Nested
+		@Order(1)
+		class Regular_Nested_Test_Case {
+			@Test
+			void some_nested_test() {
+			}
+		}
+
+		@Nested
+		@Order(2)
+		@ContainerTemplate
+		class Nested_Container_Template {
+			@Test
+			void some_nested_test() {
+			}
+		}
+
+		private static class Once implements ContainerTemplateInvocationContextProvider {
+
+			@Override
+			public boolean supportsContainerTemplate(ExtensionContext context) {
+				return true;
+			}
+
+			@Override
+			public Stream<ContainerTemplateInvocationContext> provideContainerTemplateInvocationContexts(
+					ExtensionContext context) {
+				return Stream.of(new ContainerTemplateInvocationContext() {
+					@Override
+					public String getDisplayName(int invocationIndex) {
+						return "%s %s".formatted(
+							ContainerTemplateInvocationContext.super.getDisplayName(invocationIndex),
+							context.getDisplayName());
+					}
+				});
 			}
 		}
 	}

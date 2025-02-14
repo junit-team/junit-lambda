@@ -14,6 +14,7 @@ import static org.junit.jupiter.engine.descriptor.TestFactoryTestDescriptor.crea
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicContainer;
@@ -44,6 +45,12 @@ class DynamicContainerTestDescriptor extends DynamicNodeTestDescriptor {
 		this.dynamicContainer = dynamicContainer;
 		this.testSource = testSource;
 		this.dynamicDescendantFilter = dynamicDescendantFilter;
+	}
+
+	@Override
+	protected DynamicContainerTestDescriptor withUniqueId(UnaryOperator<UniqueId> uniqueIdTransformer) {
+		return new DynamicContainerTestDescriptor(uniqueIdTransformer.apply(getUniqueId()), this.index,
+			this.dynamicContainer, this.testSource, this.dynamicDescendantFilter, this.configuration);
 	}
 
 	@Override

@@ -13,11 +13,14 @@ package org.junit.jupiter.engine.discovery;
 import static org.apiguardian.api.API.Status.INTERNAL;
 
 import org.apiguardian.api.API;
+import org.junit.jupiter.engine.config.JupiterConfiguration;
 import org.junit.jupiter.engine.descriptor.JupiterEngineDescriptor;
+import org.junit.jupiter.engine.descriptor.JupiterTestDescriptor;
 import org.junit.jupiter.engine.discovery.predicates.IsTestClassWithTests;
 import org.junit.platform.engine.EngineDiscoveryRequest;
 import org.junit.platform.engine.TestDescriptor;
 import org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolver;
+import org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolver.InitializationContext;
 
 /**
  * {@code DiscoverySelectorResolver} resolves {@link TestDescriptor TestDescriptors}
@@ -33,16 +36,22 @@ import org.junit.platform.engine.support.discovery.EngineDiscoveryRequestResolve
 @API(status = INTERNAL, since = "5.0")
 public class DiscoverySelectorResolver {
 
-	// @formatter:off
-	private static final EngineDiscoveryRequestResolver<JupiterEngineDescriptor> resolver = EngineDiscoveryRequestResolver.<JupiterEngineDescriptor>builder()
-			.addClassContainerSelectorResolver(new IsTestClassWithTests())
-			.addSelectorResolver(context -> new ClassSelectorResolver(context.getClassNameFilter(), context.getEngineDescriptor().getConfiguration()))
-			.addSelectorResolver(context -> new MethodSelectorResolver(context.getEngineDescriptor().getConfiguration()))
-			.addTestDescriptorVisitor(context -> new ClassOrderingVisitor(context.getEngineDescriptor().getConfiguration()))
-			.addTestDescriptorVisitor(context -> new MethodOrderingVisitor(context.getEngineDescriptor().getConfiguration()))
-			.addTestDescriptorVisitor(context -> TestDescriptor::prune)
+	private static final EngineDiscoveryRequestResolver<JupiterEngineDescriptor> resolver = EngineDiscoveryRequestResolver.<JupiterEngineDescriptor> builder() //
+			.addClassContainerSelectorResolver(new IsTestClassWithTests()) //
+			.addSelectorResolver(ctx -> new ClassSelectorResolver(ctx.getClassNameFilter(), getConfiguration(ctx))) //
+			.addSelectorResolver(ctx -> new MethodSelectorResolver(getConfiguration(ctx))) //
+			.addTestDescriptorVisitor(ctx -> new ClassOrderingVisitor(getConfiguration(ctx))) //
+			.addTestDescriptorVisitor(ctx -> new MethodOrderingVisitor(getConfiguration(ctx))) //
+			.addTestDescriptorVisitor(ctx -> descriptor -> {
+				if (descriptor instanceof JupiterTestDescriptor) {
+					((JupiterTestDescriptor) descriptor).prunePriorToFiltering();
+				}
+			}) //
 			.build();
-	// @formatter:on
+
+	private static JupiterConfiguration getConfiguration(InitializationContext<JupiterEngineDescriptor> context) {
+		return context.getEngineDescriptor().getConfiguration();
+	}
 
 	public void resolveSelectors(EngineDiscoveryRequest request, JupiterEngineDescriptor engineDescriptor) {
 		resolver.resolve(request, engineDescriptor);

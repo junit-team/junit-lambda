@@ -32,7 +32,7 @@ in the `junit-jupiter-api` module.
 | `@ParameterizedTest`     | Denotes that a method is a <<writing-tests-parameterized-tests, parameterized test>>. Such methods are inherited unless they are overridden.
 | `@RepeatedTest`          | Denotes that a method is a test template for a <<writing-tests-repeated-tests, repeated test>>. Such methods are inherited unless they are overridden.
 | `@TestFactory`           | Denotes that a method is a test factory for <<writing-tests-dynamic-tests, dynamic tests>>. Such methods are inherited unless they are overridden.
-| `@TestTemplate`          | Denotes that a method is a <<writing-tests-test-templates, template for test cases>> designed to be invoked multiple times depending on the number of invocation contexts returned by the registered <<extensions-test-templates, providers>>. Such methods are inherited unless they are overridden.
+| `@TestTemplate`          | Denotes that a method is a <<writing-tests-test-templates, template for a test case>> designed to be invoked multiple times depending on the number of invocation contexts returned by the registered <<extensions-test-templates, providers>>. Such methods are inherited unless they are overridden.
 | `@TestClassOrder`        | Used to configure the <<writing-tests-test-execution-order-classes, test class execution order>> for `@Nested` test classes in the annotated test class. Such annotations are inherited.
 | `@TestMethodOrder`       | Used to configure the <<writing-tests-test-execution-order-methods, test method execution order>> for the annotated test class; similar to JUnit 4's `@FixMethodOrder`. Such annotations are inherited.
 | `@TestInstance`          | Used to configure the <<writing-tests-test-instance-lifecycle, test instance lifecycle>> for the annotated test class. Such annotations are inherited.
@@ -42,6 +42,7 @@ in the `junit-jupiter-api` module.
 | `@AfterEach`             | Denotes that the annotated method should be executed _after_ *each* `@Test`, `@RepeatedTest`, `@ParameterizedTest`, or `@TestFactory` method in the current class; analogous to JUnit 4's `@After`. Such methods are inherited unless they are overridden.
 | `@BeforeAll`             | Denotes that the annotated method should be executed _before_ *all* `@Test`, `@RepeatedTest`, `@ParameterizedTest`, and `@TestFactory` methods in the current class; analogous to JUnit 4's `@BeforeClass`. Such methods are inherited unless they are overridden and must be `static` unless the "per-class" <<writing-tests-test-instance-lifecycle, test instance lifecycle>> is used.
 | `@AfterAll`              | Denotes that the annotated method should be executed _after_ *all* `@Test`, `@RepeatedTest`, `@ParameterizedTest`, and `@TestFactory` methods in the current class; analogous to JUnit 4's `@AfterClass`. Such methods are inherited unless they are overridden and must be `static` unless the "per-class" <<writing-tests-test-instance-lifecycle, test instance lifecycle>> is used.
+| `@ContainerTemplate`     | Denotes that the annotated class is a <<writing-tests-container-templates, template for a set of test cases>> designed to be executed multiple times depending on the number of invocation contexts returned by the registered <<extensions-container-templates, providers>>.
 | `@Nested`                | Denotes that the annotated class is a non-static <<writing-tests-nested,nested test class>>. On Java 8 through Java 15, `@BeforeAll` and `@AfterAll` methods cannot be used directly in a `@Nested` test class unless the "per-class" <<writing-tests-test-instance-lifecycle, test instance lifecycle>> is used. Beginning with Java 16, `@BeforeAll` and `@AfterAll` methods can be declared as `static` in a `@Nested` test class with either test instance lifecycle mode. Such annotations are not inherited.
 | `@Tag`                   | Used to declare <<writing-tests-tagging-and-filtering,tags for filtering tests>>, either at the class or method level; analogous to test groups in TestNG or Categories in JUnit 4. Such annotations are inherited at the class level but not at the method level.
 | `@Disabled`              | Used to <<writing-tests-disabling,disable>> a test class or test method; analogous to JUnit 4's `@Ignore`. Such annotations are not inherited.
@@ -2448,12 +2449,22 @@ lifecycle methods (e.g. `@BeforeEach`) and test class constructors.
 include::{testDir}/example/ParameterizedTestDemo.java[tags=ParameterResolver_example]
 ----
 
+[[writing-tests-container-templates]]
+=== Container Templates
+
+A `{ContainerTemplate}` class is not a regular test class but rather a template for the
+contained test cases. As such, it is designed to be invoked multiple times depending on
+invocation contexts returned by the registered providers. Thus, it must be used in
+conjunction with a registered `{ContainerTemplateInvocationContextProvider}` extension.
+Each invocation of a container template class behaves like the execution of a regular test
+class with full support for the same lifecycle callbacks and extensions. Please refer to
+<<extensions-container-templates>> for usage examples.
 
 [[writing-tests-test-templates]]
 === Test Templates
 
-A `{TestTemplate}` method is not a regular test case but rather a template for test
-cases. As such, it is designed to be invoked multiple times depending on the number of
+A `{TestTemplate}` method is not a regular test case but rather a template for a test
+case. As such, it is designed to be invoked multiple times depending on the number of
 invocation contexts returned by the registered providers. Thus, it must be used in
 conjunction with a registered `{TestTemplateInvocationContextProvider}` extension. Each
 invocation of a test template method behaves like the execution of a regular `@Test`

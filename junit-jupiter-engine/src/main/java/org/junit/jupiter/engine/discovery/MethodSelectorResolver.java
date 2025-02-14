@@ -30,8 +30,8 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.engine.config.JupiterConfiguration;
-import org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor;
 import org.junit.jupiter.engine.descriptor.Filterable;
+import org.junit.jupiter.engine.descriptor.TestClassAware;
 import org.junit.jupiter.engine.descriptor.TestFactoryTestDescriptor;
 import org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor;
 import org.junit.jupiter.engine.descriptor.TestTemplateInvocationTestDescriptor;
@@ -208,8 +208,7 @@ class MethodSelectorResolver implements SelectorResolver {
 				return Optional.empty();
 			}
 			return context.addToParent(() -> selectClass(enclosingClasses, testClass), //
-				parent -> Optional.of(
-					createTestDescriptor((ClassBasedTestDescriptor) parent, testClass, method, configuration)));
+				parent -> Optional.of(createTestDescriptor(parent, testClass, method, configuration)));
 		}
 
 		private DiscoverySelector selectClass(List<Class<?>> enclosingClasses, Class<?> testClass) {
@@ -225,11 +224,11 @@ class MethodSelectorResolver implements SelectorResolver {
 			if (segmentType.equals(lastSegment.getType())) {
 				return context.addToParent(() -> selectUniqueId(uniqueId.removeLastSegment()), parent -> {
 					String methodSpecPart = lastSegment.getValue();
-					Class<?> testClass = ((ClassBasedTestDescriptor) parent).getTestClass();
+					Class<?> testClass = ((TestClassAware) parent).getTestClass();
 					// @formatter:off
 					return methodFinder.findMethod(methodSpecPart, testClass)
 							.filter(methodPredicate)
-							.map(method -> createTestDescriptor((ClassBasedTestDescriptor) parent, testClass, method, configuration));
+							.map(method -> createTestDescriptor(parent, testClass, method, configuration));
 					// @formatter:on
 				});
 			}
@@ -239,10 +238,11 @@ class MethodSelectorResolver implements SelectorResolver {
 			return Optional.empty();
 		}
 
-		private TestDescriptor createTestDescriptor(ClassBasedTestDescriptor parent, Class<?> testClass, Method method,
+		private TestDescriptor createTestDescriptor(TestDescriptor parent, Class<?> testClass, Method method,
 				JupiterConfiguration configuration) {
 			UniqueId uniqueId = createUniqueId(method, parent);
-			return createTestDescriptor(uniqueId, testClass, method, parent::getEnclosingTestClasses, configuration);
+			return createTestDescriptor(uniqueId, testClass, method, ((TestClassAware) parent)::getEnclosingTestClasses,
+				configuration);
 		}
 
 		private UniqueId createUniqueId(Method method, TestDescriptor parent) {

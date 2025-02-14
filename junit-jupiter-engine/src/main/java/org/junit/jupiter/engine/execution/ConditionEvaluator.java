@@ -72,7 +72,7 @@ public class ConditionEvaluator {
 
 	private void logResult(Class<?> conditionType, ConditionEvaluationResult result, ExtensionContext context) {
 		logger.trace(() -> format("Evaluation of condition [%s] on [%s] resulted in: %s", conditionType.getName(),
-			context.getElement().get(), result));
+			context.getElement().orElse(null), result));
 	}
 
 	private ConditionEvaluationException evaluationException(Class<?> conditionType, Exception ex) {

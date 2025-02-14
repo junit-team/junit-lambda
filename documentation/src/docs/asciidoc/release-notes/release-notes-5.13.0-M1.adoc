@@ -45,7 +45,11 @@ repository on GitHub.
 [[release-notes-5.13.0-M1-junit-jupiter-new-features-and-improvements]]
 ==== New Features and Improvements
 
-* ❓
+* Introduce `@ContainerTemplate` and `ContainerTemplateInvocationContextProvider` that
+  allow declaring a top-level or `@Nested` test class as a template to be invoked multiple
+  times. This may be used, for example, to inject different parameters to be used by all
+  tests in the container template class or to set up each invocation of the container
+  template differently.
 
 
 [[release-notes-5.13.0-M1-junit-vintage]]

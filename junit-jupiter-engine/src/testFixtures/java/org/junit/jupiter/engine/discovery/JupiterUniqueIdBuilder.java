@@ -12,13 +12,18 @@ package org.junit.jupiter.engine.discovery;
 
 import static org.junit.platform.commons.util.ReflectionUtils.isInnerClass;
 
+import org.junit.jupiter.api.ContainerTemplate;
 import org.junit.jupiter.engine.descriptor.ClassTestDescriptor;
+import org.junit.jupiter.engine.descriptor.ContainerTemplateInvocationTestDescriptor;
+import org.junit.jupiter.engine.descriptor.ContainerTemplateTestDescriptor;
 import org.junit.jupiter.engine.descriptor.JupiterEngineDescriptor;
 import org.junit.jupiter.engine.descriptor.NestedClassTestDescriptor;
 import org.junit.jupiter.engine.descriptor.TestFactoryTestDescriptor;
 import org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor;
 import org.junit.jupiter.engine.descriptor.TestTemplateInvocationTestDescriptor;
 import org.junit.jupiter.engine.descriptor.TestTemplateTestDescriptor;
+import org.junit.platform.commons.support.AnnotationSupport;
+import org.junit.platform.commons.support.ReflectionSupport;
 import org.junit.platform.engine.UniqueId;
 
 /**
@@ -31,16 +36,30 @@ import org.junit.platform.engine.UniqueId;
 public class JupiterUniqueIdBuilder {
 
 	public static UniqueId uniqueIdForClass(Class<?> clazz) {
-		UniqueId containerId = engineId();
 		if (isInnerClass(clazz)) {
-			containerId = uniqueIdForClass(clazz.getEnclosingClass());
-			return containerId.append(NestedClassTestDescriptor.SEGMENT_TYPE, clazz.getSimpleName());
+			var segmentType = classSegmentType(clazz, NestedClassTestDescriptor.SEGMENT_TYPE,
+				ContainerTemplateTestDescriptor.NESTED_CLASS_SEGMENT_TYPE);
+			return uniqueIdForClass(clazz.getEnclosingClass()).append(segmentType, clazz.getSimpleName());
 		}
-		return containerId.append(ClassTestDescriptor.SEGMENT_TYPE, clazz.getName());
+		return uniqueIdForStaticClass(clazz.getName());
 	}
 
-	public static UniqueId uniqueIdForTopLevelClass(String className) {
-		return engineId().append(ClassTestDescriptor.SEGMENT_TYPE, className);
+	public static UniqueId uniqueIdForStaticClass(String className) {
+		return engineId().append(staticClassSegmentType(className), className);
+	}
+
+	private static String staticClassSegmentType(String className) {
+		return ReflectionSupport.tryToLoadClass(className).toOptional() //
+				.map(it -> classSegmentType(it, ClassTestDescriptor.SEGMENT_TYPE,
+					ContainerTemplateTestDescriptor.STATIC_CLASS_SEGMENT_TYPE)) //
+				.orElse(ClassTestDescriptor.SEGMENT_TYPE);
+	}
+
+	private static String classSegmentType(Class<?> clazz, String regularSegmentType,
+			String containerTemplateSegmentType) {
+		return AnnotationSupport.isAnnotated(clazz, ContainerTemplate.class) //
+				? containerTemplateSegmentType //
+				: regularSegmentType;
 	}
 
 	public static UniqueId uniqueIdForMethod(Class<?> clazz, String methodPart) {
@@ -57,6 +76,10 @@ public class JupiterUniqueIdBuilder {
 
 	public static UniqueId appendTestTemplateInvocationSegment(UniqueId parentId, int index) {
 		return parentId.append(TestTemplateInvocationTestDescriptor.SEGMENT_TYPE, "#" + index);
+	}
+
+	public static UniqueId appendContainerTemplateInvocationSegment(UniqueId parentId, int index) {
+		return parentId.append(ContainerTemplateInvocationTestDescriptor.SEGMENT_TYPE, "#" + index);
 	}
 
 	public static UniqueId engineId() {
