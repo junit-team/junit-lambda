@@ -453,7 +453,7 @@ tasks {
 					project.sourceSets.named { it.startsWith("main") }.map { it.allJava.srcDirs }
 				).asPath
 			}))
-			addStringOption("-add-modules", "info.picocli")
+			addStringOption("-add-modules", "info.picocli,org.opentest4j.reporting.events")
 			addOption(ModuleSpecificJavadocFileOption("-add-reads", mapOf(
 					"org.junit.platform.console" to "info.picocli",
 					"org.junit.platform.reporting" to "org.opentest4j.reporting.events",
