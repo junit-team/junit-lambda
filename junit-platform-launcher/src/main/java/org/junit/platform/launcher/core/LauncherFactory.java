@@ -26,6 +26,8 @@ import org.junit.platform.commons.util.ClassNamePatternFilterUtils;
 import org.junit.platform.commons.util.Preconditions;
 import org.junit.platform.engine.ConfigurationParameters;
 import org.junit.platform.engine.TestEngine;
+import org.junit.platform.engine.support.store.Namespace;
+import org.junit.platform.engine.support.store.NamespacedHierarchicalStore;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryListener;
 import org.junit.platform.launcher.LauncherInterceptor;
@@ -63,6 +65,8 @@ import org.junit.platform.launcher.TestExecutionListener;
 @API(status = STABLE, since = "1.0")
 public class LauncherFactory {
 
+	private static final NamespacedHierarchicalStore<Namespace> SESSION_STORE = new NamespacedHierarchicalStore<>(null);
+
 	private LauncherFactory() {
 		/* no-op */
 	}
@@ -96,7 +100,8 @@ public class LauncherFactory {
 		Preconditions.notNull(config, "LauncherConfig must not be null");
 		LauncherConfigurationParameters configurationParameters = LauncherConfigurationParameters.builder().build();
 		return new DefaultLauncherSession(collectLauncherInterceptors(configurationParameters),
-			() -> createLauncherSessionListener(config), () -> createDefaultLauncher(config, configurationParameters));
+			() -> createLauncherSessionListener(config),
+			launcherFactory -> createDefaultLauncher(config, configurationParameters));
 	}
 
 	/**
@@ -133,9 +138,7 @@ public class LauncherFactory {
 			LauncherConfigurationParameters configurationParameters) {
 		Set<TestEngine> engines = collectTestEngines(config);
 		List<PostDiscoveryFilter> filters = collectPostDiscoveryFilters(config);
-
-		DefaultLauncher launcher = new DefaultLauncher(engines, filters);
-
+		DefaultLauncher launcher = new DefaultLauncher(engines, filters, SESSION_STORE);
 		registerLauncherDiscoveryListeners(config, launcher);
 		registerTestExecutionListeners(config, launcher, configurationParameters);
 

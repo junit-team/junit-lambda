@@ -19,6 +19,8 @@ import org.apiguardian.api.API;
 import org.junit.platform.commons.PreconditionViolationException;
 import org.junit.platform.commons.util.Preconditions;
 import org.junit.platform.engine.reporting.OutputDirectoryProvider;
+import org.junit.platform.engine.support.store.Namespace;
+import org.junit.platform.engine.support.store.NamespacedHierarchicalStore;
 
 /**
  * Provides a single {@link TestEngine} access to the information necessary to
@@ -40,6 +42,7 @@ public class ExecutionRequest {
 	private final EngineExecutionListener engineExecutionListener;
 	private final ConfigurationParameters configurationParameters;
 	private final OutputDirectoryProvider outputDirectoryProvider;
+	private final NamespacedHierarchicalStore<Namespace> store = new NamespacedHierarchicalStore<>(null);
 
 	@Deprecated
 	@API(status = DEPRECATED, since = "1.11")
@@ -140,6 +143,10 @@ public class ExecutionRequest {
 	public OutputDirectoryProvider getOutputDirectoryProvider() {
 		return Preconditions.notNull(outputDirectoryProvider,
 			"No OutputDirectoryProvider was configured for this request");
+	}
+
+	public NamespacedHierarchicalStore<Namespace> getStore() {
+		return this.store;
 	}
 
 }

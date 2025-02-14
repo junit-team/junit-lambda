@@ -11,9 +11,12 @@
 package org.junit.platform.launcher.core;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.junit.platform.commons.PreconditionViolationException;
+import org.junit.platform.engine.support.store.Namespace;
+import org.junit.platform.engine.support.store.NamespacedHierarchicalStore;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryListener;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
@@ -43,21 +46,27 @@ class DefaultLauncherSession implements LauncherSession {
 	private final LauncherInterceptor interceptor;
 	private final LauncherSessionListener listener;
 	private final DelegatingLauncher launcher;
+	private final NamespacedHierarchicalStore<Namespace> store;
 
-	DefaultLauncherSession(List<LauncherInterceptor> interceptors, Supplier<LauncherSessionListener> listenerSupplier,
-			Supplier<Launcher> launcherSupplier) {
+	DefaultLauncherSession(List<LauncherInterceptor> interceptors, //
+			Supplier<LauncherSessionListener> listenerSupplier, //
+			Function<NamespacedHierarchicalStore<Namespace>, Launcher> launcherFactory //
+	) {
 		interceptor = composite(interceptors);
 		Launcher launcher;
 		if (interceptor == NOOP_INTERCEPTOR) {
 			this.listener = listenerSupplier.get();
-			launcher = launcherSupplier.get();
+			launcher = launcherFactory.apply(getStore());
 		}
 		else {
 			this.listener = interceptor.intercept(listenerSupplier::get);
-			launcher = new InterceptingLauncher(interceptor.intercept(launcherSupplier::get), interceptor);
+			launcher = new InterceptingLauncher(interceptor.intercept(() -> launcherFactory.apply(getStore())),
+				interceptor);
 		}
 		this.launcher = new DelegatingLauncher(launcher);
 		listener.launcherSessionOpened(this);
+		// TODO [#4281] store should be session-level store
+		this.store = new NamespacedHierarchicalStore<>(null);
 	}
 
 	@Override
@@ -76,6 +85,11 @@ class DefaultLauncherSession implements LauncherSession {
 			listener.launcherSessionClosed(this);
 			interceptor.close();
 		}
+	}
+
+	@Override
+	public NamespacedHierarchicalStore<Namespace> getStore() {
+		return store;
 	}
 
 	private static class ClosedLauncher implements Launcher {

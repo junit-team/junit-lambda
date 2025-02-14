@@ -18,6 +18,8 @@ import java.util.Collection;
 
 import org.junit.platform.commons.util.Preconditions;
 import org.junit.platform.engine.TestEngine;
+import org.junit.platform.engine.support.store.Namespace;
+import org.junit.platform.engine.support.store.NamespacedHierarchicalStore;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryListener;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
@@ -41,6 +43,7 @@ class DefaultLauncher implements Launcher {
 	private final EngineExecutionOrchestrator executionOrchestrator = new EngineExecutionOrchestrator(
 		listenerRegistry.testExecutionListeners);
 	private final EngineDiscoveryOrchestrator discoveryOrchestrator;
+	private final NamespacedHierarchicalStore<Namespace> requestStore;
 
 	/**
 	 * Construct a new {@code DefaultLauncher} with the supplied test engines.
@@ -50,7 +53,8 @@ class DefaultLauncher implements Launcher {
 	 * @param postDiscoveryFilters the additional post discovery filters for
 	 * discovery requests; never {@code null}
 	 */
-	DefaultLauncher(Iterable<TestEngine> testEngines, Collection<PostDiscoveryFilter> postDiscoveryFilters) {
+	DefaultLauncher(Iterable<TestEngine> testEngines, Collection<PostDiscoveryFilter> postDiscoveryFilters,
+			NamespacedHierarchicalStore<Namespace> sessionStore) {
 		Preconditions.condition(testEngines != null && testEngines.iterator().hasNext(),
 			() -> "Cannot create Launcher without at least one TestEngine; "
 					+ "consider adding an engine implementation JAR to the classpath");
@@ -59,6 +63,7 @@ class DefaultLauncher implements Launcher {
 			"PostDiscoveryFilter array must not contain null elements");
 		this.discoveryOrchestrator = new EngineDiscoveryOrchestrator(testEngines,
 			unmodifiableCollection(postDiscoveryFilters), listenerRegistry.launcherDiscoveryListeners);
+		this.requestStore = new NamespacedHierarchicalStore<>(sessionStore);
 	}
 
 	@Override
